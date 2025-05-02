@@ -3,7 +3,7 @@ import cron from 'node-cron';
 import { generateBlog } from '../controllers/blogController.js';
 import { generateTopic } from '../controllers/topicController.js';
 
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('0 */6 * * *', async () => {
 	console.log('⏰ Running daily blog generator...');
 
 	try {
@@ -14,7 +14,7 @@ cron.schedule('*/10 * * * *', async () => {
 	}
 });
 
-cron.schedule('*/2 * * * *', async () => {
+cron.schedule('0 */3 * * *', async () => {
 	console.log('⏰ Running topic generator...');
 
 	try {

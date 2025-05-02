@@ -34,7 +34,8 @@
 				flex-wrap: wrap;
 				gap: 20px;
 				justify-content: center;
-				padding: 20px;
+				padding-left: 50px;
+				padding-right: 50px;
 			}
 			.card {
 				background: #fff;
@@ -105,6 +106,7 @@
 		<div class="container">
 			<% blogs.forEach(blog => { %>
 			<div class="card">
+				<span><%= blog.date %></span>
 				<h2 class="title">
 					<a href="/blogs/<%= blog.slug %>"><%= blog.title %></a>
 				</h2>

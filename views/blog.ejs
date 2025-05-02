@@ -50,7 +50,9 @@
 	<body>
 		<%- include('header') %>
 		<div class="container">
-			<span>Published: <%= blog.date %></span>
+			<br />
+			<br />
+			<span><%= blog.date %></span>
 			<h1><%= blog.title %></h1>
 			<div class="categories">
 				<% blog.categories.forEach(category => { %>

@@ -10,8 +10,6 @@ export const generateBlog = async () => {
 	try {
 		const topic = await getRandomTopic();
 
-		console.log(topic.title);
-
 		const response = await openai.chat.completions.create({
 			model: 'gpt-4.1-nano',
 			messages: [
@@ -36,8 +34,6 @@ export const generateBlog = async () => {
 		const content = response.choices[0].message.content;
 		const parsedContent = JSON.parse(content);
 
-		console.log(parsedContent);
-
 		const newBlog = new blogModel({
 			title: parsedContent.title,
 			content: parsedContent.content,
@@ -60,7 +56,7 @@ export const getAllBlogs = async (req, res) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
-			date: moment(blog.createdAt).format('MMM DD, YYYY'),
+			date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
 		};
 	});
 
@@ -73,7 +69,7 @@ export const getBlog = async (req, res) => {
 
 	const title = blog.title;
 	const content = marked.parse(blog.content);
-	const date = moment(blog.createdAt).format('MMM DD, YYYY');
+	const date = moment(blog.createdAt).format('MMM DD, YYYY hh:mm A');
 	const categories = blog.categories;
 
 	res.render('blog', { blog: { title, content, date, categories } });
@@ -84,7 +80,16 @@ export const getBlogsByCategory = async (req, res) => {
 	const blogs = await blogModel
 		.find({ categories: new RegExp(`^${category}$`, 'i') })
 		.sort({ createdAt: -1 });
-	res.render('blogs', { blogs });
+
+	const parsedBlogs = blogs.map((blog) => {
+		return {
+			...blog._doc,
+			summary: blog.summary,
+			date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
+		};
+	});
+
+	res.render('blogs', { blogs: parsedBlogs });
 };
 
 const getSlug = async (title) => {
