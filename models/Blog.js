@@ -1,0 +1,12 @@
+import mongoose from 'mongoose';
+
+const blogSchema = new mongoose.Schema({
+	title: String,
+	content: String,
+	createdAt: { type: Date, default: Date.now },
+	slug: { type: String, unique: true },
+	categories: [{ type: String }],
+	summary: String,
+});
+
+export const blogModel = mongoose.model('Blog', blogSchema);
