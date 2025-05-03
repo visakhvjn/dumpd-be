@@ -76,8 +76,9 @@ export const getBlog = async (req, res) => {
 		const content = marked.parse(blog.content);
 		const date = moment(blog.createdAt).format('MMM DD, YYYY hh:mm A');
 		const categories = blog.categories;
+		const summary = blog.summary;
 
-		res.render('blog', { blog: { title, content, date, categories } });
+		res.render('blog', { blog: { title, content, date, categories, summary } });
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);
 		res.status(404).render('404', { title: 'Blog Not Found' });
