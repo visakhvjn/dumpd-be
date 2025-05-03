@@ -18,9 +18,8 @@ app.set('views', './views');
 await connectDb();
 
 app.use('/', blogRoutes);
-
-// app.all('*', (req, res) => {
-// 	res.send('Not Found');
-// });
+app.all('*path', (req, res) => {
+	res.status(404).render('404', { title: '404 Not Found' });
+});
 
 app.listen(3000);

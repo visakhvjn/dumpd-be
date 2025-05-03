@@ -64,32 +64,50 @@ export const getAllBlogs = async (req, res) => {
 };
 
 export const getBlog = async (req, res) => {
-	const slug = req.params.slug;
-	const blog = await blogModel.findOne({ slug: slug });
+	try {
+		const slug = req.params.slug;
+		const blog = await blogModel.findOne({ slug: slug });
 
-	const title = blog.title;
-	const content = marked.parse(blog.content);
-	const date = moment(blog.createdAt).format('MMM DD, YYYY hh:mm A');
-	const categories = blog.categories;
+		if (!blog) {
+			throw Error('Blog not found');
+		}
 
-	res.render('blog', { blog: { title, content, date, categories } });
+		const title = blog.title;
+		const content = marked.parse(blog.content);
+		const date = moment(blog.createdAt).format('MMM DD, YYYY hh:mm A');
+		const categories = blog.categories;
+
+		res.render('blog', { blog: { title, content, date, categories } });
+	} catch (err) {
+		console.error('❌ Error fetching blog:', err);
+		res.status(404).render('404', { title: 'Blog Not Found' });
+	}
 };
 
 export const getBlogsByCategory = async (req, res) => {
-	const category = req.params.category;
-	const blogs = await blogModel
-		.find({ categories: new RegExp(`^${category}$`, 'i') })
-		.sort({ createdAt: -1 });
+	try {
+		const category = req.params.category;
+		const blogs = await blogModel
+			.find({ categories: new RegExp(`^${category}$`, 'i') })
+			.sort({ createdAt: -1 });
 
-	const parsedBlogs = blogs.map((blog) => {
-		return {
-			...blog._doc,
-			summary: blog.summary,
-			date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
-		};
-	});
+		if (blogs.length === 0) {
+			throw Error('No blogs found for this category');
+		}
 
-	res.render('blogs', { blogs: parsedBlogs });
+		const parsedBlogs = blogs.map((blog) => {
+			return {
+				...blog._doc,
+				summary: blog.summary,
+				date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
+			};
+		});
+
+		res.render('blogs', { blogs: parsedBlogs });
+	} catch (err) {
+		console.error('❌ Error fetching blogs by category:', err);
+		res.status(404).render('404', { title: 'Category Not Found' });
+	}
 };
 
 const getSlug = async (title) => {
