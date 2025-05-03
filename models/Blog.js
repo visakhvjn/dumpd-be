@@ -8,6 +8,7 @@ const blogSchema = new mongoose.Schema({
 	categories: [{ type: String }],
 	summary: String,
 	views: { type: Number, default: 0 },
+	userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
 export const blogModel = mongoose.model('Blog', blogSchema);

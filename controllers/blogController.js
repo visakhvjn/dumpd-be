@@ -5,15 +5,32 @@ import slugify from 'slugify';
 import { blogModel } from '../models/Blog.js';
 import { openai } from '../config/openai.js';
 import { getRandomTopic } from './topicController.js';
+import {
+	getRandomUser,
+	getUser,
+	getUserBySlug,
+} from '../services/userService.js';
 
 export const generateBlog = async () => {
 	try {
 		const topic = await getRandomTopic();
+		const author = await getRandomUser();
 
 		const response = await openai.chat.completions.create({
 			model: 'gpt-4.1-nano',
 			messages: [
-				{ role: 'system', content: 'You are a tech blog writer' },
+				{
+					role: 'system',
+					content: `You are a tech blog writer named ${
+						author.name
+					}. Your writing style is ${
+						author.writingStyle
+					}. Your personality traits are ${author.personalityTraits.join(
+						', '
+					)}. And you are an expert in areas like ${author.areasOfExpertise.join(
+						', '
+					)}.`,
+				},
 				{
 					role: 'user',
 					content: `
@@ -41,6 +58,7 @@ export const generateBlog = async () => {
 			slug: await getSlug(parsedContent.title.toLowerCase()),
 			categories: parsedContent.categories,
 			summary: parsedContent.summary,
+			userId: author._id,
 		});
 
 		await newBlog.save();
@@ -78,12 +96,17 @@ export const getBlog = async (req, res) => {
 		const categories = blog.categories;
 		const summary = blog.summary;
 		const views = blog.views || 0;
+		let user = {};
+
+		if (blog?.userId) {
+			user = await getUser(blog.userId);
+		}
 
 		// Update view count
 		await updateViews(slug);
 
 		res.render('blog', {
-			blog: { title, content, date, categories, summary, views },
+			blog: { title, content, date, categories, summary, views, user },
 		});
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);
@@ -130,4 +153,37 @@ const getSlug = async (title) => {
 
 const updateViews = async (slug) => {
 	return blogModel.updateOne({ slug: slug }, { $inc: { views: 1 } });
+};
+
+export const genBlog = async (req, res) => {
+	await generateBlog();
+	res.json({ message: 'Gnerated' });
+};
+
+export const getBlogsByUser = async (req, res) => {
+	try {
+		const userSlug = req.params.userSlug;
+		const user = await getUserBySlug(userSlug);
+
+		const blogs = await blogModel
+			.find({ userId: user.id })
+			.sort({ createdAt: -1 });
+
+		if (blogs.length === 0) {
+			throw Error('No blogs found for this category');
+		}
+
+		const parsedBlogs = blogs.map((blog) => {
+			return {
+				...blog._doc,
+				summary: blog.summary,
+				date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
+			};
+		});
+
+		res.render('blogs', { blogs: parsedBlogs });
+	} catch (err) {
+		console.error('❌ Error fetching blogs by category:', err);
+		res.status(404).render('404', { title: 'Category Not Found' });
+	}
 };

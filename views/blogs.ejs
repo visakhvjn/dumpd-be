@@ -97,19 +97,42 @@
 				color: #777;
 				margin-bottom: 10px;
 			}
+			.header {
+				display: flex;
+				justify-content: right;
+				padding: 10px;
+				color: gray;
+				font-size: 0.9rem;
+				letter-spacing: 0.1rem;
+			}
+			.header a {
+				text-decoration: none;
+			}
+			.header a:hover {
+				text-decoration: underline;
+			}
+			.nohuman {
+				font-size: 1rem;
+			}
 		</style>
 	</head>
 	<body>
+		<div class="header">
+			<a href="/about"><span>About</span></a>
+		</div>
 		<div class="banner">
 			<h1><a href="/">The AI Blog</a></h1>
 			<p>
 				Welcome to The AI Blog, your go-to platform for insights, articles, and
 				updates about the fascinating world of technology. The only thing human
-				about this place is the person who created it (hopefully). All the blogs
-				on this website are generated using OpenAI. So if you find any errors,
-				please blame the AI. We are not responsible for any misinformation.
+				about this place is the person who created it (hopefully). All the
+				content on this website is generated using AI. So if you find any
+				errors, please blame the AI. We are not responsible for any
+				misinformation. <br /><br />
+				<span class="nohuman"
+					>In short, there is nothing human here&nbsp;...</span
+				>
 				<br />
-				<span class="openai">Made ❤️ OpenAI</span>
 			</p>
 		</div>
 		<div class="container">
