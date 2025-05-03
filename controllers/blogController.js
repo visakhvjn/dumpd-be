@@ -77,8 +77,14 @@ export const getBlog = async (req, res) => {
 		const date = moment(blog.createdAt).format('MMM DD, YYYY hh:mm A');
 		const categories = blog.categories;
 		const summary = blog.summary;
+		const views = blog.views || 0;
 
-		res.render('blog', { blog: { title, content, date, categories, summary } });
+		// Update view count
+		await updateViews(slug);
+
+		res.render('blog', {
+			blog: { title, content, date, categories, summary, views },
+		});
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);
 		res.status(404).render('404', { title: 'Blog Not Found' });
@@ -120,4 +126,8 @@ const getSlug = async (title) => {
 	}
 
 	return slug;
+};
+
+const updateViews = async (slug) => {
+	return blogModel.updateOne({ slug: slug }, { $inc: { views: 1 } });
 };

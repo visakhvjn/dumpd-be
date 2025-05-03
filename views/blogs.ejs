@@ -88,6 +88,15 @@
 			.openai {
 				font-size: 1rem;
 			}
+
+			.card-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 0.9rem;
+				color: #777;
+				margin-bottom: 10px;
+			}
 		</style>
 	</head>
 	<body>
@@ -106,7 +115,12 @@
 		<div class="container">
 			<% blogs.forEach(blog => { %>
 			<div class="card">
-				<span><%= blog.date %></span>
+				<div class="card-header">
+					<span><%= blog.date %></span>
+					<% if (blog.views > 0) { %>
+					<span>👀 <%= blog.views %></span>
+					<% } %>
+				</div>
 				<h2 class="title">
 					<a href="/blogs/<%= blog.slug %>"><%= blog.title %></a>
 				</h2>

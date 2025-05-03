@@ -7,6 +7,7 @@ const blogSchema = new mongoose.Schema({
 	slug: { type: String, unique: true },
 	categories: [{ type: String }],
 	summary: String,
+	views: { type: Number, default: 0 },
 });
 
 export const blogModel = mongoose.model('Blog', blogSchema);
