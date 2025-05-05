@@ -1,7 +1,8 @@
 import * as userService from '../services/userService.js';
+import * as blogService from '../services/blogService.js';
+
 import mongoose from 'mongoose';
 
-const getBlogs = async (req, res) => {};
 const getBlog = async (req, res) => {};
 
 export const getUsers = async (req, res) => {
@@ -23,4 +24,17 @@ export const getUser = async (req, res) => {
 	}
 
 	res.json(user);
+};
+
+export const getBlogs = async (req, res) => {
+	const { page, size } = req.query;
+
+	if (isNaN(page) || isNaN(size)) {
+		res.status(400).json({
+			error: 'Invalid values for size/page params. Please pass numbers',
+		});
+	}
+
+	const blogs = await blogService.getBlogs(page, size);
+	res.json(blogs);
 };
