@@ -74,7 +74,7 @@ const createUser = async (userData) => {
 	return newUser;
 };
 
-const getUsers = async () => {
+export const getUsers = async () => {
 	const users = await userModel.find({});
 	return users;
 };

@@ -4,6 +4,8 @@ import helmet from 'helmet';
 import { connectDb } from './config/db.js';
 import blogRoutes from './routes/blogRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
+
 import './jobs/cron.js';
 
 const app = express();
@@ -21,6 +23,8 @@ await connectDb();
 
 app.use('/', blogRoutes);
 app.use('/user', userRoutes);
+app.use('/api', apiRoutes);
+
 app.get('/about', (req, res) => {
 	res.render('about');
 });
