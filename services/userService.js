@@ -74,7 +74,7 @@ const createUser = async (userData) => {
 	return newUser;
 };
 
-const getUsers = async () => {
+export const getUsers = async () => {
 	const users = await userModel.find({});
 	return users;
 };
@@ -87,6 +87,11 @@ export const getRandomUser = async () => {
 
 export const getUser = async (userId) => {
 	const user = await userModel.findById(userId);
+
+	if (!user) {
+		throw Error('User not found!');
+	}
+
 	return user;
 };
 
