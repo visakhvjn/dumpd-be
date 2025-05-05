@@ -87,6 +87,11 @@ export const getRandomUser = async () => {
 
 export const getUser = async (userId) => {
 	const user = await userModel.findById(userId);
+
+	if (!user) {
+		throw Error('User not found!');
+	}
+
 	return user;
 };
 
