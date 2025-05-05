@@ -27,9 +27,12 @@ export const getUser = async (req, res) => {
 };
 
 export const getBlogs = async (req, res) => {
-	const { page, size } = req.query;
+	let { page, size } = req.query;
 
-	if (isNaN(page) || isNaN(size)) {
+	if (!page || parseInt(page) < 1) page = 1;
+	if (!size || parseInt(size) < 1) size = 10;
+
+	if ((page && size && isNaN(page)) || isNaN(size)) {
 		res.status(400).json({
 			error: 'Invalid values for size/page params. Please pass numbers',
 		});
