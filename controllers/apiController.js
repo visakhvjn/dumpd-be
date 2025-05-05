@@ -25,19 +25,34 @@ export const getUser = async (req, res) => {
 };
 
 export const getBlogs = async (req, res) => {
-	let { page, size, category } = req.query;
+	try {
+		let { page, size, category, userId } = req.query;
 
-	if (!page || parseInt(page) < 1) page = 1;
-	if (!size || parseInt(size) < 1) size = 10;
+		if (!page || parseInt(page) < 1) page = 1;
+		if (!size || parseInt(size) < 1) size = 10;
 
-	if ((page && size && isNaN(page)) || isNaN(size)) {
-		res.status(400).json({
-			error: 'Invalid values for size/page params. Please pass numbers',
-		});
+		// if page and size are not numbers
+		if ((page && size && isNaN(page)) || isNaN(size)) {
+			res.status(400).json({
+				error: 'Invalid values for size/page params. Please pass numbers',
+			});
+		}
+
+		// if category key is there but value isn't
+		if (category !== undefined && category.trim() === '') {
+			throw Error('Invalid value for category');
+		}
+
+		// if userId key is present but empty or invalid
+		if (userId !== undefined && !mongoose.Types.ObjectId.isValid(userId)) {
+			throw Error('Invalid userId!');
+		}
+
+		const blogs = await blogService.getBlogs(page, size, category, userId);
+		res.json(blogs);
+	} catch (err) {
+		res.json({ error: err.message });
 	}
-
-	const blogs = await blogService.getBlogs(page, size, category);
-	res.json(blogs);
 };
 
 export const getBlog = async (req, res) => {

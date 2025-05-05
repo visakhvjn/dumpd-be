@@ -1,11 +1,22 @@
 import { blogModel } from '../models/Blog.js';
 import * as userService from './userService.js';
 
-export const getBlogs = async (page = 1, size = 10, category = '') => {
+export const getBlogs = async (
+	page = 1,
+	size = 10,
+	category = '',
+	userId = ''
+) => {
 	const skip = (page - 1) * size;
-	const query = category
-		? { categories: { $regex: new RegExp(category, 'i') } }
-		: {};
+	let query = {};
+
+	if (category) {
+		query = { categories: { $regex: new RegExp(category, 'i') } };
+	}
+
+	if (userId) {
+		query.userId = userId;
+	}
 
 	const blogs = await blogModel
 		.find(query)
