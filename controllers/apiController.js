@@ -42,13 +42,16 @@ export const getBlogs = async (req, res) => {
 
 export const getBlog = async (req, res) => {
 	try {
-		const { blogId } = req.params;
+		const { blogIdOrSlug } = req.params;
 
-		if (!blogId || !mongoose.Types.ObjectId.isValid(blogId)) {
-			res.status(400).json({ error: 'Invalid blogId!' });
+		let blog = {};
+
+		if (mongoose.Types.ObjectId.isValid(blogIdOrSlug)) {
+			blog = await blogService.getBlogByBlogId(blogIdOrSlug);
+		} else {
+			blog = await blogService.getBlogBySlug(blogIdOrSlug);
 		}
 
-		const blog = await blogService.getBlog(blogId);
 		res.json(blog);
 	} catch (err) {
 		res.status(400).json({ error: err.message });

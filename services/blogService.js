@@ -13,8 +13,20 @@ export const getBlogs = async (page = 1, size = 10) => {
 	return blogs;
 };
 
-export const getBlog = async (blogId) => {
+export const getBlogByBlogId = async (blogId) => {
 	const blog = await blogModel.findById(blogId);
+
+	if (!blog) {
+		throw Error('Blog not found!');
+	}
+
+	const user = await userService.getUser(blog?.userId);
+
+	return { blog, user };
+};
+
+export const getBlogBySlug = async (slug) => {
+	const blog = await blogModel.findOne({ slug });
 
 	if (!blog) {
 		throw Error('Blog not found!');

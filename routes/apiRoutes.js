@@ -12,6 +12,6 @@ const apiRouter = new express.Router();
 apiRouter.get('/users', getUsers);
 apiRouter.get('/users/:userId', getUser);
 apiRouter.get('/blogs', getBlogs);
-apiRouter.get('/blogs/:blogId', getBlog);
+apiRouter.get('/blogs/:blogIdOrSlug', getBlog);
 
 export default apiRouter;
