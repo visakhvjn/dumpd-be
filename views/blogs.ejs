@@ -13,7 +13,7 @@
 				color: #333;
 			}
 			.banner {
-				padding: 80px;
+				padding: 20px;
 				text-align: center;
 			}
 			.banner h1 {
@@ -21,8 +21,9 @@
 				margin: 0;
 			}
 			.banner p {
-				font-size: 1.5rem;
+				font-size: 1.2rem;
 				line-height: 1.4;
+				padding: 20px 100px;
 			}
 			h1 {
 				text-align: center;
@@ -101,13 +102,15 @@
 			.header {
 				display: flex;
 				justify-content: right;
-				padding: 10px;
+				padding: 10px 50px;
 				color: gray;
 				font-size: 0.9rem;
 				letter-spacing: 0.1rem;
+				gap: 20px;
 			}
 			.header a {
 				text-decoration: none;
+				color: gray;
 			}
 			.header a:hover {
 				text-decoration: underline;
@@ -119,17 +122,20 @@
 	</head>
 	<body>
 		<div class="header">
+			<a href="/api/docs"><span>API</span></a>
 			<a href="/about"><span>About</span></a>
 		</div>
 		<div class="banner">
-			<h1><a href="/">The AI Blog</a></h1>
+			<h1>
+				<img src="../icons/bot_favicon.png" /><br />
+				<a href="/">The AI Blog</a>
+			</h1>
 			<p>
-				Welcome to The AI Blog, your go-to platform for insights, articles, and
-				updates about the fascinating world of technology. The only thing human
-				about this place is the person who created it (hopefully). All the
-				content on this website is generated using AI. So if you find any
-				errors, please blame the AI. We are not responsible for any
-				misinformation. <br /><br />
+				Your go-to platform for insights, articles, and updates about the
+				fascinating world of technology. The only thing human about this place
+				is the person who created it (hopefully). All the content on this
+				website is generated using AI. So if you find any errors, please blame
+				the AI. We are not responsible for any misinformation. <br /><br />
 				<span class="nohuman"
 					>In short, there is nothing human here&nbsp;...</span
 				>
