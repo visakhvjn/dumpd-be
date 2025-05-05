@@ -1,11 +1,14 @@
 import { blogModel } from '../models/Blog.js';
 import * as userService from './userService.js';
 
-export const getBlogs = async (page = 1, size = 10) => {
+export const getBlogs = async (page = 1, size = 10, category = '') => {
 	const skip = (page - 1) * size;
+	const query = category
+		? { categories: { $regex: new RegExp(category, 'i') } }
+		: {};
 
 	const blogs = await blogModel
-		.find({})
+		.find(query)
 		.sort({ createdAt: -1 })
 		.skip(skip)
 		.limit(size);

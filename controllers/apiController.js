@@ -25,7 +25,7 @@ export const getUser = async (req, res) => {
 };
 
 export const getBlogs = async (req, res) => {
-	let { page, size } = req.query;
+	let { page, size, category } = req.query;
 
 	if (!page || parseInt(page) < 1) page = 1;
 	if (!size || parseInt(size) < 1) size = 10;
@@ -36,7 +36,7 @@ export const getBlogs = async (req, res) => {
 		});
 	}
 
-	const blogs = await blogService.getBlogs(page, size);
+	const blogs = await blogService.getBlogs(page, size, category);
 	res.json(blogs);
 };
 
