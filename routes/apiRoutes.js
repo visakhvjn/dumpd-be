@@ -25,6 +25,17 @@ apiRouter.use(
 	})
 );
 
+// Middleware to restrict if no api key is present
+apiRouter.use((req, res, next) => {
+	const userKey = req.headers['x-api-key'];
+
+	if (!userKey || userKey !== API_KEY) {
+		return res.status(401).json({ message: 'Invalid or missing API key' });
+	}
+
+	next();
+});
+
 apiRouter.get('/users', getUsers);
 apiRouter.get('/users/:userId', getUser);
 apiRouter.get('/blogs', getBlogs);
