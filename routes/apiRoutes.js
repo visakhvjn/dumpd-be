@@ -8,6 +8,7 @@ import {
 	getBlogs,
 	getBlog,
 } from '../controllers/apiController.js';
+import * as apiKeyService from '../services/apiKeyService.js';
 
 const apiRouter = new express.Router();
 
@@ -26,12 +27,19 @@ apiRouter.use(
 );
 
 // Middleware to restrict if no api key is present
-apiRouter.use((req, res, next) => {
+apiRouter.use(async (req, res, next) => {
 	const userKey = req.headers['x-api-key'];
 
 	if (!userKey) {
-		return res.status(401).json({ message: 'Invalid or missing API key' });
+		return res.status(401).json({ message: 'Missing API key' });
 	}
+
+	if (!(await apiKeyService.isApiKeyValid(userKey))) {
+		return res.status(401).json({ message: 'Invalid API key' });
+	}
+
+	// Update usage of the key by 1
+	await apiKeyService.updateApiKey(userKey);
 
 	next();
 });

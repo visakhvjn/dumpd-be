@@ -5,7 +5,6 @@ import {
 	getAllBlogs,
 	getBlog,
 	getBlogsByCategory,
-	genBlog,
 	getBlogsByUser,
 } from '../controllers/blogController.js';
 
