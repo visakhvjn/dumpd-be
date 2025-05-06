@@ -17,12 +17,25 @@ tags:
 
 servers:
   - url: /api
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+
+security:
+  - ApiKeyAuth: []
+
 paths:
   /users:
     get:
       tags:
         - Users
       summary: Get all users
+      security:
+        - ApiKeyAuth: []
       responses:
         200:
           description: A list of users
@@ -51,6 +64,8 @@ paths:
       tags:
         - Users
       summary: Get a single user
+      security:
+        - ApiKeyAuth: []
       parameters:
         - in: path
           name: userId
@@ -86,6 +101,8 @@ paths:
       tags:
         - Blogs
       summary: Get all blogs
+      security:
+        - ApiKeyAuth: []
       parameters:
         - in: query
           name: page
@@ -133,6 +150,8 @@ paths:
       tags:
         - Blogs
       summary: Get a single blog
+      security:
+        - ApiKeyAuth: []
       parameters:
         - in: path
           name: blogIdOrSlug
