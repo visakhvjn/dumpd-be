@@ -21,6 +21,12 @@ app.set('views', './views');
 // Connecting to the mongodb database
 await connectDb();
 
+app.use((req, res, next) => {
+	// Cache requests for 1 hour
+	res.setHeader('Cache-Control', 'public, max-age=3600');
+	next();
+});
+
 app.use('/', blogRoutes);
 app.use('/user', userRoutes);
 app.use('/api', apiRoutes);
