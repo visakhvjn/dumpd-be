@@ -29,7 +29,7 @@ apiRouter.use(
 apiRouter.use((req, res, next) => {
 	const userKey = req.headers['x-api-key'];
 
-	if (!userKey || userKey !== API_KEY) {
+	if (!userKey) {
 		return res.status(401).json({ message: 'Invalid or missing API key' });
 	}
 
