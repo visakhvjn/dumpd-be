@@ -12,6 +12,7 @@ import {
 	getUsers,
 } from '../services/userService.js';
 import * as blogService from '../services/blogService.js';
+import * as makeService from '../services/makeService.js';
 
 export const generateBlog = async () => {
 	try {
@@ -63,7 +64,17 @@ export const generateBlog = async () => {
 			userId: author._id,
 		});
 
-		await newBlog.save();
+		const blog = await newBlog.save();
+
+		// post to linkedin
+		await makeService.postBlogToLinkedIn(
+			blog.title,
+			blog.categories,
+			blog.summary,
+			blog.slug
+		);
+
+		// post to linkedin
 	} catch (err) {
 		console.error('❌ Error generating blog:', err);
 	}
