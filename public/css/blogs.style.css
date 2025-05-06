@@ -1,0 +1,152 @@
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
+	background-color: #f4f4f9;
+	color: #333;
+}
+.banner {
+	padding: 20px;
+	text-align: center;
+}
+.banner h1 {
+	font-size: 4rem;
+	margin: 0;
+}
+.banner p {
+	font-size: 1.2rem;
+	line-height: 1.4;
+	padding: 20px 100px;
+}
+h1 {
+	text-align: center;
+	font-size: 2.5rem;
+	color: #2c3e50;
+	margin-bottom: 20px;
+}
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: left;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+.card {
+	background: #fff;
+	width: calc(50% - 20px); /* Adjusted to ensure 2 cards per row */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	padding: 20px;
+	box-sizing: border-box;
+	height: 280px;
+	overflow: hidden;
+}
+.card h2 {
+	font-size: 1.5rem;
+	margin: 0 0 10px;
+	color: #2c3e50;
+}
+.card p {
+	color: #555;
+	line-height: 1.6;
+	font-size: 1rem;
+	margin: 0;
+}
+.card a {
+	text-decoration: none;
+	color: #3498db;
+	font-weight: bold;
+	display: block;
+	margin-top: 10px;
+}
+.card a:hover {
+	text-decoration: underline;
+}
+@media (max-width: 768px) {
+	.card {
+		width: calc(100% - 20px); /* Full width for smaller screens */
+	}
+}
+@media (max-width: 480px) {
+	.card {
+		width: 100%;
+	}
+}
+.title a {
+	color: #2c3e50;
+}
+
+.banner a {
+	text-decoration: none;
+	color: #2c3e50;
+}
+
+.openai {
+	font-size: 1rem;
+}
+
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 0.9rem;
+	color: #777;
+	margin-bottom: 10px;
+}
+.header {
+	display: flex;
+	justify-content: right;
+	padding: 10px 50px;
+	color: gray;
+	font-size: 0.9rem;
+	letter-spacing: 0.1rem;
+	gap: 20px;
+}
+.header a {
+	text-decoration: none;
+	color: gray;
+}
+.header a:hover {
+	text-decoration: underline;
+}
+.nohuman {
+	font-size: 1rem;
+}
+.categories-container {
+	padding: 20px;
+	text-align: center;
+}
+.categories-container ul {
+	list-style: none;
+	padding: 0;
+	text-align: left;
+}
+.categories-container li {
+	margin: 5px 0;
+}
+.categories-container a {
+	text-decoration: none;
+	color: #3498db;
+}
+.categories-container a:hover {
+	text-decoration: underline;
+}
+.content-container {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+}
+.left-content {
+	width: 13%;
+}
+.right-content {
+	width: 87%;
+	padding-top: 30px;
+}
+.left-content a {
+	color: gray;
+}
+
+h2.title {
+	font-size: 1.4rem;
+}
