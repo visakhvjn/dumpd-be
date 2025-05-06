@@ -4,8 +4,8 @@ import { generateBlog } from '../controllers/blogController.js';
 import { generateTopic } from '../controllers/topicController.js';
 import { generateUser } from '../services/userService.js';
 
-// Every 6 hours a new blog is added
-cron.schedule('0 */6 * * *', async () => {
+// Every 12 hours a new blog is added
+cron.schedule('0 */12 * * *', async () => {
 	console.log('⏰ Running daily blog generator...');
 
 	try {
@@ -16,8 +16,8 @@ cron.schedule('0 */6 * * *', async () => {
 	}
 });
 
-// Every 4 hours a new topic is added
-cron.schedule('0 */4 * * *', async () => {
+// Every 6 hours a new topic is added
+cron.schedule('0 */6 * * *', async () => {
 	console.log('⏰ Running topic generator...');
 
 	try {
