@@ -15,7 +15,15 @@ const apiRouter = new express.Router();
 const swaggerDocument = yaml.load('./swagger.yml');
 
 // Initialize Swagger UI
-apiRouter.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+apiRouter.use(
+	'/docs',
+	swaggerUi.serve,
+	swaggerUi.setup(swaggerDocument, {
+		customfavIcon: '/icons/bot_favicon.png',
+		customSiteTitle: 'AI Blog - API Documentation',
+		customCssUrl: '/css/swagger.css',
+	})
+);
 
 apiRouter.get('/users', getUsers);
 apiRouter.get('/users/:userId', getUser);

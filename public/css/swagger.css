@@ -1,0 +1,98 @@
+/* Hide the default top bar */
+.swagger-ui .topbar {
+	display: none;
+}
+
+h2.title span {
+	display: none;
+}
+
+/* Customize the title */
+.swagger-ui .info h1 {
+	color: #2c3e50; /* Match your website's primary color */
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Match your website's font */
+	font-size: 2rem;
+}
+
+/* Customize the description text */
+.swagger-ui .info p {
+	color: #555; /* Neutral text color */
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+/* Customize the background and text color */
+.swagger-ui {
+	background-color: #f4f4f9; /* Light background color */
+	color: #333; /* Dark text color */
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/* Customize the operation summary (endpoint titles) */
+.swagger-ui .opblock-summary {
+	background-color: #2c3e50; /* Match your website's primary color */
+	color: white;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	border-radius: 5px;
+}
+
+/* Customize the operation details */
+.swagger-ui .opblock {
+	border: 1px solid #00bcd4; /* Match your website's primary color */
+	border-radius: 5px;
+	background-color: white;
+}
+
+.swagger-ui .opblock .opblock-summary-path {
+	color: white !important;
+}
+
+button.opblock-control-arrow {
+	color: white !important;
+}
+
+/* Customize the buttons */
+.swagger-ui .btn {
+	background-color: #2c3e50; /* Match your website's primary color */
+	color: white;
+	border-radius: 5px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.swagger-ui .btn:hover {
+	background-color: #008c9e; /* Darker shade for hover effect */
+}
+
+/* Customize the input fields */
+.swagger-ui input[type='text'],
+.swagger-ui textarea {
+	border: 1px solid #2c3e50; /* Match your website's primary color */
+	border-radius: 5px;
+	padding: 5px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Customize the response section */
+.swagger-ui .responses-inner {
+	background-color: #f9f9f9; /* Light background for responses */
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+/* Customize the headers in the response section */
+.swagger-ui .responses-inner h4 {
+	color: #2c3e50; /* Match your website's primary color */
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Customize the footer */
+.swagger-ui .footer {
+	background-color: #2c3e50; /* Match your website's primary color */
+	color: white;
+	text-align: center;
+	padding: 10px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
