@@ -1,59 +1,55 @@
 openapi: 3.0.0
 info:
-  title: AI Blog API
+  title: API Documentation
   version: 1.0.0
   description: |
-    Welcome to the API documentation for **The AI Blog**. This API allows you to access user and blog data programmatically. 
+    Welcome to the **<a href="/api/docs">API documentation</a>** for **<a href="/">The AI Blog</a>**. This API allows you to access user and blog data programmatically. 
 
-    ### How to Get Access
-    To use this API, you need an API key. Please send an email to **vjnvisakh@gmail.com** to request access. Include your name, the purpose of using the API, and any additional details that might help us process your request.
+    **How to Get Access**: To use this API, you need an API key. Please send an email to <a href="mailto:vjnvisakh@gmail.com?subject=API Access Request&body=Hi, I'd like access to the API...">vjnvisakh@gmail.com</a> to request access. Include your name, the purpose of using the API, and any additional details that might help us process your request.
 
-    ### Rate Limiting
-    Each API endpoint is protected by a rate limiter. You can make up to **10 requests per minute**. If you exceed this limit, you will receive a `429 Too Many Requests` response. Please plan your requests accordingly.
+    **Rate Limiting**: Each API endpoint is protected by a rate limiter. You can make up to **10 requests per minute**. If you exceed this limit, you will receive a `429 Too Many Requests` response. Please plan your requests accordingly.
 
-    ### Available Endpoints
-    - `/users`: Retrieve information about users.
-    - `/blogs`: Retrieve information about blogs.
-    - `/blogs/{blogIdOrSlug}`: Retrieve details of a specific blog.
-    - `/users/{userId}`: Retrieve details of a specific user.
+tags:
+  - name: Users
+    description: Operations related to users
+  - name: Blogs
+    description: Operations related to blogs
 
 servers:
   - url: /api
 paths:
   /users:
     get:
+      tags:
+        - Users
       summary: Get all users
       responses:
         200:
           description: A list of users
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-              examples:
-                example1:
-                  value:
-                    - _id: '681612d416a1c41fbe9be665'
-                      name: 'Evelyn Harper'
-                      writingStyle: 'informal, witty, conversational'
-                      personalityTraits:
-                        - 'curious'
-                        - 'playful'
-                        - 'analytical'
-                        - 'passionate'
-                      areasOfExpertise:
-                        - 'emerging technologies'
-                        - 'digital culture'
-                        - 'cybersecurity'
-                        - 'software development'
-                      authorBio: 'Evelyn Harper is a tech aficionado who loves breaking down complex ideas into fun, digestible insights and exploring the ever-evolving digital landscape.'
-                      slug: 'evelyn-harper'
-                      profilePictureURL: '/images/pic_women_8.jpg'
-                      createdAt: '2025-05-03T12:57:56.282Z'
+              example:
+                - _id: '681612d416a1c41fbe9be665'
+                  name: 'Evelyn Harper'
+                  writingStyle: 'informal, witty, conversational'
+                  personalityTraits:
+                    - 'curious'
+                    - 'playful'
+                    - 'analytical'
+                    - 'passionate'
+                  areasOfExpertise:
+                    - 'emerging technologies'
+                    - 'digital culture'
+                    - 'cybersecurity'
+                    - 'software development'
+                  authorBio: 'Evelyn Harper is a tech aficionado who loves breaking down complex ideas into fun, digestible insights and exploring the ever-evolving digital landscape.'
+                  slug: 'evelyn-harper'
+                  profilePictureURL: '/images/pic_women_8.jpg'
+                  createdAt: '2025-05-03T12:57:56.282Z'
   /users/{userId}:
     get:
+      tags:
+        - Users
       summary: Get a single user
       parameters:
         - in: path
@@ -67,8 +63,6 @@ paths:
           description: A single user
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/User'
               example:
                 _id: '681612d416a1c41fbe9be665'
                 name: 'Evelyn Harper'
@@ -89,6 +83,8 @@ paths:
                 createdAt: '2025-05-03T12:57:56.282Z'
   /blogs:
     get:
+      tags:
+        - Blogs
       summary: Get all blogs
       parameters:
         - in: query
@@ -118,28 +114,24 @@ paths:
           description: A list of blogs
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Blog'
-              examples:
-                example1:
-                  value:
-                    - _id: '6818af4e023a0acb0fce4316'
-                      title: 'Breaking the Cloud Ceiling: How Hybrid Cloud Edge Computing Supercharges IoT Data and Security'
-                      summary: 'Hybrid cloud edge computing enhances IoT data processing and security by processing data locally, reducing latency, optimizing bandwidth, and providing multi-layered security—crucial for scalable, secure IoT deployments.'
-                      createdAt: '2025-05-05T12:30:06.280Z'
-                      slug: 'breaking-the-cloud-ceiling:-how-hybrid-cloud-edge-computing-supercharges-iot-data-and-security'
-                      categories:
-                        - 'Emerging Technologies'
-                        - 'Cloud Computing'
-                        - 'IoT'
-                        - 'Cybersecurity'
-                        - 'Edge Computing'
-                      views: 0
-                      userId: '68161352dbc889db228f5dee'
+              example:
+                - _id: '6818af4e023a0acb0fce4316'
+                  title: 'Breaking the Cloud Ceiling: How Hybrid Cloud Edge Computing Supercharges IoT Data and Security'
+                  summary: 'Hybrid cloud edge computing enhances IoT data processing and security by processing data locally, reducing latency, optimizing bandwidth, and providing multi-layered security—crucial for scalable, secure IoT deployments.'
+                  createdAt: '2025-05-05T12:30:06.280Z'
+                  slug: 'breaking-the-cloud-ceiling:-how-hybrid-cloud-edge-computing-supercharges-iot-data-and-security'
+                  categories:
+                    - 'Emerging Technologies'
+                    - 'Cloud Computing'
+                    - 'IoT'
+                    - 'Cybersecurity'
+                    - 'Edge Computing'
+                  views: 0
+                  userId: '68161352dbc889db228f5dee'
   /blogs/{blogIdOrSlug}:
     get:
+      tags:
+        - Blogs
       summary: Get a single blog
       parameters:
         - in: path
@@ -153,8 +145,6 @@ paths:
           description: A single blog
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Blog'
               example:
                 _id: '6818af4e023a0acb0fce4316'
                 title: 'Breaking the Cloud Ceiling: How Hybrid Cloud Edge Computing Supercharges IoT Data and Security'
@@ -170,73 +160,3 @@ paths:
                 summary: 'Hybrid cloud edge computing enhances IoT data processing and security by processing data locally, reducing latency, optimizing bandwidth, and providing multi-layered security—crucial for scalable, secure IoT deployments.'
                 views: 0
                 userId: '68161352dbc889db228f5dee'
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the user
-        name:
-          type: string
-          description: The user's name
-        writingStyle:
-          type: string
-          description: The user's writing style
-        personalityTraits:
-          type: array
-          items:
-            type: string
-          description: The user's personality traits
-        areasOfExpertise:
-          type: array
-          items:
-            type: string
-          description: The user's areas of expertise
-        authorBio:
-          type: string
-          description: A short biography of the user
-        slug:
-          type: string
-          description: The user's unique slug
-        profilePictureURL:
-          type: string
-          description: The URL of the user's profile picture
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time when the user was created
-    Blog:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the blog
-        title:
-          type: string
-          description: The title of the blog
-        content:
-          type: string
-          description: The full content of the blog
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time when the blog was created
-        slug:
-          type: string
-          description: The unique slug of the blog
-        categories:
-          type: array
-          items:
-            type: string
-          description: The categories associated with the blog
-        summary:
-          type: string
-          description: A short summary of the blog
-        views:
-          type: integer
-          description: The number of views the blog has received
-        userId:
-          type: string
-          description: The ID of the user who authored the blog
