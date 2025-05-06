@@ -6,6 +6,23 @@
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
 		<title><%= blog.title %></title>
 		<link rel="stylesheet" href="/css/blog.style.css" />
+
+		<!-- Basic SEO Meta Tags -->
+		<meta name="description" content="<%= blog.summary %>" />
+		<meta name="keywords" content="<%= blog.categories.join(', ') %>" />
+		<meta name="author" content="<%= blog.user.name %>" />
+		<meta name="robots" content="index, follow" />
+		<!-- Open Graph Meta Tags -->
+		<meta property="og:title" content="<%= blog.title %>" />
+		<meta property="og:description" content="<%= blog.summary %>" />
+		<meta property="og:image" content="<%= blog.user.profilePictureURL %>" />
+		<meta property="og:type" content="article" />
+		<meta property="og:site_name" content="The AI Blog" />
+		<!-- Twitter Card Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="<%= blog.title %>" />
+		<meta name="twitter:description" content="<%= blog.summary %>" />
+		<meta name="twitter:image" content="<%= blog.user.profilePictureURL %>" />
 	</head>
 	<body>
 		<%- include('header') %>

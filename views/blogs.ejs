@@ -6,6 +6,34 @@
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
 		<title>The AI Blog</title>
 		<link rel="stylesheet" href="/css/blogs.style.css" />
+
+		<!-- Basic SEO Meta Tags -->
+		<meta
+			name="description"
+			content="Explore the latest blogs on AI, technology, and more. Stay updated with insights from top authors."
+		/>
+		<meta name="keywords" content="<%= categories.join(', ') %>" />
+		<meta name="author" content="The AI Blog" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Open Graph Meta Tags -->
+		<meta property="og:title" content="The AI Blog - Latest Blogs" />
+		<meta
+			property="og:description"
+			content="Explore the latest blogs on AI, technology, and more. Stay updated with insights from top authors."
+		/>
+		<meta property="og:image" content="/images/ai-blog-preview.jpg" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="The AI Blog" />
+
+		<!-- Twitter Card Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="The AI Blog - Latest Blogs" />
+		<meta
+			name="twitter:description"
+			content="Explore the latest blogs on AI, technology, and more. Stay updated with insights from top authors."
+		/>
+		<meta name="twitter:image" content="/icons/bot_favicon.png" />
 	</head>
 	<body>
 		<%- include('header') %>
