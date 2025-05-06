@@ -35,17 +35,19 @@
 				display: flex;
 				flex-wrap: wrap;
 				gap: 20px;
-				justify-content: center;
+				justify-content: left;
 				padding-left: 50px;
 				padding-right: 50px;
 			}
 			.card {
 				background: #fff;
-				width: calc(33.333% - 20px);
+				width: calc(50% - 20px); /* Adjusted to ensure 2 cards per row */
 				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 				border-radius: 8px;
 				padding: 20px;
 				box-sizing: border-box;
+				height: 280px;
+				overflow: hidden;
 			}
 			.card h2 {
 				font-size: 1.5rem;
@@ -70,7 +72,7 @@
 			}
 			@media (max-width: 768px) {
 				.card {
-					width: calc(50% - 20px);
+					width: calc(100% - 20px); /* Full width for smaller screens */
 				}
 			}
 			@media (max-width: 480px) {
@@ -118,45 +120,80 @@
 			.nohuman {
 				font-size: 1rem;
 			}
+			.categories-container {
+				padding: 20px;
+				text-align: center;
+			}
+			.categories-container ul {
+				list-style: none;
+				padding: 0;
+				text-align: left;
+			}
+			.categories-container li {
+				margin: 5px 0;
+			}
+			.categories-container a {
+				text-decoration: none;
+				color: #3498db;
+			}
+			.categories-container a:hover {
+				text-decoration: underline;
+			}
+			.content-container {
+				display: flex;
+				justify-content: space-between;
+				gap: 20px;
+			}
+			.left-content {
+				width: 13%;
+			}
+			.right-content {
+				width: 87%;
+				padding-top: 30px;
+			}
+			.left-content a {
+				color: gray;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="header">
-			<a href="/api/docs"><span>API</span></a>
-			<a href="/about"><span>About</span></a>
-		</div>
-		<div class="banner">
-			<h1>
-				<img src="../icons/bot_favicon.png" /><br />
-				<a href="/">The AI Blog</a>
-			</h1>
-			<p>
-				Your go-to platform for insights, articles, and updates about the
-				fascinating world of technology. The only thing human about this place
-				is the person who created it (hopefully). All the content on this
-				website is generated using AI. So if you find any errors, please blame
-				the AI. We are not responsible for any misinformation. <br /><br />
-				<span class="nohuman"
-					>In short, there is nothing human here&nbsp;...</span
-				>
+		<%- include('header') %>
+		<div class="content-container">
+			<div class="left-content categories-container">
+				<ul>
+					<h3><u>Categories</u></h3>
+					<% categories.forEach(category => { %>
+					<li>
+						<a href="/blogs/category/<%= category %>"><%= category %></a>
+					</li>
+					<% }) %>
+				</ul>
 				<br />
-			</p>
-		</div>
-		<div class="container">
-			<% blogs.forEach(blog => { %>
-			<div class="card">
-				<div class="card-header">
-					<span><%= blog.date %></span>
-					<% if (blog.views > 0) { %>
-					<span>👀 <%= blog.views %></span>
-					<% } %>
-				</div>
-				<h2 class="title">
-					<a href="/blogs/<%= blog.slug %>"><%= blog.title %></a>
-				</h2>
-				<p><%- blog.summary %></p>
+				<ul>
+					<h3><u>Authors</u></h3>
+					<% users.forEach(user => { %>
+					<li>
+						<a href="/blogs/user/<%= user.slug %>"><%= user.name %></a>
+					</li>
+					<% }) %>
+				</ul>
 			</div>
-			<% }) %>
+			<div class="right-content container">
+				<% blogs.forEach(blog => { %>
+				<div class="card">
+					<div class="card-header">
+						<span><%= blog.date %></span>
+						<% if (blog.views > 0) { %>
+						<span>👀 <%= blog.views %></span>
+						<% } %>
+					</div>
+					<h2 class="title">
+						<a href="/blogs/<%= blog.slug %>"><%= blog.title %></a>
+					</h2>
+					<p><%- blog.summary %></p>
+				</div>
+				<% }) %>
+			</div>
 		</div>
 		<br />
 	</body>

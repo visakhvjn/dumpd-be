@@ -50,3 +50,8 @@ export const getBlogBySlug = async (slug) => {
 
 	return { blog, user };
 };
+
+export const getAllCategories = async () => {
+	const categories = await blogModel.distinct('categories');
+	return categories;
+};

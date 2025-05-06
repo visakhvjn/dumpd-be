@@ -9,7 +9,9 @@ import {
 	getRandomUser,
 	getUser,
 	getUserBySlug,
+	getUsers,
 } from '../services/userService.js';
+import * as blogService from '../services/blogService.js';
 
 export const generateBlog = async () => {
 	try {
@@ -78,7 +80,10 @@ export const getAllBlogs = async (req, res) => {
 		};
 	});
 
-	res.render('blogs', { blogs: parsedBlogs });
+	const categories = await blogService.getAllCategories();
+	const users = await getUsers();
+
+	res.render('blogs', { blogs: parsedBlogs, categories, users });
 };
 
 export const getBlog = async (req, res) => {
@@ -133,7 +138,10 @@ export const getBlogsByCategory = async (req, res) => {
 			};
 		});
 
-		res.render('blogs', { blogs: parsedBlogs });
+		const categories = await blogService.getAllCategories();
+		const users = await getUsers();
+
+		res.render('blogs', { blogs: parsedBlogs, categories, users });
 	} catch (err) {
 		console.error('❌ Error fetching blogs by category:', err);
 		res.status(404).render('404', { title: 'Category Not Found' });
@@ -181,7 +189,10 @@ export const getBlogsByUser = async (req, res) => {
 			};
 		});
 
-		res.render('blogs', { blogs: parsedBlogs });
+		const categories = await blogService.getAllCategories();
+		const users = await getUsers();
+
+		res.render('blogs', { blogs: parsedBlogs, categories, users });
 	} catch (err) {
 		console.error('❌ Error fetching blogs by category:', err);
 		res.status(404).render('404', { title: 'Category Not Found' });
