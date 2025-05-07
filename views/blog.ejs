@@ -23,6 +23,21 @@
 		<meta name="twitter:title" content="<%= blog.title %>" />
 		<meta name="twitter:description" content="<%= blog.summary %>" />
 		<meta name="twitter:image" content="<%= blog.user.profilePictureURL %>" />
+
+		<!-- Google tag (gtag.js) -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
+		></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-VM6TGRN8B5');
+		</script>
 	</head>
 	<body>
 		<%- include('header') %>
