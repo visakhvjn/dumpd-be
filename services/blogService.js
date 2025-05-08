@@ -1,5 +1,9 @@
+import NodeCache from 'node-cache';
+
 import { blogModel } from '../models/Blog.js';
 import * as userService from './userService.js';
+
+const cache = new NodeCache({ stdTTL: 3600 });
 
 export const getBlogs = async (
 	page = 1,
@@ -52,6 +56,14 @@ export const getBlogBySlug = async (slug) => {
 };
 
 export const getAllCategories = async () => {
+	const cachedCategories = cache.get('categories');
+
+	if (cachedCategories) {
+		return cachedCategories;
+	}
+
 	const categories = await blogModel.distinct('categories');
+	cache.set('categories', categories, 21600);
+
 	return categories;
 };
