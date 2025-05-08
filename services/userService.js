@@ -2,9 +2,12 @@ import slugify from 'slugify';
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
+import NodeCache from 'node-cache';
 
 import { openai } from '../config/openai.js';
 import { userModel } from '../models/User.js';
+
+const cache = new NodeCache({ stdTTL: 3600 });
 
 export const generateUser = async () => {
 	const existingUsers = await getUsers();
@@ -75,7 +78,14 @@ const createUser = async (userData) => {
 };
 
 export const getUsers = async () => {
+	const cachedUsers = cache.get('users');
+
+	if (cachedUsers) {
+		return cachedUsers;
+	}
+
 	const users = await userModel.find({});
+	cache.set('users', users, 21600);
 	return users;
 };
 
