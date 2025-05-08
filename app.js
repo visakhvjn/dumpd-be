@@ -8,7 +8,7 @@ import apiRoutes from './routes/apiRoutes.js';
 
 import './jobs/cron.js';
 
-const app = express();
+export const app = express();
 
 app.use(helmet());
 

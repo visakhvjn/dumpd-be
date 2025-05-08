@@ -2,6 +2,7 @@ import NodeCache from 'node-cache';
 
 import { blogModel } from '../models/Blog.js';
 import * as userService from './userService.js';
+import * as Errors from '../utils/errors.js';
 
 const cache = new NodeCache({ stdTTL: 3600 });
 
@@ -15,7 +16,7 @@ export const getBlogs = async (
 	let query = {};
 
 	if (category) {
-		query = { categories: { $regex: new RegExp(category, 'i') } };
+		query = { categories: { $regex: new RegExp(`^${category}$`, 'i') } };
 	}
 
 	if (userId) {
@@ -35,7 +36,7 @@ export const getBlogByBlogId = async (blogId) => {
 	const blog = await blogModel.findById(blogId);
 
 	if (!blog) {
-		throw Error('Blog not found!');
+		throw new Errors.NotFoundError('Blog not found!');
 	}
 
 	const user = await userService.getUser(blog?.userId);
@@ -47,7 +48,7 @@ export const getBlogBySlug = async (slug) => {
 	const blog = await blogModel.findOne({ slug });
 
 	if (!blog) {
-		throw Error('Blog not found!');
+		throw new Errors.NotFoundError('Blog not found!');
 	}
 
 	const user = await userService.getUser(blog?.userId);

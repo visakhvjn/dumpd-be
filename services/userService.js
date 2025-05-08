@@ -6,6 +6,7 @@ import NodeCache from 'node-cache';
 
 import { openai } from '../config/openai.js';
 import { userModel } from '../models/User.js';
+import * as Errors from '../utils/errors.js';
 
 const cache = new NodeCache({ stdTTL: 3600 });
 
@@ -99,7 +100,7 @@ export const getUser = async (userId) => {
 	const user = await userModel.findById(userId);
 
 	if (!user) {
-		throw Error('User not found!');
+		throw new Errors.NotFoundError('User not found!');
 	}
 
 	return user;

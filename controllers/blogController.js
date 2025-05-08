@@ -134,7 +134,7 @@ export const getBlogsByCategory = async (req, res) => {
 	try {
 		const category = req.params.category;
 		const blogs = await blogModel
-			.find({ categories: new RegExp(`^${category}$`, 'i') })
+			.find({ categories: { $regex: new RegExp(`^${category}$`, 'i') } })
 			.sort({ createdAt: -1 });
 
 		if (blogs.length === 0) {
