@@ -41,10 +41,14 @@
 	</head>
 	<body>
 		<%- include('header') %>
-		<div class="grid grid-cols-12">
-			<div class="col-span-1"></div>
-			<div class="col-span-10 grid grid-cols-10 gap-2">
-				<div class="col-span-2 flex flex-col gap-2 px-2 items-end">
+		<div class="grid grid-cols-1 md:grid-cols-12">
+			<div class="hidden md:block md:col-span-1"></div>
+			<div
+				class="col-span-1 md:col-span-10 grid grid-cols-1 md:grid-cols-10 gap-2"
+			>
+				<div
+					class="hidden md:block md:col-span-2 flex-col gap-2 px-2 items-end"
+				>
 					<img
 						class="w-28 h-28"
 						src="<%= blog.user.profilePictureURL %>"
@@ -58,7 +62,7 @@
 						<span class="text-sm"><%= blog.user.authorBio %></span>
 					</div>
 				</div>
-				<div class="col-span-6 flex flex-col gap-2 bg-white p-6">
+				<div class="col-span-1 md:col-span-6 flex flex-col gap-2 bg-white p-6">
 					<!-- TITLE SECTION -->
 					<div class="flex flex-col">
 						<span class="text-sm"><%= blog.date %></span>
@@ -75,7 +79,7 @@
 							><%= blog.subcategory %></a
 						>
 					</div>
-					<hr class="text-gray-200" />
+					<hr class="hidden md:block text-gray-200" />
 
 					<!-- CONTENT SECTION -->
 					<div class="flex flex-col">
@@ -84,7 +88,7 @@
 				</div>
 				<div class="col-span-2 flex flex-col gap-2"></div>
 			</div>
-			<div class="col-span-1"></div>
+			<div class="hidden md:block md:col-span-1"></div>
 		</div>
 	</body>
 </html>
