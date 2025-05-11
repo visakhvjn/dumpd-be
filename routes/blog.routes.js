@@ -6,11 +6,13 @@ import {
 	getBlog,
 	getBlogsByCategory,
 	getBlogsByUser,
-} from '../controllers/blogController.js';
+	generateBlog,
+} from '../controllers/blog.controller.js';
 
 router.get('/', getAllBlogs);
+router.get('/blogs/generate', generateBlog);
 router.get('/blogs/:slug', getBlog);
-router.get('/blogs/category/:category', getBlogsByCategory);
+router.get('/blogs/categories/:category', getBlogsByCategory);
 router.get('/blogs/user/:userSlug', getBlogsByUser);
 
 export default router;

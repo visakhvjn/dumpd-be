@@ -6,13 +6,15 @@
 	"scripts": {
 		"start": "node app.js",
 		"dev": "nodemon app.js",
-		"test": "mocha tests/**/*.test.js"
+		"test": "mocha tests/**/*.test.js",
+		"build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/styles.css --watch"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"description": "",
 	"dependencies": {
+		"@tailwindcss/cli": "^4.1.6",
 		"axios": "^1.9.0",
 		"dotenv": "^16.5.0",
 		"ejs": "^3.1.10",
@@ -26,6 +28,7 @@
 		"openai": "^4.96.2",
 		"slugify": "^1.6.6",
 		"swagger-ui-express": "^5.0.1",
+		"tailwindcss": "^4.1.6",
 		"yamljs": "^0.3.0"
 	},
 	"devDependencies": {

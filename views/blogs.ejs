@@ -4,15 +4,14 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
-		<title>The AI Blog</title>
-		<link rel="stylesheet" href="/css/blogs.style.css" />
+		<title>Dumpd!</title>
+		<link rel="stylesheet" href="/css/styles.css" />
 
 		<!-- Basic SEO Meta Tags -->
 		<meta
 			name="description"
 			content="Explore the latest blogs on AI, technology, and more. Stay updated with insights from top authors."
 		/>
-		<meta name="keywords" content="<%= categories.join(', ') %>" />
 		<meta name="author" content="The AI Blog" />
 		<meta name="robots" content="index, follow" />
 
@@ -36,7 +35,7 @@
 		<meta name="twitter:image" content="/icons/bot_favicon.png" />
 
 		<!-- Google tag (gtag.js) -->
-		<script
+		<!-- <script
 			async
 			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
 		></script>
@@ -48,45 +47,66 @@
 			gtag('js', new Date());
 
 			gtag('config', 'G-VM6TGRN8B5');
-		</script>
+		</script> -->
 	</head>
 	<body>
 		<%- include('header') %>
-		<div class="content-container">
-			<div class="left-content categories-container">
-				<ul>
-					<h3><u>Categories</u></h3>
-					<% categories.forEach(category => { %>
-					<li>
-						<a href="/blogs/category/<%= category %>"><%= category %></a>
-					</li>
-					<% }) %>
-				</ul>
-				<br />
-				<ul>
-					<h3><u>Authors</u></h3>
-					<% users.forEach(user => { %>
-					<li>
-						<a href="/blogs/user/<%= user.slug %>"><%= user.name %></a>
-					</li>
-					<% }) %>
-				</ul>
-			</div>
-			<div class="right-content container">
-				<% blogs.forEach(blog => { %>
-				<div class="card">
-					<div class="card-header">
-						<span><%= blog.date %></span>
-						<% if (blog.views > 0) { %>
-						<span>👀 <%= blog.views %></span>
-						<% } %>
-					</div>
-					<h2 class="title">
-						<a href="/blogs/<%= blog.slug %>"><%= blog.title %></a>
-					</h2>
-					<p><%- blog.summary %></p>
+		<div class="grid grid-cols-1 md:grid-cols-12">
+			<div class="col-span-1"></div>
+			<div class="col-span-10 grid grid-cols-8 gap-2">
+				<!-- CATEGORIES SECTION -->
+				<div class="col-span-1">
+					<ul>
+						<a class="hover:underline" href="/categories">
+							<h3 class="text-lg font-bold">Categories</h3>
+						</a>
+						<% categories.forEach(category => { %>
+						<li>
+							<a
+								class="hover:underline text-sm"
+								href="/blogs/categories/<%= category %>"
+								><%= category %></a
+							>
+						</li>
+						<% }) %>
+					</ul>
 				</div>
-				<% }) %>
+				<!-- BLOG SECTION -->
+				<div class="col-span-5">
+					<% blogs.forEach(blog => { %>
+					<a href="/blogs/<%= blog.slug %>"
+						><div class="card">
+							<div class="flex justify-between">
+								<span class="text-xs"><%= blog.date %></span>
+								<span class="text-sm">by <%= blog.user.name %></span>
+							</div>
+							<h2 class="text-2xl font-bold"><%= blog.title %></h2>
+							<p class="text-md"><%- blog.summary %></p>
+							<div>
+								<span class="pill"><%= blog.category %></span>
+								<span class="pill"><%= blog.subcategory %></span>
+							</div>
+						</div></a
+					>
+					<% }) %>
+				</div>
+				<div class="col-span-2 p-4 flex flex-col">
+					<span class="text-lg font-bold">Popular Blogs</span>
+
+					<% popularBlogs.forEach(blog => { %>
+					<a href="/blogs/<%= blog.slug %>">
+						<div class="flex flex-col gap-2 py-2">
+							<div class="flex justify-between">
+								<span class="text-xs"><%= blog.date %></span>
+							</div>
+							<span class="text-sm font-bold"><%= blog.title %></span>
+							<span class="text-xs"><%= blog.summary %></span>
+							<span class="text-xs mt-2"><%= blog.views %> views</span>
+						</div>
+					</a>
+					<hr class="text-gray-200" />
+					<% }) %>
+				</div>
 			</div>
 		</div>
 		<br />

@@ -1,5 +1,5 @@
-import * as userService from '../services/userService.js';
-import * as blogService from '../services/blogService.js';
+import * as userService from '../services/user.service.js';
+import * as blogService from '../services/blog.service.js';
 import * as Errors from '../utils/errors.js';
 
 import mongoose from 'mongoose';
