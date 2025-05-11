@@ -11,7 +11,7 @@ import './jobs/cron.js';
 
 export const app = express();
 
-// app.use(helmet());
+app.use(helmet());
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -22,11 +22,11 @@ app.set('views', './views');
 // Connecting to the mongodb database
 await connectDb();
 
-// app.use((req, res, next) => {
-// 	// Cache requests for 1 hour
-// 	res.setHeader('Cache-Control', 'public, max-age=3600');
-// 	next();
-// });
+app.use((req, res, next) => {
+	// Cache requests for 1 hour
+	res.setHeader('Cache-Control', 'public, max-age=3600');
+	next();
+});
 
 app.use('/', blogRoutes);
 app.use('/user', userRoutes);
