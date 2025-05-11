@@ -44,9 +44,12 @@ export const getAllBlogs = async (req, res) => {
 
 	res.render('blogs', {
 		blogs: parsedBlogs,
+		category: null,
 		categories: categories.map((cat) => cat.name),
+		subcategories: [],
 		users,
 		popularBlogs,
+		hasCategoryFilter: false,
 	});
 };
 
@@ -98,13 +101,19 @@ export const getBlogsByCategory = async (req, res) => {
 		const categoryName = req.params.category;
 		const blogs = await blogService.getBlogs(1, 10, categoryName);
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
+		const category = await categoryService.getCategory(categoryName);
 		const users = await getUsers();
 
 		if (!blogs.length) {
-			throw Error('No blogs found for this category');
+			return res.render('blogs', {
+				blogs: [],
+				categories: [],
+				subcategories: category.subcategories.sort((a, b) =>
+					a.toLowerCase().localeCompare(b.toLowerCase())
+				),
+				popularBlogs,
+			});
 		}
-
-		const category = await categoryService.getCategory(categoryName);
 
 		const parsedBlogs = blogs.map((blog) => {
 			return {
@@ -119,8 +128,73 @@ export const getBlogsByCategory = async (req, res) => {
 
 		res.render('blogs', {
 			blogs: parsedBlogs,
-			categories: category.subcategories,
+			category: categoryName,
+			categories: [],
+			subcategories: category.subcategories.sort((a, b) =>
+				a.toLowerCase().localeCompare(b.toLowerCase())
+			),
 			popularBlogs,
+			hasCategoryFilter: true,
+		});
+	} catch (err) {
+		console.log(err);
+		console.error('❌ Error fetching blogs by category:', err);
+		res.status(404).render('404', { title: 'Category Not Found' });
+	}
+};
+
+export const getBlogsBySubCategory = async (req, res) => {
+	try {
+		const categoryName = req.params.category;
+		const subcategoryName = req.params.subcategory;
+
+		const blogs = await blogService.getBlogs(
+			1,
+			10,
+			categoryName,
+			subcategoryName
+		);
+		const popularBlogs = await blogService.getPopularBlogs(
+			1,
+			5,
+			categoryName,
+			subcategoryName
+		);
+		const category = await categoryService.getCategory(categoryName);
+		const users = await getUsers();
+
+		if (!blogs.length) {
+			return res.render('blogs', {
+				blogs: [],
+				category: categoryName,
+				categories: [],
+				subcategories: category.subcategories.sort((a, b) =>
+					a.toLowerCase().localeCompare(b.toLowerCase())
+				),
+				popularBlogs,
+			});
+		}
+
+		const parsedBlogs = blogs.map((blog) => {
+			return {
+				...blog._doc,
+				summary: blog.summary,
+				date: moment(blog.createdAt).format('MMM DD, YYYY'),
+				user: users.find(
+					(user) => user._id.toString() === blog.userId.toString()
+				),
+			};
+		});
+
+		res.render('blogs', {
+			blogs: parsedBlogs,
+			category: categoryName,
+			categories: [],
+			subcategories: category.subcategories.sort((a, b) =>
+				a.toLowerCase().localeCompare(b.toLowerCase())
+			),
+			popularBlogs,
+			hasCategoryFilter: true,
 		});
 	} catch (err) {
 		console.log(err);

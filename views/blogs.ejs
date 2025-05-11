@@ -60,7 +60,7 @@
 						<a class="hover:underline" href="/categories">
 							<h3 class="text-lg font-bold">Categories</h3>
 						</a>
-						<% categories.forEach(category => { %>
+						<% categories.length && categories.forEach(category => { %>
 						<li>
 							<a
 								class="hover:underline text-sm"
@@ -68,12 +68,25 @@
 								><%= category %></a
 							>
 						</li>
+						<% }) %> <% subcategories.length &&
+						subcategories.forEach(subcategory => { %>
+						<li>
+							<a
+								class="hover:underline text-sm"
+								href="/blogs/categories/<%= category %>/subcategories/<%= subcategory %>"
+								><%= subcategory %></a
+							>
+						</li>
 						<% }) %>
 					</ul>
 				</div>
 				<!-- BLOG SECTION -->
 				<div class="col-span-1 md:col-span-5">
-					<% blogs.forEach(blog => { %>
+					<% if (blogs.length === 0) {%>
+					<div class="flex items-center justify-center h-full">
+						<p class="text-lg">Woah! Looks like we ran out of content</p>
+					</div>
+					<% } %> <% blogs.forEach(blog => { %>
 					<a href="/blogs/<%= blog.slug %>"
 						><div class="card">
 							<div class="flex justify-between">
@@ -91,9 +104,9 @@
 					<% }) %>
 				</div>
 				<div class="hidden md:block md:col-span-2 p-4 flex-col">
+					<% if (popularBlogs.length) { %>
 					<span class="text-lg font-bold">Popular Blogs</span>
-
-					<% popularBlogs.forEach(blog => { %>
+					<% } %> <% popularBlogs.forEach(blog => { %>
 					<a href="/blogs/<%= blog.slug %>">
 						<div class="flex flex-col gap-2 py-2">
 							<div class="flex justify-between">

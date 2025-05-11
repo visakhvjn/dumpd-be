@@ -14,13 +14,18 @@ export const getBlogs = async (
 	page = 1,
 	size = 10,
 	category = '',
+	subcategory = '',
 	userId = ''
 ) => {
 	const skip = (page - 1) * size;
 	let query = {};
 
 	if (category) {
-		query = { category: { $regex: new RegExp(`^${category}$`, 'i') } };
+		query = { category };
+	}
+
+	if (category && subcategory) {
+		query = { category, subcategory };
 	}
 
 	if (userId) {
@@ -117,13 +122,18 @@ export const getPopularBlogs = async (
 	page = 1,
 	size = 5,
 	category = '',
+	subcategory = '',
 	userId = ''
 ) => {
 	const skip = (page - 1) * size;
 	let query = {};
 
 	if (category) {
-		query = { category: { $regex: new RegExp(`^${category}$`, 'i') } };
+		query = { category };
+	}
+
+	if (category && subcategory) {
+		query = { category, subcategory };
 	}
 
 	if (userId) {
