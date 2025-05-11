@@ -3,8 +3,8 @@ import cron from 'node-cron';
 import { generateUser } from '../services/user.service.js';
 import * as blogService from '../services/blog.service.js';
 
-// Every half hour a new blog is added
-cron.schedule('*/30 * * * *', async () => {
+// Every hour a new blog is added
+cron.schedule('0 * * * *', async () => {
 	console.log('⏰ Running daily blog generator...');
 
 	try {
