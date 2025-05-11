@@ -1,8 +1,7 @@
 import { marked } from 'marked';
 import moment from 'moment';
-import slugify from 'slugify';
 
-import { blogModel } from '../models/Blog.js';
+import { blogModel } from '../models/blog.model.js';
 import { openai } from '../config/openai.js';
 import { getRandomTopic } from './topicController.js';
 import {
@@ -10,91 +9,47 @@ import {
 	getUser,
 	getUserBySlug,
 	getUsers,
-} from '../services/userService.js';
+} from '../services/user.service.js';
 import * as blogService from '../services/blogService.js';
 import * as makeService from '../services/makeService.js';
+import * as categoryService from '../services/category.service.js';
 
-export const generateBlog = async () => {
+export const generateBlog = async (req, res) => {
 	try {
-		const topic = await getRandomTopic();
-		const author = await getRandomUser();
-
-		const response = await openai.chat.completions.create({
-			model: 'gpt-4.1-nano',
-			messages: [
-				{
-					role: 'system',
-					content: `You are a tech blog writer named ${
-						author.name
-					}. Your writing style is ${
-						author.writingStyle
-					}. Your personality traits are ${author.personalityTraits.join(
-						', '
-					)}. And you are an expert in areas like ${author.areasOfExpertise.join(
-						', '
-					)}.`,
-				},
-				{
-					role: 'user',
-					content: `
-                Write a blog about a topic in technology related to ${topic.title}.
-                
-                The response should be a json object with title and content, categories and summary properties.
-                The title should be a catchy title.
-                The content should be a well-structured blog post with headings and subheadings.
-                The blog should be informative and engaging.
-                The blog should be around 500 words.
-                The response should contain an array of categories that the blog belongs to.
-                The summary should be in not more than 50 words.
-            `,
-				},
-			],
-		});
-
-		const content = response.choices[0].message.content;
-		const parsedContent = JSON.parse(content);
-
-		const newBlog = new blogModel({
-			title: parsedContent.title,
-			content: parsedContent.content,
-			createdAt: new Date(),
-			slug: await getSlug(parsedContent.title.toLowerCase()),
-			categories: parsedContent.categories,
-			summary: parsedContent.summary,
-			userId: author._id,
-		});
-
-		const blog = await newBlog.save();
-
-		// post to linkedin
-		await makeService.postBlogToLinkedIn(
-			blog.title,
-			blog.categories,
-			blog.summary,
-			blog.slug
-		);
-
-		// post to linkedin
+		const blog = await blogService.generateBlog();
+		res.json(blog);
 	} catch (err) {
 		console.error('❌ Error generating blog:', err);
+		res.status(err.statusCode).json({ error: err.message });
 	}
 };
 
 export const getAllBlogs = async (req, res) => {
 	const blogs = await blogModel.find({}).sort({ createdAt: -1 });
+	const users = await getUsers();
 
 	const parsedBlogs = blogs.map((blog) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
-			date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
+			date: `${moment(blog.createdAt).format('MMM DD, YYYY')} (${moment(
+				blog.createdAt
+			).fromNow()})`,
+			user: users.find(
+				(user) => user._id.toString() === blog.userId.toString()
+			),
 		};
 	});
 
-	const categories = await blogService.getAllCategories();
-	const users = await getUsers();
+	const categories = await categoryService.getCategories();
 
-	res.render('blogs', { blogs: parsedBlogs, categories, users });
+	console.log(parsedBlogs);
+
+	res.render('blogs', {
+		blogs: parsedBlogs,
+		categories: categories.map((cat) => cat.name),
+		users,
+	});
 };
 
 export const getBlog = async (req, res) => {
@@ -108,8 +63,9 @@ export const getBlog = async (req, res) => {
 
 		const title = blog.title;
 		const content = marked.parse(blog.content);
-		const date = moment(blog.createdAt).format('MMM DD, YYYY hh:mm A');
-		const categories = blog.categories;
+		const date = moment(blog.createdAt).format('MMM DD, YYYY');
+		const category = blog.category;
+		const subcategory = blog.subcategory;
 		const summary = blog.summary;
 		const views = blog.views || 0;
 		let user = {};
@@ -122,7 +78,16 @@ export const getBlog = async (req, res) => {
 		await updateViews(slug);
 
 		res.render('blog', {
-			blog: { title, content, date, categories, summary, views, user },
+			blog: {
+				title,
+				content,
+				date,
+				category,
+				subcategory,
+				summary,
+				views,
+				user,
+			},
 		});
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);
@@ -132,42 +97,33 @@ export const getBlog = async (req, res) => {
 
 export const getBlogsByCategory = async (req, res) => {
 	try {
-		const category = req.params.category;
+		const categoryName = req.params.category;
 		const blogs = await blogModel
-			.find({ categories: { $regex: new RegExp(`^${category}$`, 'i') } })
+			.find({ category: { $regex: new RegExp(`^${categoryName}$`, 'i') } })
 			.sort({ createdAt: -1 });
 
 		if (blogs.length === 0) {
 			throw Error('No blogs found for this category');
 		}
 
+		const category = await categoryService.getCategory(categoryName);
+
 		const parsedBlogs = blogs.map((blog) => {
 			return {
 				...blog._doc,
 				summary: blog.summary,
-				date: moment(blog.createdAt).format('MMM DD, YYYY hh:mm A'),
+				date: moment(blog.createdAt).format('MMM DD, YYYY'),
 			};
 		});
 
-		const categories = await blogService.getAllCategories();
-		const users = await getUsers();
-
-		res.render('blogs', { blogs: parsedBlogs, categories, users });
+		res.render('blogs', {
+			blogs: parsedBlogs,
+			categories: category.subcategories,
+		});
 	} catch (err) {
 		console.error('❌ Error fetching blogs by category:', err);
 		res.status(404).render('404', { title: 'Category Not Found' });
 	}
-};
-
-const getSlug = async (title) => {
-	let slug = slugify(title);
-	let counter = 1;
-
-	while (await blogModel.exists({ slug })) {
-		slug = `${slug}-${counter++}`;
-	}
-
-	return slug;
 };
 
 const updateViews = async (slug) => {

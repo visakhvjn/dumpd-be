@@ -5,11 +5,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
 		<title><%= blog.title %></title>
-		<link rel="stylesheet" href="/css/blog.style.css" />
+		<link rel="stylesheet" href="/css/styles.css" />
 
 		<!-- Basic SEO Meta Tags -->
 		<meta name="description" content="<%= blog.summary %>" />
-		<meta name="keywords" content="<%= blog.categories.join(', ') %>" />
+		<meta name="keywords" content="<%= blog.category %>" />
 		<meta name="author" content="<%= blog.user.name %>" />
 		<meta name="robots" content="index, follow" />
 		<!-- Open Graph Meta Tags -->
@@ -25,7 +25,7 @@
 		<meta name="twitter:image" content="<%= blog.user.profilePictureURL %>" />
 
 		<!-- Google tag (gtag.js) -->
-		<script
+		<!-- <script
 			async
 			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
 		></script>
@@ -37,48 +37,62 @@
 			gtag('js', new Date());
 
 			gtag('config', 'G-VM6TGRN8B5');
-		</script>
+		</script> -->
 	</head>
 	<body>
 		<%- include('header') %>
-		<div class="container">
-			<br />
-			<br />
-			<div class="header">
-				<% if (blog.user.name) { %>
-				<div class="author">
+		<div class="grid grid-cols-1 md:grid-cols-8 bg-white">
+			<div class="hidden md:block md:col-span-2"></div>
+			<div class="col-span-1 md:col-span-4 p-4 flex flex-col gap-4">
+				<!-- AUTHOR -->
+				<div class="flex gap-2">
+					<% if (blog.user.name) { %>
 					<img
+						class="w-20 h-20 rounded-full"
 						src="<%= blog.user.profilePictureURL %>"
-						class="profile-picture"
 						alt="profile picture of <%= blog.user.name %>"
 					/>
-					<div style="display: flex; flex-direction: column">
+					<div class="flex flex-col justify-center">
 						<a href="/blogs/user/<%= blog.user.slug %>"
 							><span><b><%= blog.user.name %></b></span></a
 						>
 						<span><%= blog.user.areasOfExpertise %></span>
 					</div>
+					<% } %>
 				</div>
-				<% } %>
-			</div>
 
-			<h1><%= blog.title %></h1>
-			<div>
-				<span>🕓 <%= blog.date %></span>
+				<!-- TITLE SECTION -->
+				<hr class="text-gray-300" />
+				<div class="flex flex-col">
+					<span class="text-sm"><%= blog.date %></span>
+					<h1 class="text-3xl font-bold"><%= blog.title %></h1>
+				</div>
+
+				<!-- CATEGORIES SECTION -->
+				<div class="flex gap-1 flex-wrap">
+					<a
+						class="pill"
+						href="/blogs/category/<%= blog.category.toLowerCase() %>"
+						><%= blog.category %></a
+					>
+					<a
+						class="pill"
+						href="/blogs/category/<%= blog.subcategory.toLowerCase() %>"
+						><%= blog.subcategory %></a
+					>
+				</div>
+
+				<!-- SUMMARY SECTION -->
+				<div class="flex border-gray-50 p-4 bg-gray-200">
+					<p><b>TL;DR: </b><%= blog.summary %></p>
+				</div>
+
+				<!-- CONTENT SECTION -->
+				<div class="flex flex-col">
+					<p><%- blog.content %></p>
+				</div>
 			</div>
-			<div class="categories">
-				<% blog.categories.forEach(category => { %>
-				<a
-					href="/blogs/category/<%= category.toLowerCase() %>"
-					class="category-pill"
-					><%= category %></a
-				>
-				<% }) %>
-			</div>
-			<br />
-			<hr />
-			<div class="summary"><b>TL;DR: </b><%= blog.summary %></div>
-			<p><%- blog.content %></p>
+			<div class="hidden md:block md:col-span-2"></div>
 		</div>
 	</body>
 </html>

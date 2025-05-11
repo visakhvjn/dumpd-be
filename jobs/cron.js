@@ -1,20 +1,20 @@
 import cron from 'node-cron';
 
-import { generateBlog } from '../controllers/blogController.js';
 import { generateTopic } from '../controllers/topicController.js';
-import { generateUser } from '../services/userService.js';
+import { generateUser } from '../services/user.service.js';
+import * as blogService from '../services/blogService.js';
 
 // Every 20 hours a new blog is added
-cron.schedule('0 */20 * * *', async () => {
-	console.log('⏰ Running daily blog generator...');
+// cron.schedule('*/5 * * * *', async () => {
+// 	console.log('⏰ Running daily blog generator...');
 
-	try {
-		await generateBlog();
-		console.log('✅ Blog generated successfully!');
-	} catch (err) {
-		console.error('❌ Error generating blog:', err);
-	}
-});
+// 	try {
+// 		await blogService.generateBlog();
+// 		console.log('✅ Blog generated successfully!');
+// 	} catch (err) {
+// 		console.error('❌ Error generating blog:', err);
+// 	}
+// });
 
 // Every 12 hours a new topic is added
 cron.schedule('0 */12 * * *', async () => {

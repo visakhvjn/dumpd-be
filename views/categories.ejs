@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
+		<title>Categories</title>
+		<link rel="stylesheet" href="/css/styles.css" />
+		<!-- Google tag (gtag.js) -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
+		></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-VM6TGRN8B5');
+		</script>
+	</head>
+	<body>
+		<%- include('header') %>
+		<div class="grid grid-cols-1 md:grid-cols-5 gap-2 p-4">
+			<div class="md:col-span-1 flex items-center p-2">
+				<p class="text-lg"></p>
+			</div>
+			<div class="md:col-span-4 grid grid-cols-3 gap-2">
+				<% categories.forEach(category => { %>
+				<a href="/blogs/categories/<%= category.name %>">
+					<div class="card col-span-1 h-full">
+						<div class="flex flex-col justify-between">
+							<span class="text-lg font-bold"><%= category.name %></span>
+							<p class="text-sm">
+								<%- category.description.slice(0, 100) %>...
+							</p>
+						</div>
+
+						<div>
+							<span class="text-xs"><%= category.count || 0 %> blogs</span
+							>&nbsp;|
+							<span class="text-xs">
+								<%= category.subcategories.length || 0 %> topics
+							</span>
+						</div>
+					</div>
+				</a>
+				<% }) %>
+			</div>
+		</div>
+	</body>
+</html>

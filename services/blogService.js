@@ -1,7 +1,11 @@
 import NodeCache from 'node-cache';
+import slugify from 'slugify';
 
-import { blogModel } from '../models/Blog.js';
-import * as userService from './userService.js';
+import { openai } from '../config/openai.js';
+
+import { blogModel } from '../models/blog.model.js';
+import * as userService from './user.service.js';
+import * as categoryService from './category.service.js';
 import * as Errors from '../utils/errors.js';
 
 const cache = new NodeCache({ stdTTL: 3600 });
@@ -67,4 +71,89 @@ export const getAllCategories = async () => {
 	cache.set('categories', categories, 21600);
 
 	return categories;
+};
+
+export const generateBlog = async () => {
+	const { category, subcategory } =
+		await categoryService.getRandomCategoryAndSubCategory();
+	const author = await userService.getRandomUser();
+
+	const response = await openai.chat.completions.create({
+		model: 'gpt-3.5-turbo',
+		messages: [
+			{
+				role: 'system',
+				content: getSystemPromptForBlog(author),
+			},
+			{
+				role: 'user',
+				content: getUserPromptForBlog(category, subcategory),
+			},
+		],
+	});
+
+	const content = response.choices[0].message.content;
+
+	const parsedContent = JSON.parse(content);
+
+	const newBlog = await blogModel.create({
+		title: parsedContent.title,
+		content: parsedContent.content,
+		createdAt: new Date(),
+		slug: await getSlug(parsedContent.title.toLowerCase()),
+		category,
+		subcategory,
+		summary: parsedContent.summary,
+		userId: author._id,
+	});
+
+	// update blog count for the category
+	await categoryService.updateCategoryBlogCount(category);
+
+	return newBlog;
+};
+
+const getSystemPromptForBlog = (author) => {
+	return `
+		You are a tech blog writer named ${author.name}.
+		Your writing style is ${author.writingStyle}.
+		Your personality traits are ${author.personalityTraits.join(', ')}.
+		And you are an expert in areas like ${author.areasOfExpertise.join(', ')}.
+	`;
+};
+
+const getUserPromptForBlog = (category, subcategory) => {
+	return `
+		Write a blog about ${category} related to ${subcategory}.
+
+		The response should be a **JSON object** with title, content and summary properties.
+
+		The title should be a catchy title.
+		The content should be a well-structured blog post with headings and subheadings.
+		The blog should be informative and engaging.
+		The blog should not be more than 1000 words.
+		The summary should be in not more than 200 words.
+
+		Try include code examples inside content when possible.
+
+		Here is sample of how the response should look like 
+		{
+			"title": "A catchy title",
+			"summary": "Too long hence don't read it",
+			"content": "This is the <h1>entire</h1> content"
+		}
+
+		**DO NOT** include any other details. Make sure it is a valid JSON
+	`;
+};
+
+const getSlug = async (title) => {
+	let slug = slugify(title);
+	let counter = 1;
+
+	while (await blogModel.exists({ slug })) {
+		slug = `${slug}-${counter++}`;
+	}
+
+	return slug;
 };

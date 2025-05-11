@@ -1,5 +1,6 @@
 import { openai } from '../config/openai.js';
 import { topicModel } from '../models/Topic.js';
+import * as topicService from '../services/topic.service.js';
 
 export const generateTopic = async () => {
 	try {
@@ -44,4 +45,9 @@ export const getRandomTopic = async () => {
 	} catch (err) {
 		console.error('❌ Error fetching random topic:', err);
 	}
+};
+
+export const getTopics = async (req, res) => {
+	const topics = await topicService.getTopics();
+	res.json(topics);
 };

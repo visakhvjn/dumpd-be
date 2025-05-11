@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+
+@layer base {
+	body {
+		@apply h-full m-0;
+	}
+	h2 {
+		@apply text-2xl font-bold mt-2;
+	}
+	p {
+		@apply my-2;
+	}
+	h3 {
+		@apply text-lg font-bold mt-2;
+	}
+	h4 {
+		@apply text-lg font-bold;
+	}
+	pre {
+		@apply bg-gray-200 p-8 my-2;
+	}
+}
+
+@layer components {
+	.card {
+		@apply flex flex-col gap-2 bg-white rounded-lg shadow-md p-6 mb-4 transition-shadow hover:shadow-lg justify-between;
+	}
+
+	.pill {
+		@apply rounded-full bg-gray-500 text-white px-2 py-1 text-xs hover:bg-black transition inline-block;
+	}
+}
