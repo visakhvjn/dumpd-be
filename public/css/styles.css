@@ -7,7 +7,6 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
@@ -206,15 +205,6 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
-  .col-span-5 {
-    grid-column: span 5 / span 5;
-  }
-  .col-span-6 {
-    grid-column: span 6 / span 6;
-  }
-  .col-span-8 {
-    grid-column: span 8 / span 8;
-  }
   .col-span-10 {
     grid-column: span 10 / span 10;
   }
@@ -251,17 +241,11 @@
   .hidden {
     display: none;
   }
-  .h-20 {
-    height: calc(var(--spacing) * 20);
-  }
   .h-28 {
     height: calc(var(--spacing) * 28);
   }
   .h-full {
     height: 100%;
-  }
-  .w-20 {
-    width: calc(var(--spacing) * 20);
   }
   .w-28 {
     width: calc(var(--spacing) * 28);
@@ -277,12 +261,6 @@
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .grid-cols-8 {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-  }
-  .grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
   }
   .grid-cols-12 {
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -305,9 +283,6 @@
   .justify-center {
     justify-content: center;
   }
-  .justify-end {
-    justify-content: flex-end;
-  }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
   }
@@ -317,21 +292,12 @@
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
-  .rounded-full {
-    border-radius: calc(infinity * 1px);
-  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .border-gray-50 {
-    border-color: var(--color-gray-50);
-  }
   .bg-black {
     background-color: var(--color-black);
-  }
-  .bg-gray-200 {
-    background-color: var(--color-gray-200);
   }
   .bg-white {
     background-color: var(--color-white);
@@ -348,14 +314,8 @@
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
-  .p-8 {
-    padding: calc(var(--spacing) * 8);
-  }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
-  }
-  .px-4 {
-    padding-inline: calc(var(--spacing) * 4);
   }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
@@ -368,9 +328,6 @@
   }
   .text-justify {
     text-align: justify;
-  }
-  .align-bottom {
-    vertical-align: bottom;
   }
   .align-middle {
     vertical-align: middle;
@@ -411,12 +368,6 @@
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
   }
-  .text-gray-50 {
-    color: var(--color-gray-50);
-  }
-  .text-gray-100 {
-    color: var(--color-gray-100);
-  }
   .text-gray-200 {
     color: var(--color-gray-200);
   }
@@ -443,14 +394,24 @@
       }
     }
   }
+  .md\:col-span-1 {
+    @media (width >= 48rem) {
+      grid-column: span 1 / span 1;
+    }
+  }
   .md\:col-span-2 {
     @media (width >= 48rem) {
       grid-column: span 2 / span 2;
     }
   }
-  .md\:col-span-4 {
+  .md\:col-span-5 {
     @media (width >= 48rem) {
-      grid-column: span 4 / span 4;
+      grid-column: span 5 / span 5;
+    }
+  }
+  .md\:col-span-6 {
+    @media (width >= 48rem) {
+      grid-column: span 6 / span 6;
     }
   }
   .md\:col-span-8 {
@@ -458,14 +419,29 @@
       grid-column: span 8 / span 8;
     }
   }
+  .md\:col-span-10 {
+    @media (width >= 48rem) {
+      grid-column: span 10 / span 10;
+    }
+  }
   .md\:block {
     @media (width >= 48rem) {
       display: block;
     }
   }
+  .md\:grid {
+    @media (width >= 48rem) {
+      display: grid;
+    }
+  }
   .md\:grid-cols-8 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+  }
+  .md\:grid-cols-10 {
+    @media (width >= 48rem) {
+      grid-template-columns: repeat(10, minmax(0, 1fr));
     }
   }
   .md\:grid-cols-12 {
@@ -517,6 +493,8 @@
   }
   pre {
     margin-bottom: calc(var(--spacing) * 8);
+    width: 100%;
+    overflow: auto;
     background-color: var(--color-gray-200);
     padding: calc(var(--spacing) * 8);
   }

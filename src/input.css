@@ -17,7 +17,7 @@
 		@apply text-lg font-bold;
 	}
 	pre {
-		@apply bg-gray-200 p-8 mb-8;
+		@apply bg-gray-200 p-8 mb-8 w-full overflow-auto;
 	}
 }
 
