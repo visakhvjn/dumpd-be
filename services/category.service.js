@@ -2,7 +2,7 @@ import { categoryModel } from '../models/category.model.js';
 import * as Errors from '../utils/errors.js';
 
 export const getCategories = async () => {
-	return categoryModel.find({});
+	return categoryModel.find({}).sort({ name: 1 });
 };
 
 export const getCategory = async (name) => {

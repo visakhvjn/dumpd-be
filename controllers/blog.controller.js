@@ -26,6 +26,7 @@ export const generateBlog = async (req, res) => {
 
 export const getAllBlogs = async (req, res) => {
 	const blogs = await blogService.getBlogs(1, 10);
+	const popularBlogs = await blogService.getPopularBlogs(1, 5);
 	const users = await getUsers();
 
 	const parsedBlogs = blogs.map((blog) => {
@@ -45,6 +46,7 @@ export const getAllBlogs = async (req, res) => {
 		blogs: parsedBlogs,
 		categories: categories.map((cat) => cat.name),
 		users,
+		popularBlogs,
 	});
 };
 
@@ -95,6 +97,7 @@ export const getBlogsByCategory = async (req, res) => {
 	try {
 		const categoryName = req.params.category;
 		const blogs = await blogService.getBlogs(1, 10, categoryName);
+		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const users = await getUsers();
 
 		console.log(blogs);
@@ -119,6 +122,7 @@ export const getBlogsByCategory = async (req, res) => {
 		res.render('blogs', {
 			blogs: parsedBlogs,
 			categories: category.subcategories,
+			popularBlogs,
 		});
 	} catch (err) {
 		console.log(err);

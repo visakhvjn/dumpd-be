@@ -113,6 +113,32 @@ export const generateBlog = async () => {
 	return newBlog;
 };
 
+export const getPopularBlogs = async (
+	page = 1,
+	size = 5,
+	category = '',
+	userId = ''
+) => {
+	const skip = (page - 1) * size;
+	let query = {};
+
+	if (category) {
+		query = { category: { $regex: new RegExp(`^${category}$`, 'i') } };
+	}
+
+	if (userId) {
+		query.userId = userId;
+	}
+
+	const blogs = await blogModel
+		.find(query)
+		.sort({ views: -1 })
+		.skip(skip)
+		.limit(size);
+
+	return blogs;
+};
+
 const getSystemPromptForBlog = (author) => {
 	return `
 		You are a tech blog writer named ${author.name}.

@@ -2,7 +2,7 @@
 
 @layer base {
 	body {
-		@apply h-full m-0;
+		@apply h-full m-0 bg-gray-100;
 	}
 	h2 {
 		@apply text-2xl font-bold mt-2;
@@ -23,7 +23,7 @@
 
 @layer components {
 	.card {
-		@apply flex flex-col gap-2 bg-white rounded-lg shadow-md p-6 mb-4 transition-shadow hover:shadow-lg justify-between;
+		@apply flex flex-col gap-2 bg-white shadow-md p-6 mb-2 transition-shadow hover:shadow-lg justify-between;
 	}
 
 	.pill {
