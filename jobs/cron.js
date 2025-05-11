@@ -2,7 +2,7 @@ import cron from 'node-cron';
 
 import { generateTopic } from '../controllers/topicController.js';
 import { generateUser } from '../services/user.service.js';
-import * as blogService from '../services/blogService.js';
+import * as blogService from '../services/blog.service.js';
 
 // Every 20 hours a new blog is added
 // cron.schedule('*/5 * * * *', async () => {

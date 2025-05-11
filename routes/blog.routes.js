@@ -7,7 +7,7 @@ import {
 	getBlogsByCategory,
 	getBlogsByUser,
 	generateBlog,
-} from '../controllers/blogController.js';
+} from '../controllers/blog.controller.js';
 
 router.get('/', getAllBlogs);
 router.get('/blogs/generate', generateBlog);

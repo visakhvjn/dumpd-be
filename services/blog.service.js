@@ -20,7 +20,7 @@ export const getBlogs = async (
 	let query = {};
 
 	if (category) {
-		query = { categories: { $regex: new RegExp(`^${category}$`, 'i') } };
+		query = { category: { $regex: new RegExp(`^${category}$`, 'i') } };
 	}
 
 	if (userId) {

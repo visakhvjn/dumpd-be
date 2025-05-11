@@ -10,7 +10,7 @@ import {
 	getUserBySlug,
 	getUsers,
 } from '../services/user.service.js';
-import * as blogService from '../services/blogService.js';
+import * as blogService from '../services/blog.service.js';
 import * as makeService from '../services/makeService.js';
 import * as categoryService from '../services/category.service.js';
 
@@ -25,16 +25,14 @@ export const generateBlog = async (req, res) => {
 };
 
 export const getAllBlogs = async (req, res) => {
-	const blogs = await blogModel.find({}).sort({ createdAt: -1 });
+	const blogs = await blogService.getBlogs(1, 10);
 	const users = await getUsers();
 
 	const parsedBlogs = blogs.map((blog) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
-			date: `${moment(blog.createdAt).format('MMM DD, YYYY')} (${moment(
-				blog.createdAt
-			).fromNow()})`,
+			date: moment(blog.createdAt).format('MMM DD, YYYY'),
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
 			),
@@ -42,8 +40,6 @@ export const getAllBlogs = async (req, res) => {
 	});
 
 	const categories = await categoryService.getCategories();
-
-	console.log(parsedBlogs);
 
 	res.render('blogs', {
 		blogs: parsedBlogs,
@@ -98,11 +94,12 @@ export const getBlog = async (req, res) => {
 export const getBlogsByCategory = async (req, res) => {
 	try {
 		const categoryName = req.params.category;
-		const blogs = await blogModel
-			.find({ category: { $regex: new RegExp(`^${categoryName}$`, 'i') } })
-			.sort({ createdAt: -1 });
+		const blogs = await blogService.getBlogs(1, 10, categoryName);
+		const users = await getUsers();
 
-		if (blogs.length === 0) {
+		console.log(blogs);
+
+		if (!blogs.length) {
 			throw Error('No blogs found for this category');
 		}
 
@@ -113,6 +110,9 @@ export const getBlogsByCategory = async (req, res) => {
 				...blog._doc,
 				summary: blog.summary,
 				date: moment(blog.createdAt).format('MMM DD, YYYY'),
+				user: users.find(
+					(user) => user._id.toString() === blog.userId.toString()
+				),
 			};
 		});
 
@@ -121,6 +121,7 @@ export const getBlogsByCategory = async (req, res) => {
 			categories: category.subcategories,
 		});
 	} catch (err) {
+		console.log(err);
 		console.error('❌ Error fetching blogs by category:', err);
 		res.status(404).render('404', { title: 'Category Not Found' });
 	}
