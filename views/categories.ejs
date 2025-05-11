@@ -23,18 +23,16 @@
 	</head>
 	<body>
 		<%- include('header') %>
-		<div class="grid grid-cols-12 gap-2">
-			<div class="col-span-1"></div>
-			<div class="col-span-10 flex flex-col">
-				<div class="grid grid-cols-3 gap-2">
+		<div class="grid grid-cols-1 md:grid-cols-12 gap-2">
+			<div class="hidden md:block md:col-span-1"></div>
+			<div class="col-span-1 md:col-span-10 flex flex-col">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
 					<% categories.forEach(category => { %>
 					<a href="/blogs/categories/<%= category.name %>">
 						<div class="card col-span-1 h-full">
 							<div class="flex flex-col justify-between">
-								<span class="text-md font-bold"><%= category.name %></span>
-								<p class="text-sm">
-									<%- category.description.slice(0, 100) %>...
-								</p>
+								<span class="text-lg font-bold"><%= category.name %></span>
+								<p class="text-sm"><%- category.description %></p>
 							</div>
 
 							<div>
@@ -51,5 +49,8 @@
 			</div>
 			<div></div>
 		</div>
+		<script>
+			document.getElementById('menu-toggle').classList.add('hidden');
+		</script>
 	</body>
 </html>

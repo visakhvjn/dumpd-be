@@ -35,7 +35,7 @@
 		<meta name="twitter:image" content="/icons/bot_favicon.png" />
 
 		<!-- Google tag (gtag.js) -->
-		<!-- <script
+		<script
 			async
 			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
 		></script>
@@ -47,10 +47,42 @@
 			gtag('js', new Date());
 
 			gtag('config', 'G-VM6TGRN8B5');
-		</script> -->
+		</script>
 	</head>
+
 	<body>
 		<%- include('header') %>
+		<div
+			class="hidden md:hidden fixed w-full bottom-0 z-50 bg-white p-4 border"
+			id="menubar"
+		>
+			<div class="flex justify-between mb-2">
+				<a class="hover:underline" href="/categories">
+					<span class="text-lg font-bold">Categories</span>
+				</a>
+				<button id="closeBtn">X</button>
+			</div>
+			<ul>
+				<% categories.length && categories.forEach(category => { %>
+				<li>
+					<a
+						class="hover:underline text-lg"
+						href="/blogs/categories/<%= category %>"
+						><%= category %></a
+					>
+				</li>
+				<% }) %> <% subcategories.length && subcategories.forEach(subcategory =>
+				{ %>
+				<li>
+					<a
+						class="hover:underline text-lg"
+						href="/blogs/categories/<%= category %>/subcategories/<%= subcategory %>"
+						><%= subcategory %></a
+					>
+				</li>
+				<% }) %>
+			</ul>
+		</div>
 		<div class="grid grid-cols-1 md:grid-cols-12">
 			<div class="hidden md:block md:col-span-1"></div>
 			<div class="col-span-1 md:col-span-10 md:grid md:grid-cols-8 gap-2">
@@ -124,5 +156,28 @@
 			<div class="hidden md:block md:col-span-1"></div>
 		</div>
 		<br />
+
+		<script>
+			const menuToggleBtn = document.getElementById('menu-toggle');
+			const closeBtn = document.getElementById('closeBtn');
+			const menubar = document.getElementById('menubar');
+
+			let isMenubarOpen = false;
+
+			menuToggleBtn.addEventListener('click', (e) => {
+				if (!isMenubarOpen) {
+					menubar.classList.remove('hidden');
+				} else {
+					menubar.classList.add('hidden');
+				}
+
+				isMenubarOpen = !isMenubarOpen;
+			});
+
+			closeBtn.addEventListener('click', (e) => {
+				menubar.classList.add('hidden');
+				isMenubarOpen = !isMenubarOpen;
+			});
+		</script>
 	</body>
 </html>
