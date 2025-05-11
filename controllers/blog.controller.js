@@ -100,8 +100,6 @@ export const getBlogsByCategory = async (req, res) => {
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const users = await getUsers();
 
-		console.log(blogs);
-
 		if (!blogs.length) {
 			throw Error('No blogs found for this category');
 		}

@@ -17,13 +17,13 @@
 		@apply text-lg font-bold;
 	}
 	pre {
-		@apply bg-gray-200 p-8 my-2;
+		@apply bg-gray-200 p-8 mb-8;
 	}
 }
 
 @layer components {
 	.card {
-		@apply flex flex-col gap-2 bg-white shadow-md p-6 mb-2 transition-shadow hover:shadow-lg justify-between;
+		@apply flex flex-col gap-1 bg-white shadow-md p-6 mb-2 transition-shadow hover:shadow-lg justify-between;
 	}
 
 	.pill {

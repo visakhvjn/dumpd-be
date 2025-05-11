@@ -23,32 +23,33 @@
 	</head>
 	<body>
 		<%- include('header') %>
-		<div class="grid grid-cols-1 md:grid-cols-5 gap-2 p-4">
-			<div class="md:col-span-1 flex items-center p-2">
-				<p class="text-lg"></p>
-			</div>
-			<div class="md:col-span-4 grid grid-cols-3 gap-2">
-				<% categories.forEach(category => { %>
-				<a href="/blogs/categories/<%= category.name %>">
-					<div class="card col-span-1 h-full">
-						<div class="flex flex-col justify-between">
-							<span class="text-lg font-bold"><%= category.name %></span>
-							<p class="text-md">
-								<%- category.description.slice(0, 100) %>...
-							</p>
-						</div>
+		<div class="grid grid-cols-12 gap-2">
+			<div class="col-span-1"></div>
+			<div class="col-span-10 flex flex-col">
+				<div class="grid grid-cols-3 gap-2">
+					<% categories.forEach(category => { %>
+					<a href="/blogs/categories/<%= category.name %>">
+						<div class="card col-span-1 h-full">
+							<div class="flex flex-col justify-between">
+								<span class="text-md font-bold"><%= category.name %></span>
+								<p class="text-sm">
+									<%- category.description.slice(0, 100) %>...
+								</p>
+							</div>
 
-						<div>
-							<span class="text-xs"><%= category.count || 0 %> blogs</span
-							>&nbsp;|
-							<span class="text-xs">
-								<%= category.subcategories.length || 0 %> topics
-							</span>
+							<div>
+								<span class="text-xs"><%= category.count || 0 %> blogs</span
+								>&nbsp;|
+								<span class="text-xs">
+									<%= category.subcategories.length || 0 %> topics
+								</span>
+							</div>
 						</div>
-					</div>
-				</a>
-				<% }) %>
+					</a>
+					<% }) %>
+				</div>
 			</div>
+			<div></div>
 		</div>
 	</body>
 </html>
