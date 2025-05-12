@@ -2,6 +2,7 @@ import cron from 'node-cron';
 
 import { generateUser } from '../services/user.service.js';
 import * as blogService from '../services/blog.service.js';
+import { generateCategoryAndSubcategoryImage } from '../services/category.service.js';
 
 const jobs = [];
 
@@ -35,5 +36,19 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	jobs.push(blogJob, userJob);
+	const subCategoryImageJob = cron.schedule('* * * * *', async () => {
+		console.log('⏰ Running user generator...');
+
+		try {
+			const hasGenerated = await generateCategoryAndSubcategoryImage();
+
+			if (hasGenerated) {
+				console.log('✅ Image generated successfully!');
+			}
+		} catch (err) {
+			console.error('❌ Error generating Image:', err);
+		}
+	});
+
+	jobs.push(subCategoryImageJob);
 };

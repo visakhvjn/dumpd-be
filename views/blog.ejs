@@ -9,23 +9,33 @@
 
 		<!-- Basic SEO Meta Tags -->
 		<meta name="description" content="<%= blog.summary %>" />
-		<meta name="keywords" content="<%= blog.category %>" />
+		<meta name="keywords" content="<%= blog.category, blog.subcategory %>" />
 		<meta name="author" content="<%= blog.user.name %>" />
 		<meta name="robots" content="index, follow" />
 		<!-- Open Graph Meta Tags -->
 		<meta property="og:title" content="<%= blog.title %>" />
 		<meta property="og:description" content="<%= blog.summary %>" />
-		<meta property="og:image" content="<%= blog.user.profilePictureURL %>" />
+		<meta
+			property="og:image"
+			content="<%= blog.domain %><%= blog.imagePath %>"
+		/>
+		<meta
+			property="og:url"
+			content="<%= blog.domain %>/blogs/<%= blog.slug %>"
+		/>
 		<meta property="og:type" content="article" />
-		<meta property="og:site_name" content="The AI Blog" />
+		<meta property="og:site_name" content="Dumpd" />
 		<!-- Twitter Card Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="<%= blog.title %>" />
 		<meta name="twitter:description" content="<%= blog.summary %>" />
-		<meta name="twitter:image" content="<%= blog.user.profilePictureURL %>" />
+		<meta
+			name="twitter:image"
+			content="<%= blog.domain %><%= blog.imagePath %>"
+		/>
 
 		<!-- Google tag (gtag.js) -->
-		<!-- <script
+		<script
 			async
 			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
 		></script>
@@ -37,7 +47,7 @@
 			gtag('js', new Date());
 
 			gtag('config', 'G-VM6TGRN8B5');
-		</script> -->
+		</script>
 	</head>
 	<body>
 		<%- include('header') %>
@@ -81,7 +91,11 @@
 							><%= blog.subcategory %></a
 						>
 					</div>
-					<hr class="hidden md:block text-gray-200" />
+					<% if (blog.imagePath) { %>
+					<div class="mt-2">
+						<img src="<%= blog.imagePath %>" alt="in content image" />
+					</div>
+					<%}%>
 
 					<!-- CONTENT SECTION -->
 					<div class="flex flex-col">

@@ -9,6 +9,9 @@ export const connectDb = async () => {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		});
+
+		//TODO: add a ping here to check for db connection
+
 		console.log('MongoDB connected');
 	} catch (error) {
 		console.error('MongoDB connection error:', error);

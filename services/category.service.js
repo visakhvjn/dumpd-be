@@ -1,4 +1,6 @@
 import { categoryModel } from '../models/category.model.js';
+import * as blogService from '../services/blog.service.js';
+import * as imageService from '../services/image.service.js';
 import * as Errors from '../utils/errors.js';
 
 export const getCategories = async () => {
@@ -58,4 +60,51 @@ export const getRandomCategoryAndSubCategory = async () => {
 
 export const updateCategoryBlogCount = async (name) => {
 	return categoryModel.updateOne({ name }, { $inc: { count: 1 } });
+};
+
+export const generateCategoryAndSubcategoryImage = async () => {
+	// get random category
+	const categoryArray = await categoryModel.aggregate([
+		{ $sample: { size: 1 } },
+	]);
+
+	const category = categoryArray[0];
+
+	const randomIndex = Math.floor(Math.random() * category.subcategories.length);
+	const subcategory = category.subcategories[randomIndex];
+
+	// check if it already has an image
+	const hasImage = await imageService.hasImage(category.name, subcategory);
+
+	if (hasImage) {
+		console.log(
+			`Image present for category=${category.name} and subcategory=${subcategory}`
+		);
+		return 0;
+	}
+
+	const blogs = await blogService.getBlogs(1, 5, category.name, subcategory);
+
+	if (!blogs.length) {
+		console.log(
+			`No blogs found for category=${category.name} and subcategory=${subcategory}`
+		);
+		return 0;
+	}
+
+	console.log(
+		`Generating image for category=${category.name} and subcategory=${subcategory}`
+	);
+
+	// generate the image
+	const fileName = await imageService.generateImage(category.name, subcategory);
+
+	// save the image
+	await imageService.saveImage(
+		`/images/blog/${fileName}`,
+		category.name,
+		subcategory
+	);
+
+	return 1;
 };
