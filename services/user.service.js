@@ -5,7 +5,7 @@ import path from 'path';
 import NodeCache from 'node-cache';
 
 import { openai } from '../config/openai.js';
-import { userModel } from '../models/User.js';
+import { userModel } from '../models/user.model.js';
 import * as Errors from '../utils/errors.js';
 
 const cache = new NodeCache({ stdTTL: 3600 });
@@ -70,6 +70,7 @@ const createUser = async (userData) => {
 		authorBio: userData.authorBio,
 		slug: slugify(userData.name.toLowerCase()),
 		profilePictureURL: await getRandomImageURL(userData.gender),
+		creativityLevel: getCreativityLevelForUser(),
 	};
 
 	const user = await userModel.create(newUser);
@@ -127,4 +128,9 @@ export const getUserBySlug = async (slug) => {
 	});
 
 	return user;
+};
+
+// ranges between 0.1 to 0.8
+export const getCreativityLevelForUser = () => {
+	return (Math.floor(Math.random() * 8) + 1) / 10;
 };

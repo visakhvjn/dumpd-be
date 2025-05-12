@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
 	authorBio: String,
 	createdAt: { type: Date, default: Date.now },
 	slug: { type: String, unique: true },
+	creativityLevel: { type: Number, default: 0.1 },
 	profilePictureURL: String,
 });
 
