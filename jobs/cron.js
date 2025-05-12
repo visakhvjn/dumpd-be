@@ -50,5 +50,5 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	jobs.push(subCategoryImageJob);
+	jobs.push(blogJob, userJob);
 };
