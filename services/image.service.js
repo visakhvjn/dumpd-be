@@ -4,14 +4,14 @@ import path from 'path';
 import { openai } from '../config/openai.js';
 import { imageModel } from '../models/image.model.js';
 
-export const generateImage = async (category, subcategory) => {
-	const imagePrompt = generateImagePrompt(category, subcategory);
+export const generateImage = async (category) => {
+	const imagePrompt = generateImagePrompt(category);
 
 	const result = await openai.images.generate({
 		model: 'gpt-image-1',
 		prompt: imagePrompt,
 		output_format: 'webp',
-		size: '1536x1024',
+		size: '1024x1024',
 		quality: 'low',
 	});
 
@@ -26,10 +26,10 @@ export const generateImage = async (category, subcategory) => {
 	return fileName;
 };
 
-const generateImagePrompt = (category, subcategory) => {
+const generateImagePrompt = (category) => {
 	return `
-        Create a minimalistic black and white image relevant to ${category} 
-        with a focus on ${subcategory}.
+        Create a minimalistic black and white image relevant to ${category}.
+		Make sure that the background is white.
     `;
 };
 
@@ -40,19 +40,18 @@ const getFileName = () => {
 	return timestampString;
 };
 
-export const hasImage = async (category, subcategory) => {
-	const image = await imageModel.findOne({ category, subcategory });
+export const hasImage = async (category) => {
+	const image = await imageModel.findOne({ category });
 	return !!image;
 };
 
-export const saveImage = async (imagePath, category, subcategory) => {
+export const saveImage = async (imagePath, category) => {
 	return imageModel.create({
 		path: imagePath,
 		category,
-		subcategory,
 	});
 };
 
-export const getImage = async (category, subcategory) => {
-	return imageModel.findOne({ category, subcategory });
+export const getImage = async (category) => {
+	return imageModel.findOne({ category });
 };

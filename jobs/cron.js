@@ -36,8 +36,8 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	const subCategoryImageJob = cron.schedule('* * * * *', async () => {
-		console.log('⏰ Running user generator...');
+	const subCategoryImageJob = cron.schedule('*/30 * * * *', async () => {
+		console.log('⏰ Running Image generator...');
 
 		try {
 			const hasGenerated = await generateCategoryAndSubcategoryImage();
@@ -50,5 +50,5 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	jobs.push(blogJob, userJob);
+	jobs.push(blogJob, userJob, subCategoryImageJob);
 };

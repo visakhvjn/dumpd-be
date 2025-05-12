@@ -81,7 +81,7 @@ export const getBlog = async (req, res) => {
 		let imagePath = '';
 
 		if (category && subcategory) {
-			const image = await imageService.getImage(category, subcategory);
+			const image = await imageService.getImage(category);
 
 			if (image) {
 				imagePath = image.path;
