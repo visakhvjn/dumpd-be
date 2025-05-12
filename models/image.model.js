@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const imageSchema = new mongoose.Schema({
 	path: { type: String, required: true },
+	transformedPath: { type: String, required: true },
 	category: { type: String, required: true },
 	createdAt: { type: Date, default: Date.now },
 });

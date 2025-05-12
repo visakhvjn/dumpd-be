@@ -87,10 +87,14 @@ export const generateCategoryAndSubcategoryImage = async () => {
 	console.log(`Generating image for category=${category.name}`);
 
 	// generate the image
-	const fileName = await imageService.generateImage(category.name);
+	const imageDetails = await imageService.generateImage(category.name);
 
 	// save the image
-	await imageService.saveImage(`/images/blog/${fileName}`, category.name);
+	await imageService.saveImage(
+		imageDetails.imageURL,
+		imageDetails.transformedImageURL,
+		category.name
+	);
 
 	return 1;
 };

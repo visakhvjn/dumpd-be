@@ -35,7 +35,8 @@ export const getAllBlogs = async (req, res) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
-			imagePath: images.find((img) => img.category === blog.category)?.path,
+			imagePath: images.find((img) => img.category === blog.category)
+				?.transformedPath,
 			date: moment(blog.createdAt).format('MMM DD, YYYY'),
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
@@ -86,7 +87,7 @@ export const getBlog = async (req, res) => {
 			const image = await imageService.getImage(category);
 
 			if (image) {
-				imagePath = image.path;
+				imagePath = image.transformedPath;
 			}
 		}
 
@@ -144,7 +145,8 @@ export const getBlogsByCategory = async (req, res) => {
 				user: users.find(
 					(user) => user._id.toString() === blog.userId.toString()
 				),
-				imagePath: images.find((img) => img.category === blog.category)?.path,
+				imagePath: images.find((img) => img.category === blog.category)
+					?.transformedPath,
 			};
 		});
 
@@ -206,7 +208,8 @@ export const getBlogsBySubCategory = async (req, res) => {
 				user: users.find(
 					(user) => user._id.toString() === blog.userId.toString()
 				),
-				imagePath: images.find((img) => img.category === blog.category)?.path,
+				imagePath: images.find((img) => img.category === blog.category)
+					?.transformedPath,
 			};
 		});
 

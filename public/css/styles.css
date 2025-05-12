@@ -543,6 +543,7 @@
     }
   }
   .pill {
+    margin-top: calc(var(--spacing) * 1);
     display: inline-block;
     border-radius: calc(infinity * 1px);
     background-color: var(--color-gray-500);
