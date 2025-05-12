@@ -28,12 +28,14 @@ export const generateBlog = async (req, res) => {
 export const getAllBlogs = async (req, res) => {
 	const blogs = await blogService.getBlogs(1, 10);
 	const popularBlogs = await blogService.getPopularBlogs(1, 5);
+	const images = await imageService.getImages();
 	const users = await getUsers();
 
 	const parsedBlogs = blogs.map((blog) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
+			imagePath: images.find((img) => img.category === blog.category)?.path,
 			date: moment(blog.createdAt).format('MMM DD, YYYY'),
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
@@ -118,6 +120,8 @@ export const getBlogsByCategory = async (req, res) => {
 		const blogs = await blogService.getBlogs(1, 10, categoryName);
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const category = await categoryService.getCategory(categoryName);
+		const images = await imageService.getImages();
+
 		const users = await getUsers();
 
 		if (!blogs.length) {
@@ -127,6 +131,7 @@ export const getBlogsByCategory = async (req, res) => {
 				subcategories: category.subcategories.sort((a, b) =>
 					a.toLowerCase().localeCompare(b.toLowerCase())
 				),
+				category: categoryName,
 				popularBlogs,
 			});
 		}
@@ -139,6 +144,7 @@ export const getBlogsByCategory = async (req, res) => {
 				user: users.find(
 					(user) => user._id.toString() === blog.userId.toString()
 				),
+				imagePath: images.find((img) => img.category === blog.category)?.path,
 			};
 		});
 
@@ -177,6 +183,7 @@ export const getBlogsBySubCategory = async (req, res) => {
 			subcategoryName
 		);
 		const category = await categoryService.getCategory(categoryName);
+		const images = await imageService.getImages();
 		const users = await getUsers();
 
 		if (!blogs.length) {
@@ -199,6 +206,7 @@ export const getBlogsBySubCategory = async (req, res) => {
 				user: users.find(
 					(user) => user._id.toString() === blog.userId.toString()
 				),
+				imagePath: images.find((img) => img.category === blog.category)?.path,
 			};
 		});
 

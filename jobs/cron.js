@@ -4,8 +4,6 @@ import { generateUser } from '../services/user.service.js';
 import * as blogService from '../services/blog.service.js';
 import { generateCategoryAndSubcategoryImage } from '../services/category.service.js';
 
-const jobs = [];
-
 export const scheduleCronJobs = () => {
 	if (process.env.NODE_ENV !== 'production') {
 		console.log(`Cronjob scheduling is skipped on ${process.env.NODE_ENV}`);
@@ -14,7 +12,7 @@ export const scheduleCronJobs = () => {
 
 	console.log(`scheduling cron jobs on ${process.env.NODE_ENV}`);
 
-	const blogJob = cron.schedule('0 * * * *', async () => {
+	cron.schedule('0 * * * *', async () => {
 		console.log('⏰ Running daily blog generator...');
 
 		try {
@@ -25,7 +23,7 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	const userJob = cron.schedule('0 10 */1 * *', async () => {
+	cron.schedule('0 10 */1 * *', async () => {
 		console.log('⏰ Running user generator...');
 
 		try {
@@ -36,7 +34,7 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	const subCategoryImageJob = cron.schedule('*/30 * * * *', async () => {
+	cron.schedule('*/5 * * * *', async () => {
 		console.log('⏰ Running Image generator...');
 
 		try {
@@ -49,6 +47,4 @@ export const scheduleCronJobs = () => {
 			console.error('❌ Error generating Image:', err);
 		}
 	});
-
-	jobs.push(blogJob, userJob, subCategoryImageJob);
 };

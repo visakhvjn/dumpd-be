@@ -55,3 +55,7 @@ export const saveImage = async (imagePath, category) => {
 export const getImage = async (category) => {
 	return imageModel.findOne({ category });
 };
+
+export const getImages = async () => {
+	return imageModel.find({});
+};
