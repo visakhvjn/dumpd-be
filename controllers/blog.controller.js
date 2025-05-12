@@ -13,6 +13,7 @@ import {
 import * as blogService from '../services/blog.service.js';
 import * as makeService from '../services/makeService.js';
 import * as categoryService from '../services/category.service.js';
+import * as imageService from '../services/image.service.js';
 
 export const generateBlog = async (req, res) => {
 	try {
@@ -69,10 +70,22 @@ export const getBlog = async (req, res) => {
 		const subcategory = blog.subcategory;
 		const summary = blog.summary;
 		const views = blog.views || 0;
+		const domain = `${req.protocol}://${req.get('host')}`;
+
 		let user = {};
 
 		if (blog?.userId) {
 			user = await getUser(blog.userId);
+		}
+
+		let imagePath = '';
+
+		if (category && subcategory) {
+			const image = await imageService.getImage(category, subcategory);
+
+			if (image) {
+				imagePath = image.path;
+			}
 		}
 
 		// Update view count
@@ -88,6 +101,9 @@ export const getBlog = async (req, res) => {
 				summary,
 				views,
 				user,
+				imagePath,
+				slug,
+				domain,
 			},
 		});
 	} catch (err) {

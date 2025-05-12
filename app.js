@@ -7,11 +7,14 @@ import userRoutes from './routes/user.routes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import categoryRoutes from './routes/category.routes.js';
 
-import './jobs/cron.js';
+import { scheduleCronJobs } from './jobs/cron.js';
 
 export const app = express();
 
 // app.use(helmet());
+
+// starting cron jobs
+scheduleCronJobs();
 
 app.use(express.json());
 app.use(express.static('public'));
