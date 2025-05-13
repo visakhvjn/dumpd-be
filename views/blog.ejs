@@ -50,23 +50,34 @@
 			<div
 				class="col-span-1 md:col-span-10 grid grid-cols-1 md:grid-cols-10 gap-2"
 			>
-				<div
-					class="hidden md:block md:col-span-2 flex-col gap-2 px-2 items-end"
-				>
+				<div class="hidden md:block md:col-span-2 flex-col gap-2 px-2">
 					<img
-						class="w-28 h-28"
+						class="w-28 h-28 ml-auto mb-4"
 						src="<%= blog.user.profilePictureURL %>"
 						alt="profile picture of <%= blog.user.name %>"
 					/>
 					<div class="flex flex-col gap-2 text-end">
-						<a href="/blogs/user/<%= blog.user.slug %>">
-							<span class="text-xl font-bold"><%= blog.user.name %></span>
-							<hr class="text-gray-300" />
-						</a>
+						<span class="text-xl font-bold"><%= blog.user.name %></span>
+						<hr class="text-gray-300" />
 						<span class="text-sm"><%= blog.user.authorBio %></span>
 					</div>
 				</div>
 				<div class="col-span-1 md:col-span-6 flex flex-col gap-2 bg-white p-6">
+					<!-- MOBILE AUTHOR DETAILS -->
+					<div class="md:hidden">
+						<div class="grid grid-cols-8 gap-2">
+							<div class="col-span-1">
+								<img
+									class="ml-auto mb-4 rounded-full"
+									src="<%= blog.user.profilePictureURL %>"
+									alt="profile picture of <%= blog.user.name %>"
+								/>
+							</div>
+							<div class="col-span-7 flex flex-col gap-2">
+								<span class="text-xl font-bold"><%= blog.user.name %></span>
+							</div>
+						</div>
+					</div>
 					<!-- TITLE SECTION -->
 					<div class="flex flex-col">
 						<span class="text-sm"><%= blog.date %></span>

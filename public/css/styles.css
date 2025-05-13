@@ -7,6 +7,8 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-50: oklch(97.1% 0.013 17.38);
+    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -219,6 +221,12 @@
   .col-span-4 {
     grid-column: span 4 / span 4;
   }
+  .col-span-6 {
+    grid-column: span 6 / span 6;
+  }
+  .col-span-7 {
+    grid-column: span 7 / span 7;
+  }
   .col-span-22 {
     grid-column: span 22 / span 22;
   }
@@ -255,6 +263,9 @@
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
+  .ml-auto {
+    margin-left: auto;
+  }
   .flex {
     display: flex;
   }
@@ -281,6 +292,9 @@
   }
   .grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .grid-cols-8 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
   .grid-cols-24 {
     grid-template-columns: repeat(24, minmax(0, 1fr));
@@ -315,6 +329,9 @@
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
+  .rounded-full {
+    border-radius: calc(infinity * 1px);
+  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
@@ -336,6 +353,12 @@
   }
   .border-gray-700 {
     border-color: var(--color-gray-700);
+  }
+  .border-red-50 {
+    border-color: var(--color-red-50);
+  }
+  .border-red-500 {
+    border-color: var(--color-red-500);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -369,6 +392,9 @@
   }
   .text-justify {
     text-align: justify;
+  }
+  .align-bottom {
+    vertical-align: bottom;
   }
   .align-middle {
     vertical-align: middle;
