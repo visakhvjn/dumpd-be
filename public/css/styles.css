@@ -220,9 +220,6 @@
   .col-span-21 {
     grid-column: span 21 / span 21;
   }
-  .col-span-22 {
-    grid-column: span 22 / span 22;
-  }
   .container {
     width: 100%;
     @media (width >= 40rem) {

@@ -10,7 +10,9 @@ export const authoriseUser = async (req, res, next) => {
 		const user = req.oidc.user;
 		const existingUser = await userService.doesUserExist(user.email);
 
-		req.userId = existingUser._id;
+		if (existingUser) {
+			req.userId = existingUser._id;
+		}
 
 		if (!existingUser && user) {
 			const user = await userService.createUser(user, true);
