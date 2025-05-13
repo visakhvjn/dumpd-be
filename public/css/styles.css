@@ -275,6 +275,9 @@
   .hidden {
     display: none;
   }
+  .h-1\/2 {
+    height: calc(1/2 * 100%);
+  }
   .h-28 {
     height: calc(var(--spacing) * 28);
   }
@@ -328,6 +331,9 @@
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
