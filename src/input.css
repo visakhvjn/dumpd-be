@@ -29,4 +29,16 @@
 	.pill {
 		@apply rounded-full bg-gray-500 text-white px-2 py-1 text-sm hover:bg-black transition inline-block mt-1;
 	}
+
+	.btn {
+		@apply cursor-pointer py-1 px-2 border hover:bg-black hover:text-white font-bold;
+	}
+
+	.outline-btn {
+		@apply cursor-pointer py-1 px-1 hover:bg-white hover:font-semibold hover:shadow-md;
+	}
+
+	.outline-btn-selected {
+		@apply bg-white font-semibold shadow-md;
+	}
 }

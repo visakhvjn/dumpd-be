@@ -4,7 +4,11 @@ import * as Errors from '../utils/errors.js';
 export const getCategories = async (req, res) => {
 	try {
 		const categories = await categoryService.getCategories();
-		res.render('categories', { categories });
+		res.render('categories', {
+			categories,
+			isLoggedIn: req.oidc.isAuthenticated(),
+			authUser: req.oidc.user,
+		});
 	} catch (err) {
 		res.status(err.statusCode).json({ error: err.message });
 	}
@@ -45,6 +49,32 @@ export const updateCategory = async (req, res) => {
 		);
 
 		return category;
+	} catch (error) {
+		res.status(error.statusCode).json({ error: error.message });
+	}
+};
+
+export const followCategory = async (req, res) => {
+	try {
+		const { userId, categoryId } = req.params;
+
+		const category = await categoryService.getCategoryById(categoryId);
+		await categoryService.followCategory(userId, categoryId);
+
+		res.redirect(`/blogs/categories/${category.name}`);
+	} catch (error) {
+		res.status(error.statusCode).json({ error: error.message });
+	}
+};
+
+export const unfollowCategory = async (req, res) => {
+	try {
+		const { userId, categoryId } = req.params;
+
+		const category = await categoryService.getCategoryById(categoryId);
+		await categoryService.unfollowCategory(userId, categoryId);
+
+		res.redirect(`/blogs/categories/${category.name}`);
 	} catch (error) {
 		res.status(error.statusCode).json({ error: error.message });
 	}
