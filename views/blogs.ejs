@@ -122,7 +122,32 @@
 				</div>
 				<!-- BLOG SECTION -->
 				<div class="col-span-1 md:col-span-5">
-					<% if (hasCategoryFilter) { %>
+					<% if (isLoggedIn && !hasCategoryFilter) { %>
+					<div class="hidden md:grid md:grid-cols-6 gap-4 mb-4">
+						<button
+							class="outline-btn <%= !isFollowingTabSelected ? 'outline-btn-selected': ''%>"
+						>
+							<a href="/"> Discover</a>
+						</button>
+						<button
+							class="outline-btn <%= isFollowingTabSelected ? 'outline-btn-selected': ''%>"
+						>
+							<a href="/following">Following </a>
+						</button>
+					</div>
+					<div class="md:hidden grid grid-cols-2 gap-4 mb-4 px-4">
+						<button
+							class="outline-btn col-span-1 <%= !isFollowingTabSelected ? 'outline-btn-selected': ''%>"
+						>
+							<a href="/"> Discover</a>
+						</button>
+						<button
+							class="outline-btn col-span-1 <%= isFollowingTabSelected ? 'outline-btn-selected': ''%>"
+						>
+							<a href="/following">Following</a>
+						</button>
+					</div>
+					<% } %> <% if (hasCategoryFilter) { %>
 					<div class="card grid grid-cols-4 gap-4 border">
 						<div class="hidden md:block md:col-span-1">
 							<img src="<%=categoryImagePath%>" />
@@ -134,8 +159,20 @@
 								><%= subcategories.length %> Topics | <%= category.blogCount %>
 								stories</span
 							>
+							<% if (isLoggedIn) { %>
+							<div class="mt-2">
+								<a
+									href="/categories/<%=category._id%>/users/<%=userId%>/<%= isCategoryFollowed ? 'unfollow' : 'follow'%>"
+								>
+									<button class="btn">
+										<%= isCategoryFollowed ? 'Unfollow' : 'Follow' %>
+									</button>
+								</a>
+							</div>
+							<% } %>
 						</div>
 					</div>
+
 					<% } %> <% if (blogs.length === 0) {%>
 					<div class="flex items-center justify-center h-full">
 						<p class="text-lg">Woah! Looks like we ran out of content</p>

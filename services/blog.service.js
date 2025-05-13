@@ -42,6 +42,27 @@ export const getBlogs = async (
 	return blogs;
 };
 
+export const getBlogsByFollowings = async (
+	page = 1,
+	size = 10,
+	categories = []
+) => {
+	const skip = (page - 1) * size;
+	let query = {};
+
+	if (categories) {
+		query = { category: { $in: categories } };
+	}
+
+	const blogs = await blogModel
+		.find(query)
+		.sort({ createdAt: -1 })
+		.skip(skip)
+		.limit(size);
+
+	return blogs;
+};
+
 export const getBlogByBlogId = async (blogId) => {
 	const blog = await blogModel.findById(blogId);
 

@@ -61,22 +61,37 @@ export const generateUser = async () => {
 	return user;
 };
 
-const createUser = async (userData) => {
-	const newUser = {
-		name: userData.name,
-		writingStyle: userData.writingStyle,
-		personalityTraits: userData.personalityTraits,
-		areasOfExpertise: userData.areasOfExpertise,
-		authorBio: userData.authorBio,
-		slug: slugify(userData.name.toLowerCase()),
-		profilePictureURL: await getRandomImageURL(userData.gender),
-		creativityLevel: getCreativityLevelForUser(),
-	};
+export const createUser = async (userData, isHuman = false) => {
+	let newUser = {};
 
-	const user = await userModel.create(newUser);
-	await user.save();
+	if (!isHuman) {
+		newUser = {
+			name: userData.name,
+			writingStyle: userData.writingStyle,
+			personalityTraits: userData.personalityTraits,
+			areasOfExpertise: userData.areasOfExpertise,
+			authorBio: userData.authorBio,
+			slug: slugify(userData.name.toLowerCase()),
+			profilePictureURL: await getRandomImageURL(userData.gender),
+			creativityLevel: getCreativityLevelForUser(),
+			isHuman,
+		};
+	} else {
+		newUser = {
+			name: userData.name,
+			email: userData.email,
+			writingStyle: '',
+			personalityTraits: [],
+			areasOfExpertise: [],
+			authorBio: '',
+			slug: userData.email,
+			profilePictureURL: userData.picture,
+			creativityLevel: 0,
+			isHuman,
+		};
+	}
 
-	return newUser;
+	return userModel.create(newUser);
 };
 
 export const getUsers = async () => {
@@ -133,4 +148,12 @@ export const getUserBySlug = async (slug) => {
 // ranges between 0.1 to 0.8
 export const getCreativityLevelForUser = () => {
 	return (Math.floor(Math.random() * 8) + 1) / 10;
+};
+
+export const doesUserExist = async (email) => {
+	return userModel.findOne({ email });
+};
+
+export const getUserByEmail = async (email) => {
+	return userModel.findOne({ email });
 };

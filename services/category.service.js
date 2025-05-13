@@ -1,4 +1,6 @@
 import { categoryModel } from '../models/category.model.js';
+import { followingModel } from '../models/following.model.js';
+
 import * as blogService from '../services/blog.service.js';
 import * as imageService from '../services/image.service.js';
 import * as Errors from '../utils/errors.js';
@@ -9,6 +11,14 @@ export const getCategories = async () => {
 
 export const getCategory = async (name) => {
 	return categoryModel.findOne({ name });
+};
+
+export const getCategoryById = async (categoryId) => {
+	return categoryModel.findById(categoryId);
+};
+
+export const getCategoriesByIds = async (categoryIds) => {
+	return categoryModel.find({ _id: { $in: categoryIds } });
 };
 
 export const createCategory = async (name, description, subcategories) => {
@@ -97,4 +107,52 @@ export const generateCategoryAndSubcategoryImage = async () => {
 	);
 
 	return 1;
+};
+
+export const followCategory = async (userId, categoryId) => {
+	const followingExists = await doesFollowingExist(userId, categoryId);
+
+	if (followingExists) {
+		throw new Errors.ForbiddenError(`Following already exists`);
+	}
+
+	return followingModel.create({
+		userId,
+		categoryId,
+	});
+};
+
+export const doesFollowingExist = async (userId, categoryId) => {
+	const following = await followingModel.findOne({
+		userId,
+		categoryId,
+	});
+
+	return !!following;
+};
+
+export const isCategoryFollowed = async (userId, categoryId) => {
+	const following = await followingModel.findOne({
+		userId,
+		categoryId,
+	});
+
+	return !!following;
+};
+
+export const unfollowCategory = async (userId, categoryId) => {
+	const followingExists = await doesFollowingExist(userId, categoryId);
+
+	if (!followingExists) {
+		throw new Errors.ForbiddenError(`Following already exists`);
+	}
+
+	return followingModel.deleteOne({
+		userId,
+		categoryId,
+	});
+};
+
+export const getUserCategoryFollowings = async (userId) => {
+	return followingModel.find({ userId });
 };

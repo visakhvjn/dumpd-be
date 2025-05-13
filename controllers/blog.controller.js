@@ -12,6 +12,8 @@ export const getAllBlogs = async (req, res) => {
 	const popularBlogs = await blogService.getPopularBlogs(1, 5);
 	const images = await imageService.getImages();
 	const users = await getUsers();
+	let isCategoryFollowed = false;
+	let isFollowingTabSelected = false;
 
 	const parsedBlogs = blogs.map((blog) => {
 		return {
@@ -37,6 +39,68 @@ export const getAllBlogs = async (req, res) => {
 		users,
 		popularBlogs,
 		hasCategoryFilter: false,
+		isLoggedIn: req.oidc.isAuthenticated(),
+		authUser: req.oidc.user,
+		userId: req?.userId,
+		isCategoryFollowed,
+		isFollowingTabSelected,
+	});
+};
+
+export const getAllFollowingBlogs = async (req, res) => {
+	let followedCategories = [];
+	let blogs = [];
+
+	if (req.userId) {
+		const categoryFollowings = await categoryService.getUserCategoryFollowings(
+			req.userId
+		);
+		const categoryIds = categoryFollowings.map(
+			(categoryFollowing) => categoryFollowing.categoryId
+		);
+
+		const categories = await categoryService.getCategoriesByIds(categoryIds);
+		followedCategories = categories.map((category) => category.name);
+	}
+
+	blogs = await blogService.getBlogsByFollowings(1, 10, followedCategories);
+
+	const popularBlogs = await blogService.getPopularBlogs(1, 5);
+	const images = await imageService.getImages();
+	const users = await getUsers();
+
+	let isCategoryFollowed = false;
+
+	const parsedBlogs = blogs.map((blog) => {
+		return {
+			...blog._doc,
+			content: marked.parse(blog.content),
+			imagePath: images.find((img) => img.category === blog.category)
+				?.transformedPath,
+			date: moment(blog.createdAt).format('MMM DD, YYYY'),
+			user: users.find(
+				(user) => user._id.toString() === blog.userId.toString()
+			),
+			isFollowingTabSelected: true,
+		};
+	});
+
+	const categories = await categoryService.getCategories();
+
+	res.render('blogs', {
+		blogs: parsedBlogs,
+		category: null,
+		subcategory: null,
+		categories,
+		subcategories: [],
+		users,
+		popularBlogs,
+		hasCategoryFilter: false,
+		isLoggedIn: req.oidc.isAuthenticated(),
+		authUser: req.oidc.user,
+		userId: req?.userId,
+		isCategoryFollowed,
+		isFollowingTabSelected: true,
 	});
 };
 
@@ -91,6 +155,9 @@ export const getBlog = async (req, res) => {
 				slug,
 				domain,
 			},
+			isLoggedIn: req.oidc.isAuthenticated(),
+			authUser: req.oidc.user,
+			userId: req?.userId,
 		});
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);
@@ -105,6 +172,15 @@ export const getBlogsByCategory = async (req, res) => {
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const category = await categoryService.getCategory(categoryName);
 		const images = await imageService.getImages();
+		let isCategoryFollowed = false;
+		let isFollowingTabSelected = false;
+
+		if (req.oidc.isAuthenticated()) {
+			isCategoryFollowed = await categoryService.isCategoryFollowed(
+				req.userId,
+				category._id
+			);
+		}
 
 		const users = await getUsers();
 
@@ -117,6 +193,11 @@ export const getBlogsByCategory = async (req, res) => {
 				),
 				category: categoryName,
 				popularBlogs,
+				isLoggedIn: req.oidc.isAuthenticated(),
+				authUser: req.oidc.user,
+				userId: req?.userId,
+				isCategoryFollowed,
+				isFollowingTabSelected,
 			});
 		}
 
@@ -145,6 +226,11 @@ export const getBlogsByCategory = async (req, res) => {
 			),
 			popularBlogs,
 			hasCategoryFilter: true,
+			isLoggedIn: req.oidc.isAuthenticated(),
+			authUser: req.oidc.user,
+			userId: req?.userId,
+			isCategoryFollowed,
+			isFollowingTabSelected,
 		});
 	} catch (err) {
 		console.log(err);
@@ -173,6 +259,16 @@ export const getBlogsBySubCategory = async (req, res) => {
 		const category = await categoryService.getCategory(categoryName);
 		const images = await imageService.getImages();
 		const users = await getUsers();
+		let isFollowingTabSelected = false;
+
+		let isCategoryFollowed = false;
+
+		if (req.oidc.isAuthenticated()) {
+			isCategoryFollowed = await categoryService.isCategoryFollowed(
+				req.userId,
+				category._id
+			);
+		}
 
 		if (!blogs.length) {
 			return res.render('blogs', {
@@ -186,6 +282,11 @@ export const getBlogsBySubCategory = async (req, res) => {
 				hasCategoryFilter: true,
 				categoryImagePath: images.find((img) => img.category === categoryName)
 					?.transformedPath,
+				isLoggedIn: req.oidc.isAuthenticated(),
+				authUser: req.oidc.user,
+				userId: req?.userId,
+				isCategoryFollowed,
+				isFollowingTabSelected,
 			});
 		}
 
@@ -214,6 +315,11 @@ export const getBlogsBySubCategory = async (req, res) => {
 			),
 			popularBlogs,
 			hasCategoryFilter: true,
+			isLoggedIn: req.oidc.isAuthenticated(),
+			authUser: req.oidc.user,
+			userId: req?.userId,
+			isCategoryFollowed,
+			isFollowingTabSelected,
 		});
 	} catch (err) {
 		console.log(err);

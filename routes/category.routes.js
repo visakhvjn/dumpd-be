@@ -1,8 +1,19 @@
 import { Router } from 'express';
-import * as categoryRoutes from '../controllers/category.controller.js';
+import * as categoryController from '../controllers/category.controller.js';
+import { isUserAuthorised } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.get('/', categoryRoutes.getCategories);
+router.get('/', categoryController.getCategories);
+router.get(
+	'/:categoryId/users/:userId/follow',
+	isUserAuthorised,
+	categoryController.followCategory
+);
+router.get(
+	'/:categoryId/users/:userId/unfollow',
+	isUserAuthorised,
+	categoryController.unfollowCategory
+);
 
 export default router;
