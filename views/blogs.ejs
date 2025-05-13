@@ -96,8 +96,8 @@
 						<li>
 							<a
 								class="hover:underline text-sm"
-								href="/blogs/categories/<%= category %>"
-								><%= category %></a
+								href="/blogs/categories/<%= category.name %>"
+								><%= category.name %></a
 							>
 						</li>
 						<% }) %> <% subcategories.length &&
@@ -105,7 +105,7 @@
 						<li>
 							<a
 								class="hover:underline text-sm"
-								href="/blogs/categories/<%= category %>/subcategories/<%= subcategory %>"
+								href="/blogs/categories/<%= category.name %>/subcategories/<%= subcategory %>"
 								><%= subcategory %></a
 							>
 						</li>
@@ -122,7 +122,21 @@
 				</div>
 				<!-- BLOG SECTION -->
 				<div class="col-span-1 md:col-span-5">
-					<% if (blogs.length === 0) {%>
+					<% if (hasCategoryFilter) { %>
+					<div class="card grid grid-cols-4 gap-4 border">
+						<div class="hidden md:block md:col-span-1">
+							<img src="<%=categoryImagePath%>" />
+						</div>
+						<div class="col-span-4 md:col-span-3 flex flex-col justify-center">
+							<span class="text-2xl font-bold"><%= category.name%></span>
+							<span><%= category.description%></span>
+							<span class="mt-2 text-sm"
+								><%= subcategories.length %> Topics | <%= category.blogCount %>
+								stories</span
+							>
+						</div>
+					</div>
+					<% } %> <% if (blogs.length === 0) {%>
 					<div class="flex items-center justify-center h-full">
 						<p class="text-lg">Woah! Looks like we ran out of content</p>
 					</div>

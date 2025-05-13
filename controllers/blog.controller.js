@@ -49,7 +49,8 @@ export const getAllBlogs = async (req, res) => {
 	res.render('blogs', {
 		blogs: parsedBlogs,
 		category: null,
-		categories: categories.map((cat) => cat.name),
+		subcategory: null,
+		categories,
 		subcategories: [],
 		users,
 		popularBlogs,
@@ -152,7 +153,10 @@ export const getBlogsByCategory = async (req, res) => {
 
 		res.render('blogs', {
 			blogs: parsedBlogs,
-			category: categoryName,
+			category: category,
+			categoryImagePath: images.find((img) => img.category === category.name)
+				?.transformedPath,
+			subcategory: null,
 			categories: [],
 			subcategories: category.subcategories.sort((a, b) =>
 				a.toLowerCase().localeCompare(b.toLowerCase())
@@ -191,12 +195,15 @@ export const getBlogsBySubCategory = async (req, res) => {
 		if (!blogs.length) {
 			return res.render('blogs', {
 				blogs: [],
-				category: categoryName,
+				category,
 				categories: [],
 				subcategories: category.subcategories.sort((a, b) =>
 					a.toLowerCase().localeCompare(b.toLowerCase())
 				),
 				popularBlogs,
+				hasCategoryFilter: true,
+				categoryImagePath: images.find((img) => img.category === categoryName)
+					?.transformedPath,
 			});
 		}
 
@@ -215,7 +222,10 @@ export const getBlogsBySubCategory = async (req, res) => {
 
 		res.render('blogs', {
 			blogs: parsedBlogs,
-			category: categoryName,
+			category: category,
+			categoryImagePath: images.find((img) => img.category === categoryName)
+				?.transformedPath,
+			subcategory: subcategoryName,
 			categories: [],
 			subcategories: category.subcategories.sort((a, b) =>
 				a.toLowerCase().localeCompare(b.toLowerCase())
