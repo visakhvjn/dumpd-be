@@ -15,8 +15,8 @@ export const authoriseUser = async (req, res, next) => {
 		}
 
 		if (!existingUser && user) {
-			const user = await userService.createUser(user, true);
-			req.userId = user._id;
+			const newUser = await userService.createUser(user, true);
+			req.userId = newUser._id;
 		}
 	}
 
