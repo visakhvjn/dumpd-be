@@ -10,6 +10,7 @@ const blogSchema = new mongoose.Schema({
 	summary: String,
 	views: { type: Number, default: 0 },
 	userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	isPosted: { type: Boolean, default: false },
 });
 
 export const blogModel = mongoose.model('Blog', blogSchema);

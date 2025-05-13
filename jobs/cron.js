@@ -12,6 +12,7 @@ export const scheduleCronJobs = () => {
 
 	console.log(`scheduling cron jobs on ${process.env.NODE_ENV}`);
 
+	// Generate a new blog every hour
 	cron.schedule('0 * * * *', async () => {
 		console.log('⏰ Running daily blog generator...');
 
@@ -23,6 +24,7 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
+	// Generate a new user at 10am every day
 	cron.schedule('0 10 */1 * *', async () => {
 		console.log('⏰ Running user generator...');
 
@@ -34,7 +36,8 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	cron.schedule('*/5 * * * *', async () => {
+	// Check if an image needs to be generated every hour
+	cron.schedule('0 * * * *', async () => {
 		console.log('⏰ Running Image generator...');
 
 		try {
@@ -43,6 +46,18 @@ export const scheduleCronJobs = () => {
 			if (hasGenerated) {
 				console.log('✅ Image generated successfully!');
 			}
+		} catch (err) {
+			console.error('❌ Error generating Image:', err);
+		}
+	});
+
+	// Post a random blog to linkedin everyday at 10am
+	cron.schedule('0 10 */1 * *', async () => {
+		console.log('⏰ Running Blog poster...');
+
+		try {
+			await blogService.postRandomBlog();
+			console.log('✅ Blog POST successful:');
 		} catch (err) {
 			console.error('❌ Error generating Image:', err);
 		}

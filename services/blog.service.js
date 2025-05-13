@@ -7,6 +7,7 @@ import { blogModel } from '../models/blog.model.js';
 import * as userService from './user.service.js';
 import * as categoryService from './category.service.js';
 import * as Errors from '../utils/errors.js';
+import * as makeService from './make.service.js';
 
 const cache = new NodeCache({ stdTTL: 3600 });
 
@@ -193,4 +194,29 @@ const getSlug = async (title) => {
 	}
 
 	return slug;
+};
+
+const getRandomBlog = async () => {
+	const blog = await blogModel.aggregate([
+		{ $match: { isPosted: false } },
+		{ $sample: { size: 1 } },
+	]);
+	return blog[0];
+};
+
+const updateBlogToPosted = async (blogId) => {
+	await blogModel.updateOne({ _id: blogId }, { $set: { isPosted: true } });
+};
+
+export const postRandomBlog = async () => {
+	const blog = await getRandomBlog();
+
+	await makeService.postBlogToLinkedIn(
+		blog.title,
+		[blog.category, blog.subcategory],
+		blog.summary,
+		blog.slug
+	);
+
+	await updateBlogToPosted(blog._id);
 };
