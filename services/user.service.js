@@ -106,8 +106,13 @@ export const getUsers = async () => {
 	return users;
 };
 
+/**
+ * Always returns an AI user
+ * AI generated content are generated using AI users only for now
+ * @returns
+ */
 export const getRandomUser = async () => {
-	const users = await getUsers();
+	const users = await userModel.find({ isHuman: false });
 	const randomIndex = Math.floor(Math.random() * users.length);
 	return users[randomIndex];
 };
