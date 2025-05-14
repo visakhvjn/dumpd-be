@@ -172,6 +172,7 @@ export const getBlogsByCategory = async (req, res) => {
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const category = await categoryService.getCategory(categoryName);
 		const images = await imageService.getImages();
+
 		let isCategoryFollowed = false;
 		let isFollowingTabSelected = false;
 
@@ -191,13 +192,16 @@ export const getBlogsByCategory = async (req, res) => {
 				subcategories: category.subcategories.sort((a, b) =>
 					a.toLowerCase().localeCompare(b.toLowerCase())
 				),
-				category: categoryName,
+				category: category,
 				popularBlogs,
 				isLoggedIn: req.oidc.isAuthenticated(),
 				authUser: req.oidc.user,
 				userId: req?.userId,
 				isCategoryFollowed,
 				isFollowingTabSelected,
+				hasCategoryFilter: true,
+				categoryImagePath: images.find((img) => img.category === category.name)
+					?.transformedPath,
 			});
 		}
 
