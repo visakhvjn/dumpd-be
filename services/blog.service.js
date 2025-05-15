@@ -190,10 +190,11 @@ const getUserPromptForBlog = (category, subcategory) => {
 		The title should be a catchy title.
 		The content should be a well-structured blog post with headings and subheadings.
 		The blog should be informative and engaging.
-		The blog should not be more than 1000 words.
-		The summary should be in not more than 200 words.
+		The blog should not be more than 2000 words.
+		The summary should be in not more than 300 words.
 
-		Try include code examples inside content when possible.
+		Try to include code examples inside content when possible.
+		Ensure that the code is properly indented.
 
 		Here is sample of how the response should look like 
 		{
