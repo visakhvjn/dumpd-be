@@ -56,9 +56,11 @@ export const updateCategoryById = async (categoryId, subcategories) => {
 };
 
 export const getRandomCategoryAndSubCategory = async () => {
-	const categories = await getCategories();
-	const randomCategoryIndex = Math.floor(Math.random() * categories.length);
-	const category = categories[randomCategoryIndex];
+	const categoryArray = await categoryModel.aggregate([
+		{ $sample: { size: 1 } },
+	]);
+
+	const category = categoryArray[0];
 
 	const randomSubCategoryIndex = Math.floor(
 		Math.random() * category.subcategories.length
