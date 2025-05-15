@@ -2,7 +2,7 @@
 
 @layer base {
 	body {
-		@apply h-full m-0 bg-gray-100;
+		@apply h-full m-0 bg-gray-100 dark:bg-zinc-800 dark:text-zinc-100;
 	}
 	h2 {
 		@apply text-2xl font-bold mt-2;
@@ -17,17 +17,17 @@
 		@apply text-lg font-bold;
 	}
 	pre {
-		@apply bg-gray-200 p-8 mb-8 w-full overflow-auto;
+		@apply bg-gray-200 p-8 mb-8 w-full overflow-auto dark:bg-zinc-800;
 	}
 }
 
 @layer components {
 	.card {
-		@apply flex flex-col gap-1 bg-white shadow-md p-6 mb-2 transition-shadow hover:shadow-lg justify-between;
+		@apply flex flex-col gap-1 bg-white shadow-md p-6 mb-2 transition-shadow hover:shadow-lg justify-between dark:bg-black dark:text-white;
 	}
 
 	.pill {
-		@apply rounded-full bg-gray-500 text-white px-2 py-1 text-sm hover:bg-black transition inline-block mt-1;
+		@apply rounded-full bg-gray-500 dark:bg-zinc-700 text-white dark:text-zinc-100 px-2 py-1 text-sm hover:bg-black transition inline-block mt-1;
 	}
 
 	.btn {
@@ -35,10 +35,10 @@
 	}
 
 	.outline-btn {
-		@apply cursor-pointer py-1 px-1 hover:bg-white hover:font-semibold hover:shadow-md;
+		@apply cursor-pointer py-1 px-1 hover:bg-white hover:font-semibold hover:shadow-md dark:hover:bg-zinc-700;
 	}
 
 	.outline-btn-selected {
-		@apply bg-white font-semibold shadow-md;
+		@apply bg-white font-semibold shadow-md dark:bg-zinc-700;
 	}
 }
