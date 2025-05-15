@@ -181,13 +181,21 @@
 					<a href="/blogs/<%= blog.slug %>"
 						><div class="card">
 							<div class="flex justify-between">
+								<% if (blog.isPremium) { %>
+								<span class="text-xs"
+									><span class="text-sm pr-2">⭐️</span><%= blog.date %></span
+								>
+								<% } else { %>
 								<span class="text-xs"><%= blog.date %></span>
+								<% } %>
 								<span class="text-sm">by <%= blog.user.name %></span>
 							</div>
 							<div class="grid grid-cols-1 md:grid-cols-4 gap-2">
 								<div class="col-span-1 md:col-span-3 flex flex-col">
 									<h2 class="text-2xl font-bold"><%= blog.title %></h2>
-									<p class="text-md"><%- blog.summary %></p>
+									<p class="text-md">
+										<%- blog.summary.substring(0, 300) %>...
+									</p>
 								</div>
 								<div class="col-span-1">
 									<% if (blog.imagePath) { %>

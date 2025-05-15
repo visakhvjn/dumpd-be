@@ -25,6 +25,7 @@ export const getAllBlogs = async (req, res) => {
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
 			),
+			isPremium: blog.aiModel.includes('-4') ? true : false,
 		};
 	});
 
@@ -82,6 +83,7 @@ export const getAllFollowingBlogs = async (req, res) => {
 				(user) => user._id.toString() === blog.userId.toString()
 			),
 			isFollowingTabSelected: true,
+			isPremium: blog.aiModel.includes('-4') ? true : false,
 		};
 	});
 
@@ -215,6 +217,7 @@ export const getBlogsByCategory = async (req, res) => {
 				),
 				imagePath: images.find((img) => img.category === blog.category)
 					?.transformedPath,
+				isPremium: blog.aiModel.includes('-4') ? true : false,
 			};
 		});
 
@@ -304,6 +307,7 @@ export const getBlogsBySubCategory = async (req, res) => {
 				),
 				imagePath: images.find((img) => img.category === blog.category)
 					?.transformedPath,
+				isPremium: blog.aiModel.includes('-4') ? true : false,
 			};
 		});
 

@@ -104,9 +104,10 @@ export const generateBlog = async () => {
 	const { category, subcategory } =
 		await categoryService.getRandomCategoryAndSubCategory();
 	const author = await userService.getRandomUser();
+	const aiModel = getRandomAIModel();
 
 	const response = await openai.chat.completions.create({
-		model: 'gpt-3.5-turbo',
+		model: aiModel,
 		temperature: author.creativityLevel,
 		messages: [
 			{
@@ -133,6 +134,7 @@ export const generateBlog = async () => {
 		subcategory,
 		summary: parsedContent.summary,
 		userId: author._id,
+		aiModel,
 	});
 
 	// update blog count for the category
@@ -190,8 +192,8 @@ const getUserPromptForBlog = (category, subcategory) => {
 		The title should be a catchy title.
 		The content should be a well-structured blog post with headings and subheadings.
 		The blog should be informative and engaging.
-		The blog should not be more than 2000 words.
-		The summary should be in not more than 300 words.
+		The blog should not be more than 1500 words.
+		The summary should be in not more than 200 words.
 
 		Try to include code examples inside content when possible.
 		Ensure that the code is properly indented.
@@ -241,4 +243,24 @@ export const postRandomBlog = async () => {
 	);
 
 	await updateBlogToPosted(blog._id);
+};
+
+const getRandomAIModel = () => {
+	// lower models are repeated to get more weightage to minimise cost
+	const aiModels = [
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-4o-mini',
+		'gpt-4.1-mini',
+		'gpt-4.1-nano',
+	];
+
+	const randomIndex = Math.floor(Math.random() * aiModels.length);
+	return aiModels[randomIndex];
 };
