@@ -58,11 +58,13 @@
 					/>
 					<div class="flex flex-col gap-2 text-end">
 						<span class="text-xl font-bold"><%= blog.user.name %></span>
-						<hr class="text-gray-300" />
+						<hr class="text-gray-300 dark:text-zinc-100" />
 						<span class="text-sm"><%= blog.user.authorBio %></span>
 					</div>
 				</div>
-				<div class="col-span-1 md:col-span-6 flex flex-col gap-2 bg-white p-6">
+				<div
+					class="col-span-1 md:col-span-6 flex flex-col gap-2 bg-white dark:bg-black dark:text-zinc-100 p-6"
+				>
 					<!-- MOBILE AUTHOR DETAILS -->
 					<div class="md:hidden">
 						<div class="grid grid-cols-8 gap-2">
@@ -98,7 +100,11 @@
 					</div>
 					<% if (blog.imagePath) { %>
 					<div class="mt-2">
-						<img src="<%= blog.imagePath %>" alt="in content image" />
+						<img
+							class="dark:invert"
+							src="<%= blog.imagePath %>"
+							alt="in content image"
+						/>
 					</div>
 					<%}%>
 
