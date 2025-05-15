@@ -12,6 +12,7 @@ import categoryRoutes from './routes/category.routes.js';
 import { authoriseUser } from './controllers/user.controller.js';
 
 import { scheduleCronJobs } from './jobs/cron.js';
+import { generateSiteMap } from './scripts/sitemap.script.js';
 
 export const app = express();
 
@@ -30,6 +31,9 @@ app.set('views', './views');
 
 // Connecting to the mongodb database
 await connectDb();
+
+// generate sitemap
+await generateSiteMap();
 
 // middleware to check if user is logged in via Auth0
 app.use(authoriseUser);

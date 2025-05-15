@@ -276,3 +276,7 @@ const getRandomAIModel = () => {
 	const randomIndex = Math.floor(Math.random() * aiModels.length);
 	return aiModels[randomIndex];
 };
+
+export const getBlogsForSitemapGeneration = async () => {
+	return blogModel.find({}, { slug: 1, createdAt: 1 });
+};
