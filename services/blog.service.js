@@ -257,8 +257,20 @@ const getRandomAIModel = () => {
 		'gpt-3.5-turbo',
 		'gpt-3.5-turbo-16k',
 		'gpt-4o-mini',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
 		'gpt-4.1-mini',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
 		'gpt-4.1-nano',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
+		'gpt-3.5-turbo',
+		'gpt-3.5-turbo-16k',
 	];
 
 	const randomIndex = Math.floor(Math.random() * aiModels.length);
