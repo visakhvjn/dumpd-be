@@ -1,7 +1,4 @@
 import slugify from 'slugify';
-import axios from 'axios';
-import fs from 'fs';
-import path from 'path';
 import NodeCache from 'node-cache';
 
 import { openai } from '../config/openai.js';
@@ -131,15 +128,7 @@ const getRandomImageURL = async (gender) => {
 	const genderType = gender === 'male' ? 'men' : 'women';
 	const randomNumber = Math.floor(Math.random() * 50);
 
-	const fileUrl = `https://randomuser.me/api/portraits/${genderType}/${randomNumber}.jpg`;
-	const fileName = `pic_${genderType}_${randomNumber}.jpg`;
-	const imagePath = path.resolve('public/images', fileName);
-
-	const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
-
-	fs.writeFileSync(imagePath, response.data);
-
-	return `/images/${fileName}`;
+	return `https://randomuser.me/api/portraits/${genderType}/${randomNumber}.jpg`;
 };
 
 export const getUserBySlug = async (slug) => {
