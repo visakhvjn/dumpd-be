@@ -24,7 +24,15 @@ app.use(auth(auth0Config));
 scheduleCronJobs();
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(
+	express.static('public', {
+		setHeaders: (res, filePath) => {
+			if (filePath.endsWith('sitemap.xml')) {
+				res.setHeader('Content-Type', 'application/xml');
+			}
+		},
+	})
+);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
