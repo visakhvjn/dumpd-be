@@ -1,5 +1,6 @@
 import NodeCache from 'node-cache';
 import slugify from 'slugify';
+import crypto from 'crypto';
 
 import { openai } from '../config/openai.js';
 
@@ -125,6 +126,19 @@ export const generateBlog = async () => {
 
 	const parsedContent = JSON.parse(content);
 
+	// A blog hash allows to check for duplicacy before saving.
+	const blogHash = generateBlogHash(parsedContent.title, parsedContent.content);
+
+	// check for duplicacy.
+	const isBlogHashDuplicate = await doesBlogWithHashExist(blogHash);
+
+	// if it is, we throw an error and skip saving
+	if (isBlogHashDuplicate) {
+		throw Errors.AppError(
+			`Duplicate blog with title - ${parsedContent.title} was generated and skipped`
+		);
+	}
+
 	const newBlog = await blogModel.create({
 		title: parsedContent.title,
 		content: parsedContent.content,
@@ -135,6 +149,7 @@ export const generateBlog = async () => {
 		summary: parsedContent.summary,
 		userId: author._id,
 		aiModel,
+		hash: blogHash,
 	});
 
 	// update blog count for the category
@@ -279,4 +294,29 @@ const getRandomAIModel = () => {
 
 export const getBlogsForSitemapGeneration = async () => {
 	return blogModel.find({}, { slug: 1, createdAt: 1 });
+};
+
+// generate a blog hash
+// THe blog hash is generated using title and content
+const generateBlogHash = (title, content) => {
+	const normalizedTitle = title
+		.replace(/\s+/g, '') // removes all white space
+		.replace(/<[^>]+>/g, '') // removes all html tags
+		.toLowerCase()
+		.trim();
+
+	const normalizedContent = content
+		.replace(/\s+/g, '') // removes all white space
+		.replace(/<[^>]+>/g, '') // removes all html tags
+		.toLowerCase()
+		.trim();
+
+	const normalizedText = normalizedTitle + normalizedContent;
+
+	return crypto.createHash('sha256').update(normalizedText).digest('hex');
+};
+
+const doesBlogWithHashExist = async (hash) => {
+	const blog = await blogModel.findOne({ hash });
+	return !!blog;
 };
