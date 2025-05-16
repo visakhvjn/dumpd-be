@@ -6,6 +6,7 @@
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
 		<title>Dumpd!</title>
 		<link rel="stylesheet" href="/css/styles.css" />
+		<link rel="canonical" href="https://www.dumpd.in/" />
 
 		<!-- Basic SEO Meta Tags -->
 		<meta
@@ -34,20 +35,7 @@
 		/>
 		<meta name="twitter:image" content="/icons/bot_favicon.png" />
 
-		<!-- Google tag (gtag.js) -->
-		<script
-			async
-			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
-		></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
-
-			gtag('config', 'G-VM6TGRN8B5');
-		</script>
+		<%- include('gtag') %>
 	</head>
 
 	<body>
@@ -64,7 +52,7 @@
 			</div>
 			<ul>
 				<% categories.length && categories.forEach(category => { %>
-				<li>
+				<li class="py-2 dark:border-b border-zinc-700">
 					<a
 						class="hover:underline text-lg"
 						href="/blogs/categories/<%= category.name %>"
@@ -73,7 +61,7 @@
 				</li>
 				<% }) %> <% subcategories.length && subcategories.forEach(subcategory =>
 				{ %>
-				<li>
+				<li class="py-2 dark:border-b border-zinc-700">
 					<a
 						class="hover:underline text-lg"
 						href="/blogs/categories/<%= category %>/subcategories/<%= subcategory %>"
@@ -89,9 +77,11 @@
 				<!-- CATEGORIES SECTION -->
 				<div class="hidden md:block md:col-span-1">
 					<ul>
-						<a class="hover:underline" href="/categories">
-							<h3 class="text-lg font-bold">Categories</h3>
-						</a>
+						<li>
+							<h3 class="text-lg font-bold">
+								<a class="hover:underline" href="/categories">Categories</a>
+							</h3>
+						</li>
 						<% categories.length && categories.forEach(category => { %>
 						<li>
 							<a
@@ -150,7 +140,11 @@
 					<% } %> <% if (hasCategoryFilter) { %>
 					<div class="card grid grid-cols-4 gap-4 border">
 						<div class="hidden md:block md:col-span-1">
-							<img src="<%=categoryImagePath%>" />
+							<img
+								loading="lazy"
+								src="<%=categoryImagePath%>"
+								alt="category picture"
+							/>
 						</div>
 						<div class="col-span-4 md:col-span-3 flex flex-col justify-center">
 							<span class="text-2xl font-bold"><%= category.name%></span>
@@ -199,7 +193,12 @@
 								</div>
 								<div class="col-span-1">
 									<% if (blog.imagePath) { %>
-									<img class="dark:invert" src="<%=blog.imagePath %>" />
+									<img
+										loading="lazy"
+										class="dark:invert"
+										src="<%=blog.imagePath %>"
+										alt="dark mode picture"
+									/>
 									<%}%>
 								</div>
 							</div>
