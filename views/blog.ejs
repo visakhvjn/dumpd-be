@@ -5,7 +5,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
 		<title><%= blog.title %></title>
-		<link rel="stylesheet" href="/css/styles.css" />
+		<link
+			rel="preload"
+			href="/css/styles.css"
+			as="style"
+			onload="this.rel='stylesheet'"
+		/>
+		<link rel="canonical" href="https://www.dumpd.in/blogs/<%= blog.slug %>" />
 
 		<!-- Basic SEO Meta Tags -->
 		<meta name="description" content="<%= blog.summary %>" />
@@ -28,20 +34,7 @@
 		<meta name="twitter:description" content="<%= blog.summary %>" />
 		<meta name="twitter:image" content="<%= blog.imagePath %>" />
 
-		<!-- Google tag (gtag.js) -->
-		<script
-			async
-			src="https://www.googletagmanager.com/gtag/js?id=G-VM6TGRN8B5"
-		></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
-
-			gtag('config', 'G-VM6TGRN8B5');
-		</script>
+		<%- include('gtag') %>
 	</head>
 	<body>
 		<%- include('header') %>
@@ -52,6 +45,7 @@
 			>
 				<div class="hidden md:block md:col-span-2 flex-col gap-2 px-2">
 					<img
+						loading="lazy"
 						class="w-28 h-28 ml-auto mb-4"
 						src="<%= blog.user.profilePictureURL %>"
 						alt="profile picture of <%= blog.user.name %>"
@@ -70,6 +64,7 @@
 						<div class="grid grid-cols-8 gap-2">
 							<div class="col-span-1">
 								<img
+									loading="lazy"
 									class="ml-auto mb-4 rounded-full"
 									src="<%= blog.user.profilePictureURL %>"
 									alt="profile picture of <%= blog.user.name %>"
@@ -101,6 +96,7 @@
 					<% if (blog.imagePath) { %>
 					<div class="mt-2">
 						<img
+							loading="lazy"
 							class="dark:invert"
 							src="<%= blog.imagePath %>"
 							alt="in content image"

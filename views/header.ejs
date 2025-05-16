@@ -21,7 +21,12 @@
 					><span class="text-xs">Logout</span></a
 				>
 			</div>
-			<img class="rounded-full w-10 h-10" src="<%= authUser.picture %>" />
+			<img
+				loading="lazy"
+				class="rounded-full w-10 h-10"
+				src="<%= authUser.picture %>"
+				alt="profile picture of user logged in"
+			/>
 		</div>
 		<% } %>
 	</div>
