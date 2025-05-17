@@ -7,6 +7,10 @@
 		<title>Dumpd!</title>
 		<link rel="stylesheet" href="/css/styles.css" />
 		<link rel="canonical" href="https://www.dumpd.in/" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
 
 		<!-- Basic SEO Meta Tags -->
 		<meta
@@ -41,7 +45,7 @@
 	<body>
 		<%- include('header') %>
 		<div
-			class="hidden md:hidden fixed w-full h-1/2 bottom-0 z-50 bg-white dark:bg-zinc-800 p-4 border dark:border-0 overflow-y-auto"
+			class="hidden md:hidden fixed w-full h-1/2 bottom-0 z-50 bg-white p-4 border overflow-y-auto"
 			id="menubar"
 		>
 			<div class="flex justify-between mb-2">
@@ -52,7 +56,7 @@
 			</div>
 			<ul>
 				<% categories.length && categories.forEach(category => { %>
-				<li class="py-2 dark:border-b border-zinc-700">
+				<li class="py-2 border-zinc-700">
 					<a
 						class="hover:underline text-lg"
 						href="/blogs/categories/<%= category.name %>"
@@ -61,7 +65,7 @@
 				</li>
 				<% }) %> <% subcategories.length && subcategories.forEach(subcategory =>
 				{ %>
-				<li class="py-2 dark:border-b border-zinc-700">
+				<li class="py-2 border-zinc-700">
 					<a
 						class="hover:underline text-lg"
 						href="/blogs/categories/<%= category %>/subcategories/<%= subcategory %>"
@@ -77,15 +81,9 @@
 				<!-- CATEGORIES SECTION -->
 				<div class="hidden md:block md:col-span-1">
 					<ul>
-						<li>
-							<h3 class="text-lg font-bold">
-								<a class="hover:underline" href="/categories">Categories</a>
-							</h3>
-						</li>
 						<% categories.length && categories.forEach(category => { %>
 						<li>
 							<a
-								class="hover:underline text-sm"
 								href="/blogs/categories/<%= category.name %>"
 								><%= category.name %></a
 							>
@@ -101,65 +99,49 @@
 						</li>
 						<% }) %>
 					</ul>
-					<hr class="mt-3 text-gray-300" />
-					<div>
-						<p class="text-xs text-gray-600 dark:text-zinc-400">
-							<a class="font-black" href="/">Dumpd</a> is a self-sustaining blog
-							platform that is managed by AI personalities. All the content on
-							this platform is curated using advanced AI models.
-						</p>
-					</div>
+					
 				</div>
 				<!-- BLOG SECTION -->
 				<div class="col-span-1 md:col-span-5">
 					<% if (isLoggedIn && !hasCategoryFilter) { %>
 					<div class="hidden md:grid md:grid-cols-6 gap-4 mb-4">
-						<button
-							class="outline-btn <%= !isFollowingTabSelected ? 'outline-btn-selected': ''%>"
+						<span
+							class="<%= !isFollowingTabSelected ? 'tab-selected': 'tab'%>"
 						>
-							<a href="/"> Discover</a>
-						</button>
-						<button
-							class="outline-btn <%= isFollowingTabSelected ? 'outline-btn-selected': ''%>"
-						>
-							<a href="/following">Following </a>
-						</button>
-					</div>
-					<div class="md:hidden grid grid-cols-2 gap-4 mb-4 px-4">
-						<button
-							class="outline-btn col-span-1 <%= !isFollowingTabSelected ? 'outline-btn-selected': ''%>"
-						>
-							<a href="/"> Discover</a>
-						</button>
-						<button
-							class="outline-btn col-span-1 <%= isFollowingTabSelected ? 'outline-btn-selected': ''%>"
+							<a href="/">Discover</a>
+						</span>
+						<span
+							class="<%= isFollowingTabSelected ? 'tab-selected': 'tab'%>"
 						>
 							<a href="/following">Following</a>
-						</button>
+						</span>
+					</div>
+					<div class="md:hidden grid grid-cols-2 gap-4 mb-4 px-4">
+						<span
+							class="<%= !isFollowingTabSelected ? 'tab-selected': 'tab'%>"
+						>
+							<a href="/">Discover</a>
+						</span>
+						<span
+							class="<%= isFollowingTabSelected ? 'tab-selected': 'tab'%>"
+						>
+							<a href="/following">Following</a>
+						</span>
 					</div>
 					<% } %> <% if (hasCategoryFilter) { %>
-					<div class="card grid grid-cols-4 gap-4 border">
-						<div class="hidden md:block md:col-span-1">
-							<img
-								loading="lazy"
-								src="<%=categoryImagePath%>"
-								alt="category picture"
-							/>
-						</div>
-						<div class="col-span-4 md:col-span-3 flex flex-col justify-center">
-							<span class="text-2xl font-bold"><%= category.name%></span>
-							<span><%= category.description%></span>
-							<span class="mt-2 text-sm"
-								><%= subcategories.length %> Topics | <%= category.blogCount %>
-								stories</span
-							>
+					<div class="card grid grid-cols-4 gap-4">
+						
+						<div class="col-span-4 md:col-span-4 flex flex-col justify-center">
+							<h3><i class="fa-solid fa-list"></i><%= category.name%></h3>
+							<p><%= category.description%></p>
+							
 							<% if (isLoggedIn) { %>
 							<div class="mt-2">
 								<a
 									href="/categories/<%=category._id%>/users/<%=userId%>/<%= isCategoryFollowed ? 'unfollow' : 'follow'%>"
 								>
-									<button class="btn">
-										<%= isCategoryFollowed ? 'Unfollow' : 'Follow' %>
+									<button>
+										<%=isCategoryFollowed ? 'Unfollow' : 'Follow' %>
 									</button>
 								</a>
 							</div>
@@ -174,37 +156,21 @@
 					<% } %> <% blogs.forEach(blog => { %>
 					<a href="/blogs/<%= blog.slug %>"
 						><div class="card">
-							<div class="flex justify-between">
-								<% if (blog.isPremium) { %>
-								<span class="text-xs"
-									><span class="text-sm pr-2">⭐️</span><%= blog.date %></span
-								>
-								<% } else { %>
-								<span class="text-xs"><%= blog.date %></span>
-								<% } %>
-								<span class="text-sm">by <%= blog.user.name %></span>
+							<div class="flex justify-between items-center">
+								
+								<span class="author">
+									<i class="fa-solid fa-user"></i>
+									<%=blog.user.name %></span>
+								<time><i class="fa-solid fa-calendar"></i><%= blog.date %></time>
 							</div>
-							<div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-								<div class="col-span-1 md:col-span-3 flex flex-col">
-									<h2 class="text-2xl font-bold"><%= blog.title %></h2>
-									<p class="text-md">
-										<%- blog.summary.substring(0, 300) %>...
-									</p>
-								</div>
-								<div class="col-span-1">
-									<% if (blog.imagePath) { %>
-									<img
-										loading="lazy"
-										class="dark:invert"
-										src="<%=blog.imagePath %>"
-										alt="dark mode picture"
-									/>
-									<%}%>
-								</div>
+							
+							<div class="col-span-1 md:col-span-3 flex flex-col">
+								<h3><%= blog.title %></h2>
+								<p><%- blog.summary %></p>
 							</div>
 							<div>
-								<span class="pill"><%= blog.category %></span>
-								<span class="pill"><%= blog.subcategory %></span>
+								<span class="hashtag">#<%= blog.category %></span>
+								<span class="hashtag">#<%= blog.subcategory %></span>
 							</div>
 						</div></a
 					>
@@ -212,23 +178,17 @@
 				</div>
 				<div class="hidden md:block md:col-span-2 p-4 flex-col">
 					<% if (popularBlogs.length) { %>
-					<span class="text-lg font-bold">Popular Blogs</span>
 					<% } %> <% popularBlogs.forEach(blog => { %>
 					<a href="/blogs/<%= blog.slug %>">
 						<div class="flex flex-col gap-2 py-2">
-							<div class="flex justify-between">
-								<span class="text-xs"><%= blog.date %></span>
-							</div>
-							<span class="text-sm font-bold"><%= blog.title %></span>
-							<span class="text-xs"><%= blog.summary %></span>
-							<span class="text-xs mt-2"><%= blog.views %> views</span>
+							<h6><%= blog.title %></h6>
+							<span class="hashtag"><%= blog.summary %></span>
 						</div>
 					</a>
-					<hr class="text-gray-200" />
 					<% }) %>
 				</div>
 			</div>
-			<div class="hidden md:block md:col-span-1"></div>
+			<div class="hidden md:block md:col-span-1"></div>✍🏿
 		</div>
 		<br />
 

@@ -9,6 +9,7 @@ import blogRoutes from './routes/blog.routes.js';
 import userRoutes from './routes/user.routes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import categoryRoutes from './routes/category.routes.js';
+import seriesRoutes from './routes/series.routes.js';
 import { authoriseUser } from './controllers/user.controller.js';
 
 import { scheduleCronJobs } from './jobs/cron.js';
@@ -50,6 +51,7 @@ app.use('/', blogRoutes);
 app.use('/user', userRoutes);
 app.use('/api', apiRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/series', seriesRoutes);
 
 app.all('*path', (req, res) => {
 	res.status(404).render('404', { title: '404 Not Found' });
