@@ -1,34 +1,41 @@
-<nav
-	class="grid grid-cols-24 py-4 mb-4 sticky top-0 z-50 shadow bg-white dark:bg-black dark:text-zinc-100"
->
-	<div class="col-span-2 md:col-span-2">
-		<button class="md:hidden text-3xl" id="menu-toggle">☰</button>
-	</div>
-	<div class="col-span-21 md:col-span-20 flex justify-between items-center">
-		<a href="/"
-			><span
-				class="text-xl md:text-xl font-bold text-white bg-black dark:bg-zinc-800 p-2"
-				>Dumpd!</span
-			></a
-		>
-		<% if (!isLoggedIn) { %>
-		<a href="/login"><button class="btn">Login</button></a>
-		<% } %> <% if (isLoggedIn) { %>
-		<div class="flex justify-center items-center gap-2">
-			<div class="flex flex-col text-end">
-				<span class="text-sm font-bold"><%= authUser.name %></span>
-				<a class="hover:underline -mt-1 p-0" href="/logout"
-					><span class="text-xs">Logout</span></a
-				>
+<nav class="grid grid-cols-24 py-4 mb-4 sticky top-0 z-50 shadow">
+	<div class="col-span-1 md:col-span-2"></div>
+	<div class="col-span-22 md:col-span-20 flex justify-between items-center">
+		<a href="/"><span class="logo">Dumpd!</span></a>
+		<div class="flex items-center justify-between gap-2">
+			<span class="pill-outline"
+				><a href="/categories"
+					><i class="fa-solid fa-list"></i
+					><span class="hidden md:inline">Categories</span></a
+				></span
+			>
+			<span class="pill-outline"
+				><a href="/series"
+					><i class="fa-solid fa-book"></i
+					><span class="hidden md:inline">Series</span></a
+				></span
+			>
+			<% if (!isLoggedIn) { %>
+			<a href="/login"
+				><button><i class="fa-solid fa-user"></i>Login</button></a
+			>
+			<% } %> <% if (isLoggedIn) { %>
+			<div class="flex justify-center items-center gap-2">
+				<div class="flex flex-col text-end">
+					<span class="text-sm font-bold"><%= authUser.name %></span>
+					<a class="hover:underline -mt-1 p-0" href="/logout"
+						><span class="text-xs">Logout</span></a
+					>
+				</div>
+				<img
+					loading="lazy"
+					class="rounded-full w-10 h-10"
+					src="<%= authUser.picture %>"
+					alt="profile picture of user logged in"
+				/>
 			</div>
-			<img
-				loading="lazy"
-				class="rounded-full w-10 h-10"
-				src="<%= authUser.picture %>"
-				alt="profile picture of user logged in"
-			/>
+			<% } %>
 		</div>
-		<% } %>
 	</div>
 	<div class="col-span-1"></div>
 </nav>

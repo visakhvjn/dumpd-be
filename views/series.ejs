@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/x-icon" href="/icons/bot_favicon.png" />
-		<title>Dumpd! - Categories</title>
+		<title>Dumpd! - Series</title>
 		<link rel="stylesheet" href="/css/styles.css" />
 		<link rel="canonical" href="https://www.dumpd.in/categories" />
 		<link
@@ -19,17 +19,21 @@
 			<div class="hidden md:block md:col-span-1"></div>
 			<div class="col-span-1 md:col-span-10 flex flex-col">
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-					<% categories.forEach(category => { %>
-
+					<% series.forEach(seriesItem => { %>
 					<div class="card col-span-1 h-full">
 						<div class="flex flex-col justify-between">
-							<h4><%= category.name %></h4>
-							<p><%- category.description.substring(0, 80) %> ...</p>
+							<time
+								><i class="fa-solid fa-calendar"></i><%=seriesItem.createdAt
+								%></time
+							>
+							<h4><%= seriesItem.title %></h4>
+							<p><%- seriesItem.description %></p>
 						</div>
-
-						<div>
-							<a href="/blogs/categories/<%= category.name %>">
-								<button><i class="fa-solid fa-list"></i>View Category</button>
+						<div class="flex justify-between">
+							<a href="/series/<%= seriesItem.slug %>">
+								<button class="purple-btn">
+									<i class="fa-solid fa-book"></i>View Course
+								</button>
 							</a>
 						</div>
 					</div>
@@ -38,8 +42,5 @@
 			</div>
 			<div></div>
 		</div>
-		<script>
-			document.getElementById('menu-toggle').classList.add('hidden');
-		</script>
 	</body>
 </html>

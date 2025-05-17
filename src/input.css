@@ -2,43 +2,89 @@
 
 @layer base {
 	body {
-		@apply h-full m-0 bg-gray-100 dark:bg-zinc-800 dark:text-zinc-100;
+		@apply h-full m-0 bg-[#23272f] text-[#f6f7f9] pb-10;
+	}
+	nav {
+		@apply bg-[#23272f] border-b border-b-[#343a45];
+	}
+	h1 {
+		@apply text-4xl font-extrabold mt-4 mb-4 tracking-tight;
 	}
 	h2 {
-		@apply text-2xl font-bold mt-2;
-	}
-	p {
-		@apply my-2;
+		@apply text-3xl font-bold mt-3 mb-3 tracking-tight;
 	}
 	h3 {
-		@apply text-lg font-bold mt-2;
+		@apply text-2xl font-semibold mt-2 mb-2 tracking-normal;
 	}
 	h4 {
-		@apply text-lg font-bold;
+		@apply text-xl font-semibold mt-2 mb-2 tracking-normal;
+	}
+	h5 {
+		@apply text-lg font-medium mt-1 mb-1 tracking-wide;
+	}
+	h6 {
+		@apply font-medium mt-1 mb-1 tracking-wide text-gray-300;
+	}
+	p {
+		@apply text-base mb-2 whitespace-pre-wrap text-gray-300;
 	}
 	pre {
-		@apply bg-gray-200 p-8 mb-8 w-full overflow-auto dark:bg-zinc-800;
+		@apply bg-black p-8 mb-8 w-full overflow-auto rounded-xl mt-4;
+	}
+	time {
+		@apply text-xs text-slate-400;
+	}
+	button {
+		@apply border font-bold border-[#57c4dc] text-white hover:bg-[#57c4dc] hover:text-[#3f4756] cursor-pointer py-2 px-4 rounded-lg shadow-md;
+	}
+	a {
+		@apply text-sm;
+	}
+
+	li a {
+		@apply text-gray-300 hover:underline;
+	}
+	i {
+		@apply mr-2;
+	}
+	hr {
+		@apply my-2 text-[#3f4756];
 	}
 }
 
 @layer components {
+	.logo {
+		@apply text-[#57c4dc] text-2xl font-bold border px-2 py-1 rounded-lg;
+	}
 	.card {
-		@apply flex flex-col gap-1 bg-white shadow-md p-6 mb-2 transition-shadow hover:shadow-lg justify-between dark:bg-black dark:text-white;
+		@apply flex flex-col gap-1 bg-[#343a46]  shadow-sm p-6 mb-4 transition-shadow hover:shadow-lg justify-between  rounded-xl;
 	}
 
-	.pill {
-		@apply rounded-full bg-gray-500 dark:bg-zinc-700 text-white dark:text-zinc-100 px-2 py-1 text-sm hover:bg-black transition inline-block mt-1;
+	.pill-outline {
+		@apply px-4 py-1 rounded-2xl hover:bg-[#343a45] cursor-pointer;
+	}
+
+	.hashtag {
+		@apply text-xs text-slate-400;
+	}
+
+	.author {
+		@apply text-xs text-slate-400;
 	}
 
 	.btn {
-		@apply cursor-pointer py-1 px-2 border hover:bg-black hover:text-white font-bold;
+		@apply cursor-pointer py-1 px-3 border  font-bold rounded;
 	}
 
-	.outline-btn {
-		@apply cursor-pointer py-1 px-1 hover:bg-white hover:font-semibold hover:shadow-md dark:hover:bg-zinc-700;
+	.tab {
+		@apply cursor-pointer text-center hover:bg-[#343a45] rounded-2xl py-1;
 	}
 
-	.outline-btn-selected {
-		@apply bg-white font-semibold shadow-md dark:bg-zinc-700;
+	.tab-selected {
+		@apply text-center bg-[#343a45] rounded-2xl py-1 font-bold;
+	}
+
+	.footer-btn {
+		@apply w-full text-center py-1;
 	}
 }
