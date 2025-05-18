@@ -20,7 +20,7 @@ apiRouter.use(
 	'/docs',
 	swaggerUi.serve,
 	swaggerUi.setup(swaggerDocument, {
-		customfavIcon: '/icons/bot_favicon.png',
+		customfavIcon: '/icons/favicon.svg',
 		customSiteTitle: 'AI Blog - API Documentation',
 		customCssUrl: '/css/swagger.css',
 	})
