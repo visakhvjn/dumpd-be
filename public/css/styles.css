@@ -260,6 +260,9 @@
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
+  .block {
+    display: block;
+  }
   .flex {
     display: flex;
   }
@@ -602,7 +605,7 @@
     width: 100%;
     overflow: auto;
     border-radius: var(--radius-xl);
-    background-color: var(--color-black);
+    background-color: #f3f3f3;
     padding: calc(var(--spacing) * 8);
   }
   time {

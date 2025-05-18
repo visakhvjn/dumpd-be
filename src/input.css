@@ -29,7 +29,7 @@
 		@apply text-base mb-2 whitespace-pre-wrap text-gray-300;
 	}
 	pre {
-		@apply bg-black p-8 mb-8 w-full overflow-auto rounded-xl mt-4;
+		@apply bg-[#f3f3f3] p-8 mb-8 w-full overflow-auto rounded-xl mt-4;
 	}
 	time {
 		@apply text-xs text-slate-400;
