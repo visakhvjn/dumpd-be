@@ -77,9 +77,13 @@
 				</div>
 				<hr />
 				<!-- CONTENT SECTION -->
+				 <% if (isPremium && !isLoggedIn) { %>
+					<%- include('premium') %>
+				<% } else {%>
 				<div class="flex flex-col">
 					<p><%- blog.content %></p>
 				</div>
+				<% } %>
 			</div>
 			<div class="hidden md:block md:col-span-2"></div>
 		</div>

@@ -25,7 +25,6 @@ export const getAllBlogs = async (req, res) => {
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
 			),
-			isPremium: blog.aiModel.includes('-4') ? true : false,
 		};
 	});
 
@@ -83,7 +82,6 @@ export const getAllFollowingBlogs = async (req, res) => {
 				(user) => user._id.toString() === blog.userId.toString()
 			),
 			isFollowingTabSelected: true,
-			isPremium: blog.aiModel.includes('-4') ? true : false,
 		};
 	});
 
@@ -116,13 +114,21 @@ export const getBlog = async (req, res) => {
 		}
 
 		const title = blog.title;
-		const content = marked.parse(blog.content);
+		let content = marked.parse(blog.content);
 		const date = moment(blog.createdAt).format('MMM DD, YYYY');
 		const category = blog.category;
 		const subcategory = blog.subcategory;
 		const summary = blog.summary;
 		const views = blog.views || 0;
 		const domain = `${req.protocol}://${req.get('host')}`;
+
+		// check if the blog is premium content
+		const isPremium = blog.aiModel.includes('-4') ? true : false;
+		const isAuthenticated = req.oidc.isAuthenticated();
+
+		if (isPremium && !isAuthenticated) {
+			content = content.substring(0, 200);
+		}
 
 		let user = {};
 
@@ -157,9 +163,10 @@ export const getBlog = async (req, res) => {
 				slug,
 				domain,
 			},
-			isLoggedIn: req.oidc.isAuthenticated(),
+			isLoggedIn: isAuthenticated,
 			authUser: req.oidc.user,
 			userId: req?.userId,
+			isPremium,
 		});
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);
@@ -217,7 +224,6 @@ export const getBlogsByCategory = async (req, res) => {
 				),
 				imagePath: images.find((img) => img.category === blog.category)
 					?.transformedPath,
-				isPremium: blog.aiModel.includes('-4') ? true : false,
 			};
 		});
 
@@ -307,7 +313,6 @@ export const getBlogsBySubCategory = async (req, res) => {
 				),
 				imagePath: images.find((img) => img.category === blog.category)
 					?.transformedPath,
-				isPremium: blog.aiModel.includes('-4') ? true : false,
 			};
 		});
 

@@ -16,9 +16,6 @@ import { scheduleCronJobs } from './jobs/cron.js';
 import { generateSiteMap } from './scripts/sitemap.script.js';
 
 export const app = express();
-
-// app.use(helmet());
-
 app.use(auth(auth0Config));
 
 // starting cron jobs
