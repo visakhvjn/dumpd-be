@@ -2,7 +2,6 @@ import cron from 'node-cron';
 
 import { generateUser } from '../services/user.service.js';
 import * as blogService from '../services/blog.service.js';
-import { generateCategoryAndSubcategoryImage } from '../services/category.service.js';
 
 export const scheduleCronJobs = () => {
 	if (process.env.NODE_ENV !== 'production') {
@@ -33,21 +32,6 @@ export const scheduleCronJobs = () => {
 			console.log('✅ User generated successfully!');
 		} catch (err) {
 			console.error('❌ Error generating User:', err);
-		}
-	});
-
-	// Check if an image needs to be generated every hour
-	cron.schedule('0 * * * *', async () => {
-		console.log('⏰ Running Image generator...');
-
-		try {
-			const hasGenerated = await generateCategoryAndSubcategoryImage();
-
-			if (hasGenerated) {
-				console.log('✅ Image generated successfully!');
-			}
-		} catch (err) {
-			console.error('❌ Error generating Image:', err);
 		}
 	});
 
