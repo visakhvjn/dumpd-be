@@ -207,11 +207,11 @@ const getUserPromptForBlog = (category, subcategory) => {
 		The title should be a catchy title.
 		The content should be a well-structured blog post with headings and subheadings.
 		The blog should be informative and engaging.
-		The blog should not be more than 1500 words.
+		The blog should not be more than 2000 words.
 		The summary should be in not more than 200 words.
 
 		Try to include code examples inside content when possible.
-		Ensure that the code is properly indented.
+		Ensure that the code is properly indented and formatted.
 
 		Here is sample of how the response should look like 
 		{
@@ -265,27 +265,17 @@ const getRandomAIModel = () => {
 	const aiModels = [
 		'gpt-3.5-turbo',
 		'gpt-3.5-turbo-16k',
-		'gpt-3.5-turbo',
-		'gpt-3.5-turbo-16k',
-		'gpt-3.5-turbo',
-		'gpt-3.5-turbo-16k',
-		'gpt-3.5-turbo',
-		'gpt-3.5-turbo-16k',
 		'gpt-4o-mini',
-		'gpt-3.5-turbo',
-		'gpt-3.5-turbo-16k',
 		'gpt-3.5-turbo',
 		'gpt-3.5-turbo-16k',
 		'gpt-4.1-mini',
 		'gpt-3.5-turbo',
 		'gpt-3.5-turbo-16k',
+		'gpt-4.1-nano',
+		'gpt-3.5-turbo-16k',
 		'gpt-3.5-turbo',
 		'gpt-3.5-turbo-16k',
 		'gpt-4.1-nano',
-		'gpt-3.5-turbo',
-		'gpt-3.5-turbo-16k',
-		'gpt-3.5-turbo',
-		'gpt-3.5-turbo-16k',
 	];
 
 	const randomIndex = Math.floor(Math.random() * aiModels.length);
