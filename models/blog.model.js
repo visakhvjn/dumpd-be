@@ -15,4 +15,9 @@ const blogSchema = new mongoose.Schema({
 	hash: { type: String, default: null },
 });
 
+blogSchema.index({ slug: 1 });
+blogSchema.index({ category: 1 });
+blogSchema.index({ subcategory: 1 });
+blogSchema.index({ hash: 1 });
+
 export const blogModel = mongoose.model('Blog', blogSchema);

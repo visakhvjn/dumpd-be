@@ -5,13 +5,12 @@ import { blogModel } from '../models/blog.model.js';
 import { getUser, getUsers } from '../services/user.service.js';
 import * as blogService from '../services/blog.service.js';
 import * as categoryService from '../services/category.service.js';
-import * as imageService from '../services/image.service.js';
 
 export const getAllBlogs = async (req, res) => {
 	const blogs = await blogService.getBlogs(1, 10);
 	const popularBlogs = await blogService.getPopularBlogs(1, 5);
-	const images = await imageService.getImages();
 	const users = await getUsers();
+
 	let isCategoryFollowed = false;
 	let isFollowingTabSelected = false;
 
@@ -19,8 +18,6 @@ export const getAllBlogs = async (req, res) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
-			imagePath: images.find((img) => img.category === blog.category)
-				?.transformedPath,
 			date: moment(blog.createdAt).format('MMM DD, YYYY'),
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
@@ -66,7 +63,6 @@ export const getAllFollowingBlogs = async (req, res) => {
 	blogs = await blogService.getBlogsByFollowings(1, 10, followedCategories);
 
 	const popularBlogs = await blogService.getPopularBlogs(1, 5);
-	const images = await imageService.getImages();
 	const users = await getUsers();
 
 	let isCategoryFollowed = false;
@@ -75,8 +71,6 @@ export const getAllFollowingBlogs = async (req, res) => {
 		return {
 			...blog._doc,
 			content: marked.parse(blog.content),
-			imagePath: images.find((img) => img.category === blog.category)
-				?.transformedPath,
 			date: moment(blog.createdAt).format('MMM DD, YYYY'),
 			user: users.find(
 				(user) => user._id.toString() === blog.userId.toString()
@@ -136,16 +130,6 @@ export const getBlog = async (req, res) => {
 			user = await getUser(blog.userId);
 		}
 
-		let imagePath = '';
-
-		if (category && subcategory) {
-			const image = await imageService.getImage(category);
-
-			if (image) {
-				imagePath = image.transformedPath;
-			}
-		}
-
 		// Update view count
 		await updateViews(slug);
 
@@ -159,7 +143,6 @@ export const getBlog = async (req, res) => {
 				summary,
 				views,
 				user,
-				imagePath,
 				slug,
 				domain,
 			},
@@ -180,7 +163,6 @@ export const getBlogsByCategory = async (req, res) => {
 		const blogs = await blogService.getBlogs(1, 10, categoryName);
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const category = await categoryService.getCategory(categoryName);
-		const images = await imageService.getImages();
 
 		let isCategoryFollowed = false;
 		let isFollowingTabSelected = false;
@@ -209,8 +191,6 @@ export const getBlogsByCategory = async (req, res) => {
 				isCategoryFollowed,
 				isFollowingTabSelected,
 				hasCategoryFilter: true,
-				categoryImagePath: images.find((img) => img.category === category.name)
-					?.transformedPath,
 			});
 		}
 
@@ -222,16 +202,12 @@ export const getBlogsByCategory = async (req, res) => {
 				user: users.find(
 					(user) => user._id.toString() === blog.userId.toString()
 				),
-				imagePath: images.find((img) => img.category === blog.category)
-					?.transformedPath,
 			};
 		});
 
 		res.render('blogs', {
 			blogs: parsedBlogs,
 			category: category,
-			categoryImagePath: images.find((img) => img.category === category.name)
-				?.transformedPath,
 			subcategory: null,
 			categories: [],
 			subcategories: category.subcategories.sort((a, b) =>
@@ -246,7 +222,6 @@ export const getBlogsByCategory = async (req, res) => {
 			isFollowingTabSelected,
 		});
 	} catch (err) {
-		console.log(err);
 		console.error('❌ Error fetching blogs by category:', err);
 		res.status(404).render('404', { title: 'Category Not Found' });
 	}
@@ -270,10 +245,9 @@ export const getBlogsBySubCategory = async (req, res) => {
 			subcategoryName
 		);
 		const category = await categoryService.getCategory(categoryName);
-		const images = await imageService.getImages();
 		const users = await getUsers();
-		let isFollowingTabSelected = false;
 
+		let isFollowingTabSelected = false;
 		let isCategoryFollowed = false;
 
 		if (req.oidc.isAuthenticated()) {
@@ -293,8 +267,6 @@ export const getBlogsBySubCategory = async (req, res) => {
 				),
 				popularBlogs,
 				hasCategoryFilter: true,
-				categoryImagePath: images.find((img) => img.category === categoryName)
-					?.transformedPath,
 				isLoggedIn: req.oidc.isAuthenticated(),
 				authUser: req.oidc.user,
 				userId: req?.userId,
@@ -311,16 +283,12 @@ export const getBlogsBySubCategory = async (req, res) => {
 				user: users.find(
 					(user) => user._id.toString() === blog.userId.toString()
 				),
-				imagePath: images.find((img) => img.category === blog.category)
-					?.transformedPath,
 			};
 		});
 
 		res.render('blogs', {
 			blogs: parsedBlogs,
 			category: category,
-			categoryImagePath: images.find((img) => img.category === categoryName)
-				?.transformedPath,
 			subcategory: subcategoryName,
 			categories: [],
 			subcategories: category.subcategories.sort((a, b) =>
@@ -343,9 +311,4 @@ export const getBlogsBySubCategory = async (req, res) => {
 
 const updateViews = async (slug) => {
 	return blogModel.updateOne({ slug: slug }, { $inc: { views: 1 } });
-};
-
-export const genBlog = async (req, res) => {
-	await generateBlog();
-	res.json({ message: 'Gnerated' });
 };
