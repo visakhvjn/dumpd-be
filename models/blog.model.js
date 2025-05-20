@@ -4,7 +4,7 @@ const blogSchema = new mongoose.Schema({
 	title: String,
 	content: String,
 	createdAt: { type: Date, default: Date.now },
-	slug: { type: String, unique: true },
+	slug: { type: String },
 	category: String,
 	subcategory: String,
 	summary: String,
