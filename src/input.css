@@ -61,7 +61,11 @@
 	}
 
 	.pill-outline {
-		@apply px-4 py-1 rounded-2xl hover:bg-[#343a45] cursor-pointer;
+		@apply px-4 py-1 rounded-2xl hover:bg-[#343a45] hover:text-[#57c4dc] cursor-pointer;
+	}
+
+	.pill-outline-selected {
+		@apply px-4 py-1 rounded-2xl bg-[#343a45] cursor-pointer text-[#57c4dc];
 	}
 
 	.hashtag {

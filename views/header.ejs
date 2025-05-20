@@ -3,13 +3,13 @@
 	<div class="col-span-22 md:col-span-20 flex justify-between items-center">
 		<a href="/"><span class="logo">Dumpd!</span></a>
 		<div class="flex items-center justify-between gap-2">
-			<span class="pill-outline"
+			<span class="<%=currentPath === '/categories' ? 'pill-outline-selected': 'pill-outline'%>"
 				><a href="/categories"
 					><i class="fa-solid fa-list"></i
 					><span class="hidden md:inline">Categories</span></a
 				></span
 			>
-			<span class="pill-outline"
+			<span class="<%=currentPath === '/series' ? 'pill-outline-selected': 'pill-outline'%>"
 				><a href="/series"
 					><i class="fa-solid fa-book"></i
 					><span class="hidden md:inline">Series</span></a

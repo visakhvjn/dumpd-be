@@ -44,6 +44,11 @@ await generateSiteMap();
 // middleware to check if user is logged in via Auth0
 app.use(authoriseUser);
 
+app.use((req, res, next) => {
+	res.locals.currentPath = req.path;
+	next();
+});
+
 app.use('/', blogRoutes);
 app.use('/user', userRoutes);
 app.use('/api', apiRoutes);
