@@ -84,6 +84,7 @@
 						<% categories.length && categories.forEach(category => { %>
 						<li>
 							<a
+								class="title"
 								href="/blogs/categories/<%= category.name %>"
 								><%= category.name %></a
 							>
@@ -92,7 +93,7 @@
 						subcategories.forEach(subcategory => { %>
 						<li>
 							<a
-								class="hover:underline text-sm"
+								class="title"
 								href="/blogs/categories/<%= category.name %>/subcategories/<%= subcategory %>"
 								><%= subcategory %></a
 							>
@@ -165,7 +166,7 @@
 							</div>
 							
 							<div class="col-span-1 md:col-span-3 flex flex-col">
-								<h3><%= blog.title %></h2>
+								<h3 class="title"><%= blog.title %></h2>
 								<p><%- blog.summary %></p>
 							</div>
 							<div>
@@ -181,7 +182,7 @@
 					<% } %> <% popularBlogs.forEach(blog => { %>
 					<a href="/blogs/<%= blog.slug %>">
 						<div class="flex flex-col gap-2 py-2">
-							<h6><%= blog.title %></h6>
+							<h6 class="title"><%= blog.title %></h6>
 							<span class="hashtag"><%= blog.summary %></span>
 						</div>
 					</a>

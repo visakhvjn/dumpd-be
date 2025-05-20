@@ -758,6 +758,32 @@
     padding-block: calc(var(--spacing) * 1);
     text-align: center;
   }
+  h3.title {
+    &:hover {
+      @media (hover: hover) {
+        color: #57c4dc;
+      }
+    }
+  }
+  h6.title {
+    &:hover {
+      @media (hover: hover) {
+        color: #57c4dc;
+      }
+    }
+  }
+  a.title {
+    &:hover {
+      @media (hover: hover) {
+        color: #57c4dc;
+      }
+    }
+    &:hover {
+      @media (hover: hover) {
+        text-decoration-line: none;
+      }
+    }
+  }
 }
 @property --tw-border-style {
   syntax: "*";

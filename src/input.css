@@ -91,4 +91,16 @@
 	.footer-btn {
 		@apply w-full text-center py-1;
 	}
+
+	h3.title {
+		@apply hover:text-[#57c4dc];
+	}
+
+	h6.title {
+		@apply hover:text-[#57c4dc];
+	}
+
+	a.title {
+		@apply hover:text-[#57c4dc] hover:no-underline;
+	}
 }
