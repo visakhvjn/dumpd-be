@@ -2,6 +2,7 @@ import cron from 'node-cron';
 
 import { generateUser } from '../services/user.service.js';
 import * as blogService from '../services/blog.service.js';
+import * as categoryService from '../services/category.service.js';
 
 export const scheduleCronJobs = () => {
 	if (process.env.NODE_ENV !== 'production') {
@@ -44,6 +45,18 @@ export const scheduleCronJobs = () => {
 			console.log('✅ Blog POST successful:');
 		} catch (err) {
 			console.error('❌ Error generating Image:', err);
+		}
+	});
+
+	// every 5 hours new subcategories are added
+	cron.schedule('0 */5 * * *', async () => {
+		console.log('⏰ Generating New Subcategories ...');
+
+		try {
+			await categoryService.generateSubCategories();
+			console.log('✅ New subcategories added');
+		} catch (err) {
+			console.error('❌ Error generating subcategories:', err);
 		}
 	});
 };
