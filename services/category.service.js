@@ -197,7 +197,7 @@ const generateSubCategoriesUsingLLM = async (category, subcategories) => {
 			{
 				role: 'system',
 				content:
-					'You are a software engineer who is an expert in generating subcategories for a given category. You are also an expert in generating subcategories for a given category.',
+					'You are a software engineer who is an expert in generating subcategories for a given category.',
 			},
 			{
 				role: 'user',
