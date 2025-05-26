@@ -249,13 +249,9 @@ const updateBlogToPosted = async (blogId) => {
 
 export const postRandomBlog = async () => {
 	const blog = await getRandomBlog();
+	const summary = await summariseForLinkedIn(blog.content);
 
-	await makeService.postBlogToLinkedIn(
-		blog.title,
-		[blog.category, blog.subcategory],
-		blog.summary,
-		blog.slug
-	);
+	await makeService.postBlogToLinkedIn(blog.title, summary, blog.slug);
 
 	await updateBlogToPosted(blog._id);
 };
@@ -309,4 +305,35 @@ const generateBlogHash = (title, content) => {
 const doesBlogWithHashExist = async (hash) => {
 	const blog = await blogModel.findOne({ hash });
 	return !!blog;
+};
+
+const summariseForLinkedIn = async (content) => {
+	const prompt = `
+		Summarise the following blog content for LinkedIn in not more than 200 words:
+		${content}.
+
+		Make sure to keep it engaging and professional.
+		Make sure it is also suitable for a LinkedIn audience.
+		Make sure it feels like a personal post from the author.
+
+		Make sure to include relevant hashtags related to the content.
+
+		Return a string with the summary and hashtags, separated by a newline.
+	`;
+
+	const response = await openai.chat.completions.create({
+		model: 'gpt-3.5-turbo',
+		messages: [
+			{
+				role: 'system',
+				content: 'You are a professional LinkedIn content writer.',
+			},
+			{
+				role: 'user',
+				content: prompt,
+			},
+		],
+	});
+
+	return response.choices[0].message.content.trim();
 };
