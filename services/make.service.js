@@ -3,14 +3,11 @@ import axios from 'axios';
 
 dotenv.config();
 
-export const postBlogToLinkedIn = async (title, categories, summary, slug) => {
+export const postBlogToLinkedIn = async (title, summary, slug) => {
 	const link = `${process.env.BASE_URL}/blogs/${slug}`;
 
-	const hashtags = categories
-		.map((category) => `#${category.split(' ').join('')}`)
-		.join(' ');
 	const payload = {
-		data: { title, hashtags, summary, link },
+		data: { title, summary, link },
 	};
 
 	try {
