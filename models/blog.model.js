@@ -20,4 +20,6 @@ blogSchema.index({ category: 1 });
 blogSchema.index({ subcategory: 1 });
 blogSchema.index({ hash: 1 });
 
+blogSchema.index({ title: 'text', content: 'text', summary: 'text' });
+
 export const blogModel = mongoose.model('Blog', blogSchema);

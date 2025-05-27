@@ -7,8 +7,10 @@ import * as blogService from '../services/blog.service.js';
 import * as categoryService from '../services/category.service.js';
 
 export const getAllBlogs = async (req, res) => {
-	const blogs = await blogService.getBlogs(1, 10);
-	const popularBlogs = await blogService.getPopularBlogs(1, 5);
+	const search = req.query.search || '';
+
+	const blogs = await blogService.getBlogs(search, 1, 10);
+	const popularBlogs = search ? [] : await blogService.getPopularBlogs(1, 5);
 	const users = await getUsers();
 
 	let isCategoryFollowed = false;
@@ -41,6 +43,7 @@ export const getAllBlogs = async (req, res) => {
 		userId: req?.userId,
 		isCategoryFollowed,
 		isFollowingTabSelected,
+		search,
 	});
 };
 
@@ -160,7 +163,7 @@ export const getBlog = async (req, res) => {
 export const getBlogsByCategory = async (req, res) => {
 	try {
 		const categoryName = req.params.category;
-		const blogs = await blogService.getBlogs(1, 10, categoryName);
+		const blogs = await blogService.getBlogs('', 1, 10, categoryName);
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const category = await categoryService.getCategory(categoryName);
 
@@ -233,6 +236,7 @@ export const getBlogsBySubCategory = async (req, res) => {
 		const subcategoryName = req.params.subcategory;
 
 		const blogs = await blogService.getBlogs(
+			'',
 			1,
 			10,
 			categoryName,
@@ -311,4 +315,42 @@ export const getBlogsBySubCategory = async (req, res) => {
 
 const updateViews = async (slug) => {
 	return blogModel.updateOne({ slug: slug }, { $inc: { views: 1 } });
+};
+
+export const searchBlogs = async (req, res) => {
+	const blogs = await blogService.searchBlogs(req.query.search);
+	const popularBlogs = [];
+	const users = [];
+
+	let isCategoryFollowed = false;
+	let isFollowingTabSelected = false;
+
+	const parsedBlogs = blogs.map((blog) => {
+		return {
+			...blog._doc,
+			content: marked.parse(blog.content),
+			date: moment(blog.createdAt).format('MMM DD, YYYY'),
+			user: users.find(
+				(user) => user._id.toString() === blog.userId.toString()
+			),
+		};
+	});
+
+	const categories = [];
+
+	res.render('blogs', {
+		blogs: parsedBlogs,
+		category: null,
+		subcategory: null,
+		categories,
+		subcategories: [],
+		users,
+		popularBlogs,
+		hasCategoryFilter: false,
+		isLoggedIn: req.oidc.isAuthenticated(),
+		authUser: req.oidc.user,
+		userId: req?.userId,
+		isCategoryFollowed,
+		isFollowingTabSelected,
+	});
 };
