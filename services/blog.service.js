@@ -13,6 +13,7 @@ import * as makeService from './make.service.js';
 const cache = new NodeCache({ stdTTL: 3600 });
 
 export const getBlogs = async (
+	search = '',
 	page = 1,
 	size = 10,
 	category = '',
@@ -22,16 +23,20 @@ export const getBlogs = async (
 	const skip = (page - 1) * size;
 	let query = {};
 
-	if (category) {
-		query = { category };
-	}
+	if (search) {
+		query = { $text: { $search: search } };
+	} else {
+		if (category) {
+			query = { category };
+		}
 
-	if (category && subcategory) {
-		query = { category, subcategory };
-	}
+		if (category && subcategory) {
+			query = { category, subcategory };
+		}
 
-	if (userId) {
-		query.userId = userId;
+		if (userId) {
+			query.userId = userId;
+		}
 	}
 
 	const blogs = await blogModel

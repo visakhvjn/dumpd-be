@@ -50,6 +50,10 @@
 	hr {
 		@apply my-2 text-[#3f4756];
 	}
+
+	input {
+		@apply text-white px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#3f4756] transition-colors;
+	}
 }
 
 @layer components {
