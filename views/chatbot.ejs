@@ -1,0 +1,114 @@
+<div class="fixed bottom-4 right-4">
+	<!-- Chat Button -->
+	<% if (blog.isVectorized) { %>
+	<button id="chatbot-toggle" class="hidden md:block chatbox-button">
+		<i class="fa-solid fa-comments"></i>
+	</button>
+	<% } %>
+
+	<!-- Chatbox -->
+	<div
+		id="chatbox"
+		class="hidden absolute bottom-16 right-0 w-80 h-150 bg-white text-black shadow-lg rounded-lg flex flex-col"
+	>
+		<div class="p-4 h-64 overflow-y-auto flex-1" id="chat-content">
+			<div class="text-left my-4">
+				<span class="bg-gray-100 text-gray-800 p-2 rounded-lg inline-block">
+					Hey👋, This is Dumpy! I am an AI assistant that can help you get more
+					insights on this blog.
+				</span>
+			</div>
+		</div>
+		<div class="p-2 border-t">
+			<form id="chat-form" class="flex items-center">
+				<input
+					type="text"
+					id="chat-input"
+					class="flex-1 border border-gray-300 rounded-lg p-2 text-sm"
+					placeholder="Type your message and press Enter..."
+				/>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	const chatbotToggle = document.getElementById('chatbot-toggle');
+	const chatbox = document.getElementById('chatbox');
+	const chatForm = document.getElementById('chat-form');
+	const chatInput = document.getElementById('chat-input');
+	const chatContent = document.getElementById('chat-content');
+
+	chatbotToggle.addEventListener('click', () => {
+		chatbox.classList.toggle('hidden');
+	});
+
+	chatForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const message = chatInput.value.trim();
+
+		if (message) {
+			// Display the user's message in the chatbox
+			const userMessage = document.createElement('div');
+			userMessage.className = 'text-right mb-2';
+			userMessage.innerHTML = `<span class="bg-blue-100 text-blue-800 p-2 rounded-lg inline-block">${message}</span>`;
+			chatContent.appendChild(userMessage);
+
+			// Scroll to the bottom of the chatbox
+			chatContent.scrollTop = chatContent.scrollHeight;
+
+			// Clear the input field
+			chatInput.value = '';
+
+			// Display "Thinking..." message
+			const thinkingMessage = document.createElement('div');
+			thinkingMessage.id = 'thinking-message';
+			thinkingMessage.className = 'text-left mb-2';
+			thinkingMessage.innerHTML = `<span class="bg-gray-100 text-gray-800 p-2 rounded-lg inline-block">Thinking...</span>`;
+			chatContent.appendChild(thinkingMessage);
+
+			// Scroll to the bottom of the chatbox
+			chatContent.scrollTop = chatContent.scrollHeight;
+
+			// Send the message to the API
+			try {
+				const response = await fetch(`/blogs/<%=blog.id%>/query`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ query: message }),
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					// Remove "Thinking..." message
+					thinkingMessage.remove();
+
+					// Display the API's response in the chatbox
+					const botMessage = document.createElement('div');
+					botMessage.className = 'text-left mb-2';
+					botMessage.innerHTML = `<span class="bg-gray-100 text-gray-800 p-2 rounded-lg inline-block">${data.summary}</span>`;
+					chatContent.appendChild(botMessage);
+				} else {
+					const data = await response.json();
+					console.log(data);
+					throw new Error(
+						data.error || 'Mmm! Something went wrong. Please try again later.'
+					);
+				}
+			} catch (error) {
+				// Remove "Thinking..." message
+				thinkingMessage.remove();
+
+				const errorMessage = document.createElement('div');
+				errorMessage.className = 'text-left mb-2';
+				errorMessage.innerHTML = `<span class="bg-red-100 text-red-800 p-2 rounded-lg inline-block">${error}</span>`;
+				chatContent.appendChild(errorMessage);
+			}
+
+			// Scroll to the bottom of the chatbox after receiving the response
+			chatContent.scrollTop = chatContent.scrollHeight;
+		}
+	});
+</script>

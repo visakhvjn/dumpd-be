@@ -59,4 +59,15 @@ export const scheduleCronJobs = () => {
 			console.error('❌ Error generating subcategories:', err);
 		}
 	});
+
+	cron.schedule('* * * * *', async () => {
+		console.log('⏰ Vectorizing blogs ...');
+
+		try {
+			await blogService.vectorizeBlogs();
+			console.log('✅ Blog vectorized!');
+		} catch (err) {
+			console.error('❌ Error vectorizing blog:', err);
+		}
+	});
 };

@@ -50,10 +50,6 @@
 	hr {
 		@apply my-2 text-[#3f4756];
 	}
-
-	input {
-		@apply text-white px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#3f4756] transition-colors;
-	}
 }
 
 @layer components {
@@ -65,11 +61,7 @@
 	}
 
 	.pill-outline {
-		@apply px-4 py-1 rounded-2xl hover:bg-[#343a45] hover:text-[#57c4dc] cursor-pointer;
-	}
-
-	.pill-outline-selected {
-		@apply px-4 py-1 rounded-2xl bg-[#343a45] cursor-pointer text-[#57c4dc];
+		@apply px-4 py-1 rounded-2xl hover:bg-[#343a45] cursor-pointer;
 	}
 
 	.hashtag {
@@ -96,15 +88,7 @@
 		@apply w-full text-center py-1;
 	}
 
-	h3.title {
-		@apply hover:text-[#57c4dc];
-	}
-
-	h6.title {
-		@apply hover:text-[#57c4dc];
-	}
-
-	a.title {
-		@apply hover:text-[#57c4dc] hover:no-underline;
+	.chatbox-button {
+		@apply bg-[#343a45] border-2 border-[#57c4dc] hover:bg-[#57c4dc] transition relative rounded-full shadow-lg p-4 hover:text-[#3f4756] cursor-pointer;
 	}
 }

@@ -13,6 +13,7 @@ const blogSchema = new mongoose.Schema({
 	isPosted: { type: Boolean, default: false },
 	aiModel: { type: String, default: null },
 	hash: { type: String, default: null },
+	isVectorized: { type: Boolean, default: false },
 });
 
 blogSchema.index({ slug: 1 });

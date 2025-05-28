@@ -6,6 +6,7 @@ import {
 	getBlog,
 	getBlogsByCategory,
 	getBlogsBySubCategory,
+	queryBlog,
 } from '../controllers/blog.controller.js';
 import { isUserAuthorised } from '../middlewares/auth.middleware.js';
 
@@ -19,5 +20,6 @@ router.get(
 	'/blogs/categories/:category/subcategories/:subcategory',
 	getBlogsBySubCategory
 );
+router.post('/blogs/:blogId/query', isUserAuthorised, queryBlog);
 
 export default router;

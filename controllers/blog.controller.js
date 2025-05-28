@@ -138,6 +138,7 @@ export const getBlog = async (req, res) => {
 
 		res.render('blog', {
 			blog: {
+				id: blog._id,
 				title,
 				content,
 				date,
@@ -148,6 +149,7 @@ export const getBlog = async (req, res) => {
 				user,
 				slug,
 				domain,
+				isVectorized: blog.isVectorized && isAuthenticated,
 			},
 			isLoggedIn: isAuthenticated,
 			authUser: req.oidc.user,
@@ -353,4 +355,26 @@ export const searchBlogs = async (req, res) => {
 		isCategoryFollowed,
 		isFollowingTabSelected,
 	});
+};
+
+export const queryBlog = async (req, res) => {
+	const blogId = req.params.blogId;
+	const { query } = req.body;
+
+	if (req.oidc.isAuthenticated() === false) {
+		return res.status(401).json({
+			error: 'You must be logged in to ask questions about the blog',
+		});
+	}
+
+	if (query.split(' ').length > 50) {
+		return res.status(400).json({
+			error:
+				'Woah! that looks like a lot to handle. Can you rephrase that and keep it under 50 words',
+		});
+	}
+
+	const summary = await blogService.queryBlog(blogId, query);
+
+	res.status(200).json({ summary });
 };

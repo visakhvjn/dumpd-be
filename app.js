@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import { auth } from 'express-openid-connect';
 
 import { connectDb } from './config/db.js';
+import { initializePinecone } from './services/pinecone.service.js';
 import { auth0Config } from './config/auth0.js';
 
 import blogRoutes from './routes/blog.routes.js';
@@ -37,6 +38,9 @@ app.set('views', './views');
 
 // Connecting to the mongodb database
 await connectDb();
+
+// initialize pinecone
+initializePinecone();
 
 // generate sitemap
 await generateSiteMap();

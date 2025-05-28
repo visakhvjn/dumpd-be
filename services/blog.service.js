@@ -9,6 +9,8 @@ import * as userService from './user.service.js';
 import * as categoryService from './category.service.js';
 import * as Errors from '../utils/errors.js';
 import * as makeService from './make.service.js';
+import * as pineconeService from './pinecone.service.js';
+import * as openaiService from './openai.service.js';
 
 const cache = new NodeCache({ stdTTL: 3600 });
 
@@ -341,4 +343,93 @@ const summariseForLinkedIn = async (content) => {
 	});
 
 	return response.choices[0].message.content.trim();
+};
+
+export const vectorizeBlogs = async () => {
+	const blogArr = await blogModel.aggregate([
+		{ $match: { isVectorized: false } },
+		{ $sample: { size: 1 } },
+	]);
+
+	const blog = blogArr[0];
+
+	await vectorizeContent(blog);
+
+	await blogModel.updateOne(
+		{ _id: blog._id },
+		{ $set: { isVectorized: true } }
+	);
+};
+
+const vectorizeContent = async (blog) => {
+	if (!blog || !blog.content) {
+		return;
+	}
+
+	const promises = [];
+
+	const blogId = blog._id.toString();
+	const content = blog.content.replace(/<[^>]+>/g, '');
+
+	const chunks = chunkText(content, 200);
+
+	if (chunks.length === 0) {
+		console.warn(`No chunks created for blog ${blogId}`);
+		return;
+	}
+
+	const records = [];
+
+	for (let i = 0; i < chunks.length; i++) {
+		promises.push(
+			openaiService.createEmbedding(chunks[i]).then((embedding) => {
+				records.push({
+					id: `blog_${blogId}_chunk_${i}`,
+					values: embedding,
+					metadata: {
+						blogId,
+						chunkIndex: i,
+						text: chunks[i],
+					},
+				});
+			})
+		);
+	}
+
+	await Promise.all(promises);
+
+	if (records.length === 0) {
+		console.warn(`No records created for blog ${blogId}`);
+		return;
+	}
+
+	await pineconeService.addRecordsToPinecone(records);
+};
+
+const chunkText = (text, chunkSize = 150) => {
+	const words = text.split(/\s+/);
+	const chunks = [];
+
+	for (let i = 0; i < words.length; i += chunkSize) {
+		chunks.push(words.slice(i, i + chunkSize).join(' '));
+	}
+
+	return chunks;
+};
+
+export const queryBlog = async (blogId, query) => {
+	const queryEmbedding = await openaiService.createEmbedding(query);
+	const results = await pineconeService.queryRecords(queryEmbedding, {
+		blogId,
+	});
+
+	const matchedChunks = results.map((result) => result.metadata.text);
+
+	if (matchedChunks.length === 0) {
+		return 'No relevant information found.';
+	}
+
+	const summary = await openaiService.summarizeQuery(query, matchedChunks);
+
+	return summary;
 };
