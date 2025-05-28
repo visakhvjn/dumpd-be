@@ -351,6 +351,11 @@ export const vectorizeBlogs = async () => {
 		{ $sample: { size: 1 } },
 	]);
 
+	if (blogArr.length === 0) {
+		console.log('No blogs to vectorize');
+		return;
+	}
+
 	const blog = blogArr[0];
 
 	await vectorizeContent(blog);

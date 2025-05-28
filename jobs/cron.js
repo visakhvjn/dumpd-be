@@ -60,7 +60,8 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	cron.schedule('* * * * *', async () => {
+	// every 5 minutes vectorize blogs
+	cron.schedule('*/5 * * * *', async () => {
 		console.log('⏰ Vectorizing blogs ...');
 
 		try {
