@@ -12,8 +12,8 @@ export const scheduleCronJobs = () => {
 
 	console.log(`scheduling cron jobs on ${process.env.NODE_ENV}`);
 
-	// Generate a new blog every hour
-	cron.schedule('0 * * * *', async () => {
+	// Generate a new blog every 5 hours
+	cron.schedule('0 */5 * * *', async () => {
 		console.log('⏰ Running daily blog generator...');
 
 		try {
@@ -60,8 +60,8 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	// every 5 minutes vectorize blogs
-	cron.schedule('*/5 * * * *', async () => {
+	// every 3 hours vectorize blogs
+	cron.schedule('0 */3 * * *', async () => {
 		console.log('⏰ Vectorizing blogs ...');
 
 		try {
