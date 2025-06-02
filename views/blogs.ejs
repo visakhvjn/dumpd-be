@@ -178,6 +178,7 @@
 						</div></a
 					>
 					<% }) %>
+					<%- include('pagination', { total: Math.ceil(total/10)}) %>
 				</div>
 				<div class="hidden md:block md:col-span-2 p-4 flex-col">
 					<% if (popularBlogs.length) { %>
@@ -194,7 +195,6 @@
 			<div class="hidden md:block md:col-span-1"></div>
 		</div>
 		<br />
-
 		<script>
 			const menuToggleBtn = document.getElementById('menu-toggle');
 			const closeBtn = document.getElementById('closeBtn');

@@ -1,0 +1,17 @@
+<div class="flex justify-between mt-4">
+	<!-- Previous -->
+	<% if (currentPage > 1) { %>
+	<a href="?page=<%= currentPage - 1 %>" class="pill-outline">
+		&laquo; Previous
+	</a>
+	<% } else { %>
+	<span></span>
+	<% } %>
+
+	<!-- Next -->
+	<% if (currentPage < total) { %>
+	<a href="?page=<%= currentPage + 1 %>" class="pill-outline"> Next &raquo; </a>
+	<% } else { %>
+	<span></span>
+	<% } %>
+</div>

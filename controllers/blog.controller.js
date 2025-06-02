@@ -8,8 +8,9 @@ import * as categoryService from '../services/category.service.js';
 
 export const getAllBlogs = async (req, res) => {
 	const search = req.query.search || '';
+	const currentPage = parseInt(req.query.page, 10) || 1;
 
-	const blogs = await blogService.getBlogs(search, 1, 10);
+	const { blogs, total } = await blogService.getBlogs(search, currentPage, 10);
 	const popularBlogs = search ? [] : await blogService.getPopularBlogs(1, 5);
 	const users = await getUsers();
 
@@ -44,6 +45,8 @@ export const getAllBlogs = async (req, res) => {
 		isCategoryFollowed,
 		isFollowingTabSelected,
 		search,
+		total,
+		currentPage,
 	});
 };
 
@@ -164,8 +167,14 @@ export const getBlog = async (req, res) => {
 
 export const getBlogsByCategory = async (req, res) => {
 	try {
+		const currentPage = parseInt(req.query.page, 10) || 1;
 		const categoryName = req.params.category;
-		const blogs = await blogService.getBlogs('', 1, 10, categoryName);
+		const { blogs, total } = await blogService.getBlogs(
+			'',
+			currentPage,
+			10,
+			categoryName
+		);
 		const popularBlogs = await blogService.getPopularBlogs(1, 5, categoryName);
 		const category = await categoryService.getCategory(categoryName);
 
@@ -196,6 +205,8 @@ export const getBlogsByCategory = async (req, res) => {
 				isCategoryFollowed,
 				isFollowingTabSelected,
 				hasCategoryFilter: true,
+				total: 0,
+				currentPage,
 			});
 		}
 
@@ -225,6 +236,8 @@ export const getBlogsByCategory = async (req, res) => {
 			userId: req?.userId,
 			isCategoryFollowed,
 			isFollowingTabSelected,
+			total,
+			currentPage,
 		});
 	} catch (err) {
 		console.error('❌ Error fetching blogs by category:', err);
@@ -234,12 +247,13 @@ export const getBlogsByCategory = async (req, res) => {
 
 export const getBlogsBySubCategory = async (req, res) => {
 	try {
+		const currentPage = parseInt(req.query.page, 10) || 1;
 		const categoryName = req.params.category;
 		const subcategoryName = req.params.subcategory;
 
-		const blogs = await blogService.getBlogs(
+		const { blogs, total } = await blogService.getBlogs(
 			'',
-			1,
+			currentPage,
 			10,
 			categoryName,
 			subcategoryName
@@ -278,6 +292,8 @@ export const getBlogsBySubCategory = async (req, res) => {
 				userId: req?.userId,
 				isCategoryFollowed,
 				isFollowingTabSelected,
+				total: 0,
+				currentPage,
 			});
 		}
 
@@ -307,6 +323,8 @@ export const getBlogsBySubCategory = async (req, res) => {
 			userId: req?.userId,
 			isCategoryFollowed,
 			isFollowingTabSelected,
+			total,
+			currentPage,
 		});
 	} catch (err) {
 		console.log(err);
