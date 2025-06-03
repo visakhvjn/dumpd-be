@@ -12,8 +12,8 @@ export const scheduleCronJobs = () => {
 
 	console.log(`scheduling cron jobs on ${process.env.NODE_ENV}`);
 
-	// Generate a new blog every 5 hours
-	cron.schedule('0 */5 * * *', async () => {
+	// Generate a new blog every 12 hours
+	cron.schedule('0 */12 * * *', async () => {
 		console.log('⏰ Running daily blog generator...');
 
 		try {
@@ -69,6 +69,18 @@ export const scheduleCronJobs = () => {
 			console.log('✅ Blog vectorized!');
 		} catch (err) {
 			console.error('❌ Error vectorizing blog:', err);
+		}
+	});
+
+	// Post a random blog to linkedin everyday at 10am
+	cron.schedule('0 10 * * *', async () => {
+		console.log('⏰ Posting to Dev.to');
+
+		try {
+			await blogService.postRandomBlogToDev();
+			console.log('✅ Blog posted!');
+		} catch (err) {
+			console.error('❌ Error posting blog to dev.to:', err);
 		}
 	});
 };
