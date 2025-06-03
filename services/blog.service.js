@@ -1,6 +1,7 @@
 import NodeCache from 'node-cache';
 import slugify from 'slugify';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
 
 import { openai } from '../config/openai.js';
 
@@ -11,6 +12,9 @@ import * as Errors from '../utils/errors.js';
 import * as makeService from './make.service.js';
 import * as pineconeService from './pinecone.service.js';
 import * as openaiService from './openai.service.js';
+import * as devToService from './dev-to.service.js';
+
+dotenv.config();
 
 const cache = new NodeCache({ stdTTL: 3600 });
 
@@ -252,8 +256,20 @@ const getRandomBlog = async () => {
 	return blog[0];
 };
 
+const getRandomBlogForDev = async () => {
+	const blog = await blogModel.aggregate([
+		{ $match: { isPostedToDev: false } },
+		{ $sample: { size: 1 } },
+	]);
+	return blog[0];
+};
+
 const updateBlogToPosted = async (blogId) => {
 	await blogModel.updateOne({ _id: blogId }, { $set: { isPosted: true } });
+};
+
+const updateBlogToPostedForDev = async (blogId) => {
+	await blogModel.updateOne({ _id: blogId }, { $set: { isPostedToDev: true } });
 };
 
 export const postRandomBlog = async () => {
@@ -439,4 +455,18 @@ export const queryBlog = async (blogId, query) => {
 	const summary = await openaiService.summarizeQuery(query, matchedChunks);
 
 	return summary;
+};
+
+export const postRandomBlogToDev = async () => {
+	const blog = await getRandomBlogForDev();
+
+	await devToService.postToDevTo(
+		blog.title,
+		blog.content,
+		[],
+		blog.category,
+		`${process.env.BASE_URL}/blogs/${blog.slug}`
+	);
+
+	await updateBlogToPostedForDev(blog._id);
 };
