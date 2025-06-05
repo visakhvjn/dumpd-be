@@ -294,6 +294,7 @@ export const getBlogsBySubCategory = async (req, res) => {
 				isFollowingTabSelected,
 				total: 0,
 				currentPage,
+				subcategory: subcategoryName,
 			});
 		}
 
