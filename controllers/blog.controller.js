@@ -52,7 +52,7 @@ export const getAllBlogs = async (req, res) => {
 
 export const getAllFollowingBlogs = async (req, res) => {
 	let followedCategories = [];
-	let blogs = [];
+	const currentPage = parseInt(req.query.page, 10) || 1;
 
 	if (req.userId) {
 		const categoryFollowings = await categoryService.getUserCategoryFollowings(
@@ -66,7 +66,11 @@ export const getAllFollowingBlogs = async (req, res) => {
 		followedCategories = categories.map((category) => category.name);
 	}
 
-	blogs = await blogService.getBlogsByFollowings(1, 10, followedCategories);
+	const { blogs, total } = await blogService.getBlogsByFollowings(
+		1,
+		10,
+		followedCategories
+	);
 
 	const popularBlogs = await blogService.getPopularBlogs(1, 5);
 	const users = await getUsers();
@@ -101,6 +105,8 @@ export const getAllFollowingBlogs = async (req, res) => {
 		userId: req?.userId,
 		isCategoryFollowed,
 		isFollowingTabSelected: true,
+		total,
+		currentPage,
 	});
 };
 

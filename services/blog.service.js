@@ -68,13 +68,15 @@ export const getBlogsByFollowings = async (
 		query = { category: { $in: categories } };
 	}
 
+	const total = await blogModel.countDocuments(query);
+
 	const blogs = await blogModel
 		.find(query)
 		.sort({ createdAt: -1 })
 		.skip(skip)
 		.limit(size);
 
-	return blogs;
+	return { blogs, total };
 };
 
 export const getBlogByBlogId = async (blogId) => {
