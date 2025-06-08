@@ -16,7 +16,7 @@ export const getCategories = async (req, res) => {
 
 export const createCategory = async (req, res) => {
 	try {
-		const { name, description, subcategories } = req.body;
+		const { name, description, prompt, subcategories } = req.body;
 
 		if (!name) {
 			throw new Errors.BadRequestError('name cannot be empty!');
@@ -29,6 +29,7 @@ export const createCategory = async (req, res) => {
 		const category = await categoryService.createCategory(
 			name,
 			description,
+			prompt,
 			subcategories
 		);
 

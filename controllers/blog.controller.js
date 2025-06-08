@@ -200,6 +200,7 @@ export const getBlogsByCategory = async (req, res) => {
 			return res.render('blogs', {
 				blogs: [],
 				categories: [],
+				subcategory: null,
 				subcategories: category.subcategories.sort((a, b) =>
 					a.toLowerCase().localeCompare(b.toLowerCase())
 				),

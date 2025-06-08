@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as categoryController from '../controllers/category.controller.js';
-import { isUserAuthorised } from '../middlewares/auth.middleware.js';
+import { hasAPIKey, isUserAuthorised } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -15,5 +15,6 @@ router.get(
 	isUserAuthorised,
 	categoryController.unfollowCategory
 );
+router.post('/', hasAPIKey, categoryController.createCategory);
 
 export default router;
