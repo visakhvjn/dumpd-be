@@ -22,7 +22,12 @@ export const getCategoriesByIds = async (categoryIds) => {
 	return categoryModel.find({ _id: { $in: categoryIds } });
 };
 
-export const createCategory = async (name, description, subcategories) => {
+export const createCategory = async (
+	name,
+	description,
+	prompt,
+	subcategories
+) => {
 	if (await doesCategoryExist(name)) {
 		throw new Errors.BadRequestError(
 			`Category with name = ${name} already exists!`
@@ -32,6 +37,7 @@ export const createCategory = async (name, description, subcategories) => {
 	return categoryModel.create({
 		name,
 		description,
+		prompt,
 		subcategories,
 	});
 };
@@ -173,7 +179,8 @@ export const generateSubCategories = async () => {
 	// get new subcategories using LLM
 	const newSubcategories = await generateSubCategoriesUsingLLM(
 		category.name,
-		subcategories
+		subcategories,
+		category.prompt
 	);
 
 	// make sure they are not duplicated
@@ -189,7 +196,11 @@ export const generateSubCategories = async () => {
 	);
 };
 
-const generateSubCategoriesUsingLLM = async (category, subcategories) => {
+const generateSubCategoriesUsingLLM = async (
+	category,
+	subcategories,
+	prompt
+) => {
 	const response = await openai.chat.completions.create({
 		model: 'gpt-3.5-turbo',
 		temperature: 0.7,
@@ -204,14 +215,16 @@ const generateSubCategoriesUsingLLM = async (category, subcategories) => {
 				content: `
 					Generate subcategories which are closely related to the category = ${category}.
 
-					Make sure they are not too long and are not too short.
-					Make sure not to repeat them and make sure they are not too similar to each other.
-					Make sure to generate 3 subcategories. The subcategories will be used to generate blogs.
+					${prompt ? prompt : ''}
+
+					- Make sure they are not too long and are not too short.
+					- Make sure not to repeat them and make sure they are not too similar to each other.
+					- Make sure to generate 3 subcategories. The subcategories will be used to generate blogs.
 
 					These are the current subcategories in the system.
 					${subcategories.join(', ')}
 
-					Make sure to generate subcategories which are not already present in the system.
+					- Make sure to generate subcategories which are not already present in the system.
 
 					return a string of subcategories separated by commas.
 					Make sure to not add any other text or explanation.

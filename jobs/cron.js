@@ -48,8 +48,8 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	// every 5 hours new subcategories are added
-	cron.schedule('0 */5 * * *', async () => {
+	// every 12 hours new subcategories are added
+	cron.schedule('0 */12 * * *', async () => {
 		console.log('⏰ Generating New Subcategories ...');
 
 		try {
