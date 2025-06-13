@@ -339,9 +339,13 @@ const summariseForLinkedIn = async (content) => {
 		Summarise the following blog content for LinkedIn in not more than 200 words:
 		${content}.
 
-		Make sure to keep it engaging and professional.
-		Make sure it is also suitable for a LinkedIn audience.
-		Make sure it feels like a personal post from the author.
+		- Make sure to keep it engaging and humorous.
+		- Make sure people will want to read it.
+		- Make sure it is also suitable for a LinkedIn audience.
+		- Don't make it too jargon-heavy.
+		- Use a professional tone, but keep it light-hearted.
+		- Don't include code examples or technical details.
+		- Include a small story or anecdote to make it relatable.
 
 		Make sure to include relevant hashtags related to the content.
 

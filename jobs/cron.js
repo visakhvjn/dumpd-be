@@ -36,8 +36,8 @@ export const scheduleCronJobs = () => {
 		}
 	});
 
-	// Post a random blog to linkedin everyday at 10am
-	cron.schedule('0 10 * * *', async () => {
+	// Post a blog every 10 hours
+	cron.schedule('0 */10 * * *', async () => {
 		console.log('⏰ Running Blog poster...');
 
 		try {
