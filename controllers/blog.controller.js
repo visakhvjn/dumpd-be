@@ -145,6 +145,14 @@ export const getBlog = async (req, res) => {
 		// Update view count
 		await updateViews(slug);
 
+		// Get 3 other articles by user
+		const similarArticlesByUser =
+			await blogService.getSimilarBlogArticlesByUserId(
+				blog.userId,
+				blog._id,
+				3
+			);
+
 		res.render('blog', {
 			blog: {
 				id: blog._id,
@@ -165,6 +173,7 @@ export const getBlog = async (req, res) => {
 			authUser: req.oidc.user,
 			userId: req?.userId,
 			isPremium,
+			similarArticlesByUser,
 		});
 	} catch (err) {
 		console.error('❌ Error fetching blog:', err);

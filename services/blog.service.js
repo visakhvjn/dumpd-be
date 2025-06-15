@@ -498,3 +498,16 @@ export const createImageForBlog = async () => {
 		{ $set: { imageBase64: response.image } }
 	);
 };
+
+export const getSimilarBlogArticlesByUserId = async (
+	userId,
+	exceptBlogId,
+	count = 3
+) => {
+	const blogs = await blogModel.aggregate([
+		{ $match: { userId: userId, _id: { $ne: exceptBlogId } } },
+		{ $sample: { size: count } },
+	]);
+
+	return blogs;
+};
