@@ -13,6 +13,7 @@ import * as makeService from './make.service.js';
 import * as pineconeService from './pinecone.service.js';
 import * as openaiService from './openai.service.js';
 import * as devToService from './dev-to.service.js';
+import * as cloudflareService from './cloudflare.service.js';
 
 dotenv.config();
 
@@ -266,6 +267,15 @@ const getRandomBlogForDev = async () => {
 	return blog[0];
 };
 
+const getRandomBlogForImageCreation = async () => {
+	const blog = await blogModel.aggregate([
+		{ $match: { imageBase64: null } },
+		{ $sample: { size: 1 } },
+	]);
+
+	return blog[0];
+};
+
 const updateBlogToPosted = async (blogId) => {
 	await blogModel.updateOne({ _id: blogId }, { $set: { isPosted: true } });
 };
@@ -475,4 +485,16 @@ export const postRandomBlogToDev = async () => {
 	);
 
 	await updateBlogToPostedForDev(blog._id);
+};
+
+export const createImageForBlog = async () => {
+	const blog = await getRandomBlogForImageCreation();
+	const imagePrompt = await openaiService.generateImagePrompt(blog.content);
+
+	const response = await cloudflareService.createImage(imagePrompt);
+
+	await blogModel.updateOne(
+		{ _id: blog._id },
+		{ $set: { imageBase64: response.image } }
+	);
 };

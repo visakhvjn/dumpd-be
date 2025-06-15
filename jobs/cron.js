@@ -83,4 +83,15 @@ export const scheduleCronJobs = () => {
 			console.error('❌ Error posting blog to dev.to:', err);
 		}
 	});
+
+	// Create an image every 8 hours - so 3 images per day
+	cron.schedule('0 */8 * * *', async () => {
+		try {
+			console.log('Generating image for blog...');
+			await blogService.createImageForBlog();
+			console.log('Image generated for blog');
+		} catch (err) {
+			console.error('❌ Error generating Image:', err);
+		}
+	});
 };
