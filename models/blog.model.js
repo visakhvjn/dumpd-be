@@ -15,6 +15,7 @@ const blogSchema = new mongoose.Schema({
 	hash: { type: String, default: null },
 	isVectorized: { type: Boolean, default: false },
 	isPostedToDev: { type: Boolean, default: false },
+	imageBase64: { type: String, default: null },
 });
 
 blogSchema.index({ slug: 1 });

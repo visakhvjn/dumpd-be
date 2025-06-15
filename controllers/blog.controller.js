@@ -159,6 +159,7 @@ export const getBlog = async (req, res) => {
 				slug,
 				domain,
 				isVectorized: blog.isVectorized && isAuthenticated,
+				image: blog.imageBase64,
 			},
 			isLoggedIn: isAuthenticated,
 			authUser: req.oidc.user,

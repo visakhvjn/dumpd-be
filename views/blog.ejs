@@ -74,6 +74,16 @@
 					>
 				</div>
 				<hr />
+				<!-- IMAGE SECTION -->
+				<% if (blog.image) { %>
+				<div class="flex justify-center">
+					<img
+						src="<%= blog.image %>"
+						alt="<%= blog.title %>"
+						class="w-full max-w-2xl rounded-lg"
+					/>
+				</div>
+				<% } %>
 				<!-- CONTENT SECTION -->
 				<% if (isPremium && !isLoggedIn) { %> <%- include('premium') %> <% }
 				else {%>
